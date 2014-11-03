@@ -1,0 +1,254 @@
+p {
+    margin: 0 0 1.5em;
+}
+
+a, a:visited{
+    color: black;
+}
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}
+
+body {
+    font-family: arial,sans-serif;
+    font-size: 14px;
+    margin: 0 0 0 0;
+    background-color: #f7f7f7;
+    line-height: 1.5em;
+
+}
+
+h1, h2, h3, h4 {
+    margin: 5px;
+    padding: 12px;
+    font-family: Avenir,'Open Sans Light',arial,​sans-serif;
+    font-family: 'open sans',arial,sans-serif;
+}
+
+div.centerContainerTop {
+    margin: 0px auto;
+    overflow: hidden;
+    width: 970px;
+}
+div.centerContainer {
+    margin: 0px auto;
+    padding: 12px;
+    border: 1px solid #dcdcdc;
+    overflow: hidden;
+    width: 970px;
+    bbackground-color: #dfe3ee;
+    min-height: 500px;
+    overflow: visible;
+}
+
+div#topContainer {
+    background-color: #dddddd;
+    height: 64px;
+}
+
+div#topContainer h2{
+    margin-bottom: 5px;
+}
+
+.tab{
+    margin: 0px;
+    position:relative;
+    background-color: silver;
+    border-radius: 5px 5px 0px 0px;
+    padding: 2px;
+    background-color: #dfe3ee;
+    width: auto;
+    min-width: 30px;
+    max-width: 120px;
+}
+
+.menu{
+    margin: 0px;
+    position:relative;
+    background-color: silver;
+    border-radius: 5px 5px 0px 0px;
+    padding: 3px;
+    background-color: #3b59A0;
+    width: auto;
+    min-width: 30px;
+    max-width: 120px;
+}
+
+div#topContainer a:link,
+div#topContainer a:visited{
+    font-family: "open sans", Helvetica;
+    color: gwhite;
+    font-variant: small-caps;
+    font-size: 14px;
+    vertical-align: bottom;
+}
+.tooltip {
+    border-bottom: 1px dotted #000000; color: #000000; outline: none;
+    cursor: help;
+    text-decoration: none;
+    position: relative;
+}
+.tooltip span {
+    margin-left: -3000;
+    position: absolute;
+    min-width: 200px;
+    max-width: 450px;
+    width: 350px;
+}
+.tooltip:hover span{
+    border-radius: 5px 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+    font-family: Calibri, Tahoma, Geneva, sans-serif;
+    position: absolute; left: -10em; top: 1em; z-index: 99;
+    margin-left: 0;
+}
+.tooltip:hover img {
+    border: 0; margin: -10px 0 0 -55px;
+    float: left; position: absolute;
+}
+.tooltip:hover em {
+    font-family: Candara, Tahoma, Geneva, sans-serif; font-size: 1.2em; font-weight: bold;
+    display: block; padding: 0.2em 0 0.6em 0;
+}
+.classic { padding: 0.8em 1em; }
+.custom { padding: 0.5em 0.8em 0.8em 2em; }
+* html a:hover { background: transparent; }
+.classic {background: #FFFFAA; border: 1px solid #FFAD33; }
+.critical { background: #FFCCAA; border: 1px solid #FF3334;	}
+.help { background: #9FDAEE; border: 1px solid #2BB0D7;	}
+.info { background: #9FDAEE; border: 1px solid #2BB0D7;	}
+.warning { background: #FFFFAA; border: 1px solid #FFAD33; }
+
+.card {
+    bbackground: gray;
+    width: 300px;
+    height: 100px;
+    min-width: 250px;
+    margin: 0px;
+    padding: 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+    border: 1px solid gray;
+    border-radius: 1px 1px; -moz-border-radius: 1px; -webkit-border-radius: 1px;
+    box-shadow: 2px 2px 2px #888888;
+    background-color: white ;
+}
+
+.card:hover {
+    box-shadow: 2px 2px 2px 2px #333333;
+}
+/*
+ ***************************** ***************************** *****************************
+The following for graph display
+ ***************************** ***************************** *****************************
+*/
+.gr {
+    ffloat: right;
+    pposition: relative;
+    background: black;
+    width: 230px;
+    height: 250px;
+    mmargin-left: 250px;
+    border: 5px solid firebrick;
+    border-radius: 8px 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px;
+}
+.link {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 1.5px;
+    stroke-opacity: .6;
+}
+.node circle {
+    fill: #cccccc;
+    sstroke: #444444;
+    sstroke-width: 1.5px;
+}
+.node text {
+    pointer-events: none;
+    font: sans-serif;
+    ffill: #fff;
+    text-anchor: middle;
+}
+.left {
+    float: left;
+    pposition: relative;
+    width: 50px;
+    background-color: #f5f5f5;
+}
+.right {
+    position: relative;
+    text-align: center;
+    margin-left: 0px;
+    background-color: #f5f5f5;
+}
+
+/*
+ ***************************** ***************************** *****************************
+The following for NLP related CSS
+ ***************************** ***************************** *****************************
+*/
+
+.box {
+    border: 1px solid #000000;
+    border-top: 1px solid #000000;
+    border-radius: 2px 2px 2px 2px;
+    display: inline;
+    margin: 0px;
+    padding: 5px;
+    wwidth: 160px;
+    text-align: center;
+    font-size: 11px;
+    background-color: #4D90FE;
+    background-image: -moz-linear-gradient(center top , #4D90FE, #4787ED);
+    border: 1px solid #3079ED;
+    color: #FFFFFF !important;
+}
+.input {
+    border: 1px solid #006;
+    border-radius: 2px 2px 2px 2px;
+    line-height: 1.5em;
+    height: 3em;;
+}
+.input:hover,.inout:focus {
+    border: 1px solid #f00;
+    background: #ff6;
+}
+.NN { color: green;}
+.NNP{ color: firebrick; }
+.NNPS{ color: firebrick; }
+.VB { color: purple; }
+
+/*
+* ---------------------------------------------------------------------------------
+*/
+#tabs {
+    background: transparent;
+    border: none;
+    font-family: "open sans", Avenir;
+    font-size: 12px;
+}
+#tabs .ui-widget-header {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #c0c0c0;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+}
+#tabs .ui-tabs-nav .ui-state-default {
+    background: transparent;
+    border: none;
+}
+#tabs .ui-tabs-nav .ui-state-active {
+    background: transparent url(img/uiTabsArrow.png) no-repeat bottom center;
+    border: none;
+}
+#tabs .ui-tabs-nav .ui-state-default a {
+    color: #c0c0c0;
+}
+#tabs .ui-tabs-nav .ui-state-active a {
+    color: #459e00;
+}

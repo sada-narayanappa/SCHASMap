@@ -1,0 +1,39 @@
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~BOTTOM - FOOTER~~~-->
+</div>
+<script>
+baseHeight = $("#topContainer").height();
+
+function getPage() {
+    var page = $('#curPage').val();
+    console.log("->>" + page + " " + baseHeight)
+    $("#content").fadeOut(200, function(){})
+    $("#content").hide().load(page, function() {
+        $("#content").fadeIn(200, function(){
+            $("#content").animate({
+                height: baseHeight + $("#content").height() + "px"
+            });
+        })
+    });
+}
+function process(url) {
+    console.log("Processing cgi")
+    var values = $('#form1').serialize();
+    console.log("values:" + values);
+    $.ajax({
+        url: url,
+        cache: false,
+        type: "post",
+        data: values,
+        success: function(html){
+            console.log(html);
+            $("#results").val(html);
+        },
+        error:function(e1, e2){
+            $("#results").val('Error submitting form ' + e1 + " " + e2);
+        }
+    });
+}
+</script>
+
+</body>
+</html>

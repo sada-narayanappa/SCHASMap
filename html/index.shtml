@@ -1,0 +1,31 @@
+<!--#include virtual="index1.html"-->
+<h3>Data Analysis and Visualization</h3>
+<div id="card1" class="card" style="display: inline-block" >
+
+<em> Visulize on Map</em>
+    <p>
+    <a href="nlp.shtml">
+    <p>
+        Map visualization
+    </p>
+    </a>
+    </p>
+</div>
+<div id="card2" class="card" style="display: inline-block"  >
+    <em>Threads abd Graphs </em>
+    <p>
+        <a href="threads.shtml">
+            <p>
+                Data from threads - display and show graphs
+            </p>
+        </a>
+    </p>
+</div>
+
+
+<script>
+    //$('#card1').draggable();
+    //$('#card1').resizable();
+</script>
+
+<!--#include virtual="index2.html"-->

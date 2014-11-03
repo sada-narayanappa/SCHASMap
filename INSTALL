@@ -1,0 +1,50 @@
+To Install - you need a Apache web server.
+
+Configure apache for 
+  * SSI Includes
+  * mod SSI
+  
+  
+Add Following:
+-------------
+
+Options Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
+
+AddHandler cgi-script .cgi .py .pl
+
+On Mac: 
+Include /private/etc/apache2/vhosts.conf
+
+Create a file to include:
+NameVirtualHost *:80
+<VirtualHost *>
+    ServerName deploy
+    DocumentRoot "/Users/snarayan/Sites/NLP"
+  
+    ProxyRequests Off
+    <Proxy *>
+        Order deny,allow
+        Allow from all
+    </Proxy>
+  
+    ProxyPass        /tomcat/ http://localhost:8080/
+    ProxyPassReverse /tomcat/ http://localhost:8080/
+
+    ProxyPass        /nlp/ http://localhost:5000/
+    ProxyPassReverse /nlp/ http://localhost:5000/
+
+    <Location />
+        Order allow,deny
+        Allow from all
+    </Location>
+</VirtualHost>
+
+
+================================================================================
+To Deploy the SCH GIS application:
+
+[ ] #==> go to apache home directory
+[ ] create a link to schgeo/src in the home directory
+
+TEST
+----
