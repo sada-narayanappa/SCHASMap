@@ -1,0 +1,467 @@
+<html lang='en'><head> <meta charset='utf-8'/>
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+ <title>Comcast Analytical Engine  Map control</title>
+<script src='OpenLayers.debug.js'></script>
+<script type='text/javascript' src='OpenLayers.debug.js'></script>
+<script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+<script src="jquery.js"></script>
+<script type="text/javascript" src="jquery.cookie.js"></script>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<style type=text/css>
+.bc { 
+    width: 90px;
+    color: #444444;
+    background-color: #66CCFF; 
+    border-color: black;
+    border-radius: 6px 6px 4px 4px;
+}
+</style>
+</head>
+<body onload="init();">
+<div style="{width:100%; height: 100%; z-index:-90;}" id="map"></div>
+
+<div style="display:block; position: absolute; border: 0px solid black; float: right; bottom: 150px; right: 10px; width:100px; z-index: 1001">
+<span id="rimg" style="display:none;">
+<img  class="bc"  src="img/red1.png" height="20" align="absmiddle" />
+</span> 
+<button class="bc" type="button" onclick="StartUpdate()">Start Updates</button>
+<button class="bc" type="button" onclick="StopUpdate()">Stop Updates</button>
+<button class="bc" type="button" onclick="GotoMyLoc()">Goto my Location</button>
+<button class="bc" type="button" onclick="FindMyLoc()">Find my Location</button>
+<bbutton class="bc" type="button" onclick="Test()"></bbutton>
+</div>
+
+<div style="position: absolute; bottom: 0px; width: 100%; z-index: 1000;">
+<img id="dataimg" style="" onclick="Toggle('data')" src="img/plus.png">
+<textarea rows="10" id="data" style="width: 99%; border: 1 solid black; ">
+[
+{"info": "AL", "lat": 32.806673, "lon" : -86.791133,  "name": 214},
+{"info": "AZ", "lat": 33.729761, "lon" : -111.431224, "name": 244}
+]
+</textarea>
+<br/>
+<span id="status" style="height:40px;width: 100%; background-color: white;">
+Status
+</span>
+</div>
+
+</body>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<script type="text/javascript">
+var lat=39.578083599444454;
+var lon=-104.93841732333334;
+var zoom=4;
+var map; 
+var proj = null;;
+var othersLoc = null;
+var myLocationLayer;
+var sumByStatesLayer;
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+function init() {
+    Configure();
+    var opts = {
+	scales: [50000000, 30000000, 10000000, 5000000] ,
+	controls:[ 
+	    new OpenLayers.Control.Navigation(),
+	    new OpenLayers.Control.PanZoomBar()
+	],
+	//maxExtent: new OpenLayers.Bounds(-8879149, 4938750,-7453286, 6017794),
+	//maxResolution: 156543.0399,
+	numZoomLevels: 5,
+	units: 'degrees',
+	//projection: new OpenLayers.Projection("EPSG:3785"),
+	displayProjection: new OpenLayers.Projection("EPSG:4326")
+    };
+    map = new OpenLayers.Map ("map", opts); 
+    SetupBaseLayers1(map);
+    //SetupBaseLayers2(map);
+
+    proj = new OpenLayers.Projection("EPSG:4326"); 
+    GotoMyLoc(zoom);
+    map.addControl(new OpenLayers.Control.MousePosition());
+    map.addControl( new OpenLayers.Control.LayerSwitcher() );
+    // ------------------------------------------------Create vector  layers
+    myLocationLayer = new CreateMyLocationLayer(map);
+    sumByStatesLayer = new CreateStateDataLayer(map);
+    SendAndGetUpdates();
+    //-----------------------------------
+    $("#status").text ("Ready ");
+}
+//-----------------------------------------------------------------------------
+function Configure() {
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function SetupBaseLayers1(map){
+    var lyrBasic1 = new OpenLayers.Layer.OSM.Mapnik("OSM Mapnik");
+    map.addLayer(lyrBasic1);
+    lyrBasic1.scales - [50000000, 30000000, 10000000, 5000000];
+    lyrBasic1.opacity = 0.6;
+//     lyrBasic1.minZoomLevel = 7;
+//     lyrBasic1.maxZoomLevel = 9;
+//     lyrBasic1.numZoomLevels = 7;
+
+    var style = new  OpenLayers.StyleMap(
+	{'default':{
+            strokeColor: "#FFFF00",
+            strokeOpacity: 0.9,
+            strokeWidth: 0.5,
+            fillColor: "#FF0000",
+            fillColor: "${STATE_FIPS}",
+            fillOpacity: 0.3,
+            ffillOpacity: "${P_MALE}",
+//             pointRadius: 5,
+//             pointerEvents: "visiblePainted",
+//             llabel : "${STATE_FIPS} ${STATE_ABBR}",
+// 	    fontColor: "${favColor}",
+//             fontSize: "12px",
+// 	    fontFamily: "Arial",
+// 	    fontWeight: "bold",
+// 	    labelAlign: "cm",
+//             labelXOffset: "0",
+//             labelYOffset: "10",
+//             labelOutlineWidth: 3
+	}});
+
+    var lyr3 = new OpenLayers.Layer.Vector("US State Boundaries", {
+	styleMap: style,
+        protocol: new OpenLayers.Protocol.HTTP({
+            url: "wfs-states.xml",
+            format: new OpenLayers.Format.GML()
+        }),
+        strategies: [new OpenLayers.Strategy.Fixed()]
+    });
+
+    lyr3.opacity = 1;
+
+    map.addLayer(lyr3);
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function SetupBaseLayers2(map){
+    var map;
+    var rs = OpenLayers.Util.getParameters(window.location.href).renderer;
+    rs = (rs) ? [rs] : OpenLayers.Layer.Vector.prototype.renderers;
+
+    var lyr1 = new OpenLayers.Layer.WMS(
+	"OpenLayers WMS",
+	"http://vmap0.tiles.osgeo.org/wms/vmap0",
+        {layers: "basic"} 
+    );
+    lyr1.opacity = 0.5;
+    map.addLayer(lyr1);
+
+    OpenLayers.ProxyHost = "proxy1.cgi?url=";
+    var lyr2 = new OpenLayers.Layer.Vector("States", {
+        strategies: [new OpenLayers.Strategy.BBOX()],
+        protocol: new OpenLayers.Protocol.WFS({
+            url: "http://demo.opengeo.org/geoserver/wfs",
+            featureType: "states",
+            featureNS: "http://www.openplans.org/topp"
+        }) });;
+    map.addLayer(lyr2);
+
+    var lyr3 = new OpenLayers.Layer.Vector("US State Boundaries", {
+        protocol: new OpenLayers.Protocol.HTTP({
+            url: "wfs-states.xml",
+            format: new OpenLayers.Format.GML()
+        }),
+        strategies: [new OpenLayers.Strategy.Fixed()]
+    });
+    map.addLayer(lyr3);
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function CreateMyLocationLayer(map){
+    this.map = map;
+    this.layer = new OpenLayers.Layer.Vector("My Location");
+    this.map.addLayer(this.layer);
+    
+    var style_blue = OpenLayers.Util.extend(
+	{}, 
+	OpenLayers.Feature.Vector.style['default']);
+    style_blue.strokeColor = "blue"; 
+    style_blue.fillColor = "blue"; 
+    style_blue.pointRadius= 3;
+
+    var pt = xPoint(lon, lat); 
+
+    locFeat = new OpenLayers.Feature.Vector(pt, null, style_blue);
+    this.layer.addFeatures(locFeat);
+
+    this.Adjust = function() {
+	this.layer.removeFeatures(locFeat);
+	var pt = xPoint(lon, lat);
+	locFeat.geometry = pt;
+	this.layer.addFeatures(locFeat);
+    }
+    return this;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function CreateStateDataLayer(map){
+    // allow testing of specific renderers via "?renderer=Canvas", etc
+    var rend = OpenLayers.Util.getParameters(window.location.href).renderer;
+    rend = (rend) ? [rend] : OpenLayers.Layer.Vector.prototype.renderers;
+    var style = new  OpenLayers.StyleMap(
+	{'default':{
+            strokeColor: "#00FF00",
+            strokeOpacity: 1,
+            strokeWidth: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.5,
+            pointRadius: 5,
+            pointerEvents: "visiblePainted",
+            label : "${name}",
+	    // fontColor: "${favColor}",
+            fontSize: "12px",
+	    fontFamily: "Arial",
+	    fontWeight: "bold",
+	    labelAlign: "cm",
+            labelXOffset: "0",
+            labelYOffset: "10",
+            labelOutlineWidth: 3
+	}});
+
+    this.map = map;
+    this.layer = new OpenLayers.Layer.Vector(
+	"Summary by ZIP", {
+	    styleMap: style,
+	    options: {
+		minScale: 5000000880230,
+		maxScale: 0,
+		mmaxExtent: new OpenLayers.Bounds(-113, 30, 60, 50),
+	    },
+	    renderers: rend
+	});
+
+    this.selectControl = new OpenLayers.Control.SelectFeature(
+	this.layer,
+	{
+	    hover: true
+	}
+    );
+    map.addControl(this.selectControl);
+    this.selectControl.activate();
+    this.layer.events.on({
+        'featureselected': onFeatureSelect,
+        'featureunselected': onFeatureUnselect
+    });
+
+    map.addLayer(this.layer);
+    return this;
+}
+ //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function onFeatureSelect(evt) {
+    feature = evt.feature;
+    popup = new OpenLayers.Popup.FramedCloud(
+	"Information",
+        feature.geometry.getBounds().getCenterLonLat(),
+	null, // new OpenLayers.Size(100,100),
+        "Info: " + "" + feature.attributes.info ,
+        null, false, onPopupClose);
+
+    feature.popup = popup;
+    popup.feature = feature;
+    popup.backgroundColor = '#99CC99';
+    popup.autoSize = true;
+    map.addPopup(popup, true);
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function onFeatureUnselect(evt) {
+    feature = evt.feature;
+    if (feature.popup) {
+        map.removePopup(feature.popup);
+        feature.popup.destroy();
+        feature.popup = null;
+    }
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Needed only for interaction, not for the display.
+function onPopupClose(evt) {
+    var feature = evt.feature;
+    if (feature.layer) { // The feature is not destroyed
+        feature.layer.selectControl.unselect(feature);
+    } else { // After "moveend" or "refresh" events on POIs layer all 
+             //     features have been destroyed by the Strategy.BBOX
+        this.destroy();
+    }
+}
+//---------------------------------------------------------------------------
+function FIND(item) {
+   if (document.getElementById) return(document.getElementById(item));
+   else if (document.all) return(document.all[item]);
+   return(false);
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function Toggle(o) {
+    obj = FIND(o);
+
+    if ( obj.style.display == "") {
+	obj.style.display = "none";
+    } else {
+	obj.style.display = "";
+    }
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function xPoint(lon, lat) {
+    var point = new OpenLayers.Geometry.Point(lon, lat); 
+    point = point.transform(proj, map.getProjectionObject()); 
+    return point;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function FindMyLoc() {
+    if ( navigator.geolocation) {
+	navigator.geolocation.getCurrentPosition(
+	    onGotGL, 
+	    function() {
+		$("#status").text( 'Could not get Location' );
+	    }
+	);
+    } else {
+	$("#status").text( 'Could not get Location' );
+    }
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function onGotGL( position ) {
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+    GotoMyLoc(0);
+    myLocationLayer.Adjust();
+    $("#status").text( 'Found Location' );
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function GotoMyLoc(zoom) {
+    var ll = new OpenLayers.LonLat(lon, lat).transform(
+	proj, 
+	map.getProjectionObject());
+    map.setCenter (ll, (zoom > 0) ? zoom : map.zoom);
+
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function addPoint(lon, lat, layer, attr ) {
+    var point = xPoint(lon, lat);
+
+    // Use this to add points with style
+    fpointFeature = new OpenLayers.Feature.Vector( 
+	point,
+	attr,
+ 	{ externalGraphic: 'img/red1.png', 
+	  graphicHeight: 12, 
+	  graphicWidth: 12
+	}
+    );
+    pointFeature = new OpenLayers.Feature.Vector( 
+	point,
+	attr
+    );
+    layer.addFeatures(pointFeature);
+    return pointFeature;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var startInterval=null;
+function StartUpdate() {
+    $('#rimg').show();
+    startInterval = setInterval( SendAndGetUpdates, 4000);
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function StopUpdate() {
+    $('#rimg').hide();
+    clearInterval(startInterval);
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function Test(dontcheck) {
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var sendUpdateWorking= false;
+var ct = 0;
+function SendAndGetUpdates() {
+    if (sendUpdateWorking)
+ 	return;
+    sendUpdateWorking = true;
+    SendAndGetUpdates1();
+    SendAndGetUpdates2();
+    sendUpdateWorking = false;
+}
+//-----------------------------------------------------------------------------
+function updateAll1(c, lyr) {
+    var locs = JSON.parse(c);
+    var bounds;
+    lyr.destroyFeatures();
+
+    locs[locs.length] = locs[0];
+    for(var i=0; i<locs.length; ++i) {
+	var lc = locs[i];
+	var feat = addPoint(lc.lon, lc.lat, lyr, lc );
+
+        if (!bounds) {
+            bounds = feat.geometry.getBounds();
+        } else {
+            bounds.extend(feat.geometry.getBounds());
+        }
+    }
+    var b1 = map.calculateBounds();
+    if ( !b1.contains(bounds) ) {
+        map.zoomToExtent(bounds);
+    }
+}
+function SendAndGetUpdates1() {
+    var p = "";  //  get the parameters from the map
+    $.ajax({
+	type: "GET", 		   // GET or POST or PUT or DELETE verb
+	url:  "sample.txt." + ct,	   // Location of the service
+	data: 	{param: p},        // Data sent to server
+	contentType: "",	   // content type sent to server
+	dataType: "text",	   // Expected data format from server
+	processdata: true,	   // True or False
+	success: function (json) { // On Successful service call
+	    var r = "RESULT: " + json;
+	    var id1 = r.indexOf("[",r.lastIndexOf("START"));
+	    var id2 = r.indexOf("]",id1);
+	    if ( id1 < 0 || id2 < 0 )
+		return;
+	    r = r.substring(id1, id2+1);
+ 	    updateAll1(r, sumByStatesLayer.layer);
+	},
+	error: function(xhr) {
+	    $("#status").text (xhr.responseText)
+	}
+    });
+    ct = (++ct % 2);
+}
+//-----------------------------------------------------------------------------
+function updateAll2(c, lyr) {
+    $("#status").text (""+c);
+    var ct = JSON.stringify(c);
+    $("#data").val (""+ct + c[0].deviceCount);
+}
+function SendAndGetUpdates2() {
+    var urlp1 = "http://localhost:8080/api/livepoint/columbus/";
+    urlp = "proxy1.cgi?url=" + urlp1 + "";
+
+    var p = "";  //  get the parameters from the map
+    $("#status").text (" SendAndGetUpdates2 " + urlp);
+    $("#data").val(" SendAndGetUpdates2" );
+//     return;
+    $.ajaxSetup({ cache: false });
+
+    $.ajax({
+	type: "GET",
+	url:  urlp,
+	timeout: 3000,
+	data: 	{param: p},
+	contentType: "",
+	dataType: "text",
+	dataType: "json",
+	processdata: true,
+	cache: false,
+	success: function (json) { 
+	    $("#data").val(" SUCC: Sendupdateworking2 " + json)
+	    $("#status").text(" SUCC: Sendupdateworking2 " + json)
+  	    updateAll2(json, sumByStatesLayer.layer);
+	},
+	error: function(xhr, stat, err) {
+	    $("#data").val(" ERR: Sendupdateworking2 " + xhr + ": " + stat + " " + err + " ]")
+	    $("#status").text(" ERR: Sendupdateworking2 " + xhr.responseText)
+	}
+    });
+}
+
+</script>
+</html>
