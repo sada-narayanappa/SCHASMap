@@ -30,15 +30,7 @@
                     fillOpacity: 0.5,
                     pointRadius: 6,
                     pointerEvents: "visiblePainted",
-					eventListeners:{
-				        'featureselected':function(evt){                
-            			  // label with \n linebreaks
-              		      label : "Humidity: ${Humidity}\n\nTemperature: ${temp}"
-        				},
-					        'featureunselected':function(evt){
-                            
-        				}
-    				},
+					
                     // label with \n linebreaks
               //      label : "Humidity: ${Humidity}\n\nTemperature: ${temp}",
                     
@@ -54,7 +46,7 @@
                 }}),
                 renderers: renderer
             });
-			
+				
 			
 		  
 		  //creating a point
@@ -87,8 +79,12 @@
 			//Giving the point attributes (probably want to use points over markers because of the attributes option)
             	var pointFeature = new OpenLayers.Feature.Vector(point);
             pointFeature.attributes = {
-                Humidity: lines[i],
-                temp: 20,
+				Longitude: -1*lon,
+				Latitude: lat,
+                Humidity: dataArray[2],
+                temp: dataArray[1],
+				Speed: dataArray[5]+", " +dataArray[6] + ", " + dataArray[7],
+				DateTime: dataArray[0]
 				
             };
 			
@@ -119,11 +115,38 @@
 		 var zoom = 13;
 		 
 		var selectCtrl = new OpenLayers.Control.SelectFeature(vectorLayer,
-             {clickout: true}
+             {clickout: true
+			 
+			 }
+			 
         );
         map.addControl(selectCtrl);
 		selectCtrl.activate();
 		
+		vectorLayer.events.on({
+		'featureselected':function(evt){
+            var feature = evt.feature;
+            var popup = new OpenLayers.Popup.FramedCloud("popup",
+                OpenLayers.LonLat.fromString(feature.geometry.toShortString()),
+                null,
+                "Latitude,Longitude:"+feature.attributes.Latitude+", " + feature.attributes.Longitude+"<br>"+"Humidity: " + feature.attributes.Humidity+"<br>"+"Temperature: "+feature.attributes.temp +"<br>"+"Speed: "+feature.attributes.Speed+"<br>"+"Date/Time: "+feature.attributes.DateTime,
+                null,
+                true,
+                null
+            );
+            popup.autoSize = true;
+            popup.maxSize = new OpenLayers.Size(400,800);
+            popup.fixedRelativePosition = true;
+            feature.popup = popup;
+            map.addPopup(popup);
+        },
+        'featureunselected':function(evt){
+            var feature = evt.feature;
+            map.removePopup(feature.popup);
+            feature.popup.destroy();
+            feature.popup = null;
+        }
+	  });
 		//adds the vector layer (which allows for adding points)
 		map.addLayer(vectorLayer);
 
