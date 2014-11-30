@@ -1,23 +1,35 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>OpenLayers Basic Example</title>
+    <title>SCHAS</title>
 
     <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="Layers.js"></script>
         
     
-    
 
     <style>
-    #mapdiv { width:1024px; height:768px; }
+	
+    #mapdiv { 
+	width:100%; 
+	height:100%; 
+	padding 0px;
+	position: absolute;
+	}
     div.olControlAttribution { bottom:3px; }
     </style>
 
 </head>
 
 <body onload="init();">
+	<form name="input" action="javascript: submitform();" method="post">
+    <label for="query">Search for address:</label> <input type="text" id="query" size=50 		name="query"
+                                                          value="Menomonie, WI"/>
+    <input type="submit" value="Submit"/>
+	</form>
+    
+    <br>
     <div id="mapdiv"></div>
 </body>
 </html>

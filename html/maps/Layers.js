@@ -1,4 +1,6 @@
 function init() {
+		OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
+	
         map = new OpenLayers.Map("mapdiv");
         var mapnik = new OpenLayers.Layer.OSM();
         map.addLayer(mapnik);
@@ -20,7 +22,7 @@ function init() {
                     strokeWidth: 3,
                     fillColor: "#FF5500",
                     fillOpacity: 0.5,
-                    pointRadius: 6,
+                    pointRadius: 4,
                     pointerEvents: "visiblePainted",
 					
                     // label with \n linebreaks
@@ -88,22 +90,7 @@ function init() {
 			
         	//append select to page
     	}); 
-		
-		/** var point = new OpenLayers.Geometry.Point(-91.9181, 44.874).transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984 //converting from map x,y coordinates to lonlat coordinates. 
-            new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator //converting from map x,y coordinates to lonlat coordinates.
-          );
-		  var pointFeature = new OpenLayers.Feature.Vector(point);
-            pointFeature.attributes = {
-                Humidity: 30,
-                temp: 20,
-				
-            };
-			vectorLayer.addFeatures([pointFeature]); */
 			
-			
-			
-		
 		 var zoom = 13;
 		 
 		var selectCtrl = new OpenLayers.Control.SelectFeature(vectorLayer,
@@ -148,11 +135,72 @@ function init() {
 		layerSwitch = map.getControlsByClass("OpenLayers.Control.LayerSwitcher")[0];
 		layerSwitch.dataLbl.innerText = "Layers"
 	  
+	  var layer_cloud = new OpenLayers.Layer.XYZ(
+        "clouds",
+        "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png",
+        {
+            isBaseLayer: false,
+            opacity: 0.7,
+            sphericalMercator: true
+        }
+    );
+
+    var layer_precipitation = new OpenLayers.Layer.XYZ(
+        "precipitation",
+        "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
+        {
+            isBaseLayer: false,
+            opacity: 0.7,
+            sphericalMercator: true
+        }
+    );
+
+	var layer_temperature = new OpenLayers.Layer.XYZ(
+        "temp",
+        "http://${s}.tile.openweathermap.org/map/temp/${z}/${x}/${y}.png",
+        {
+            isBaseLayer: false,
+            opacity: 0.4,
+            sphericalMercator: true
+        }
+    );
+
+    map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature, vectorLayer]);
+	  
 		//adds the vector layer (which allows for adding points)
-		map.addLayer(vectorLayer);
+		//map.addLayer(vectorLayer);
 
 		//sets the center to the lonlat variable(which is on menomonie now) and zoom to zoom variable
         map.setCenter(lonlat, zoom);
        
 		
-      }
+      }//end Init() function
+	  
+	  function submitform() {
+            var queryString = document.forms[0].query.value;
+            OpenLayers.Request.POST({
+                url: "http://www.openrouteservice.org/php/OpenLSLUS_Geocode.php",
+                scope: this,
+                failure: this.requestFailure,
+                success: this.requestSuccess,
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                data: "FreeFormAdress=" + encodeURIComponent(queryString) + "&MaxResponse=1"
+            });
+        }//end submitform()
+        function requestSuccess(response) {
+            var format = new OpenLayers.Format.XLS();
+            var output = format.read(response.responseXML);
+            if (output.responseLists[0]) {
+                var geometry = output.responseLists[0].features[0].geometry;
+                var foundPosition = new OpenLayers.LonLat(geometry.x, geometry.y).transform(
+                        new OpenLayers.Projection("EPSG:4326"),
+                        map.getProjectionObject()
+                        );
+                map.setCenter(foundPosition, 16);
+            } else {
+                alert("Sorry, no address found");
+            }
+        }//end requestSuccess()
+        function requestFailure(response) {
+            alert("An error occurred while communicating with the OpenLS service. Please try again.");
+        }//end requestFailure()
