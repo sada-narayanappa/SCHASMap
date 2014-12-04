@@ -15,7 +15,7 @@ function init() {
 		  var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
             renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
             
-            var vectorLayer = new OpenLayers.Layer.Vector("Simple Geometry", {
+            var vectorLayer = new OpenLayers.Layer.Vector("User Tracks", {
                 styleMap: new OpenLayers.StyleMap({'default':{
                     strokeColor: "#00FF00",
                     strokeOpacity: 1,
@@ -91,7 +91,7 @@ function init() {
         	//append select to page
     	}); 
 			
-		 var zoom = 13;
+		 var zoom = 14;
 		 
 		var selectCtrl = new OpenLayers.Control.SelectFeature(vectorLayer,
              {clickout: true
@@ -136,7 +136,7 @@ function init() {
 		layerSwitch.dataLbl.innerText = "Layers"
 	  
 	  var layer_cloud = new OpenLayers.Layer.XYZ(
-        "clouds",
+        "Clouds",
         "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png",
         {
             isBaseLayer: false,
@@ -146,7 +146,7 @@ function init() {
     );
 
     var layer_precipitation = new OpenLayers.Layer.XYZ(
-        "precipitation",
+        "Precipitation",
         "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
         {
             isBaseLayer: false,
@@ -156,7 +156,7 @@ function init() {
     );
 
 	var layer_temperature = new OpenLayers.Layer.XYZ(
-        "temp",
+        "Temperature",
         "http://${s}.tile.openweathermap.org/map/temp/${z}/${x}/${y}.png",
         {
             isBaseLayer: false,
@@ -164,7 +164,11 @@ function init() {
             sphericalMercator: true
         }
     );
-
+	
+	layer_precipitation.setVisibility(false);
+	layer_cloud.setVisibility(false);
+	layer_temperature.setVisibility(false);
+	
     map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature, vectorLayer]);
 	  
 		//adds the vector layer (which allows for adding points)
