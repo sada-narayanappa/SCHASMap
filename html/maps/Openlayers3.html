@@ -31,7 +31,6 @@
         } else {
             document.getElementById('formcontent').style.display= "none"
         }
-
     }
 </script>
 <div id='form'>
@@ -49,29 +48,27 @@
         <input type="submit" value="Submit"/>
         <hr size="1"/>
 
-
         <div id="tabs">
             <ul>
-                <li><a href="#tabs-1">Pick users</a></li>
+                <li><a href="#tabs-1">Utilities</a></li>
                 <li><a href="#tabs-2">Find Trajectories</a></li>
-                <li><a href="#tabs-3">Create User</a></li>
+                <li><a href="#tabs-3">Pick/ User</a></li>
             </ul>
             <div id="tabs-1">
-                <p>Query data base and show a list of users </p>
-                <p>Also provide a way to find interesting users
+                <input type="button" onclick="findLocation()" value="Find my Location">
                 </p>
             </div>
             <div id="tabs-2">
                 <p>Find interesting trajectories - query</p>
             </div>
             <div id="tabs-3">
-                <p>Create new users</p>
+                <p>Find Users</p>
             </div>
         </div>
 
         <hr size="1"/>
         SCHAS Maps  | <a style="color: white;" href="http://www.geospaces.org">Geospaces</a> |
-            SHOW MOUSE LOCATION
+            WADE SHOW MOUSE LOCATION HERE
         </div>
     </form>
 </div>

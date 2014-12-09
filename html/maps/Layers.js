@@ -169,10 +169,6 @@ function init() {
 
    map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature, vectorLayer]);
 
-   //adds the vector layer (which allows for adding points)
-   //map.addLayer(vectorLayer);
-
-   //sets the center to the lonlat variable(which is on menomonie now) and zoom to zoom variable
    map.setCenter(lonlat, zoom);
 
 }//end Init() function
