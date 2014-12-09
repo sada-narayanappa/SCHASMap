@@ -20,10 +20,10 @@ function init() {
          'default': {
             strokeColor: "#00FF00",
             strokeOpacity: 1,
-            strokeWidth: 3,
+            strokeWidth: 2,
             fillColor: "#FF5500",
             fillOpacity: 0.5,
-            pointRadius: 4,
+            pointRadius: 3,
             pointerEvents: "visiblePainted",
 
             // label with \n linebreaks
