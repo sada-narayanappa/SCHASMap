@@ -1,29 +1,28 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>SCHAS</title>
-
+    <title>SCHAS Maps</title>
     <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="Layers.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
-    
-
+    <link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
 </head>
 
 <body onload="init();">
-	<div id="heading">
-    SCHAS Map
-    </div>
-    <div id="mapdiv"></div>
-	<div id='form'>
-	<form name="input" action="javascript: submitform();" method="post">
-    <label for="query">Search for address:</label> <input type="text" id="query" size=50 		name="query"
-                                                          value="Menomonie, WI"/>
-    <input type="submit" value="Submit"/>
-	</form>
-    </div>
-    
+<div id="mapdiv"></div>
+
+<div id='form'>
+    <form name="input" action="javascript: submitform();" method="post">
+        <label for="query">Address/zip :</label>
+        <input type="text" id="query" size=50 name="query" value="Menomonie, WI"/>
+        <input type="submit" value="Submit"/>
+        <hr size="1"/>
+
+        <hr size="1"/>
+        SCHAS Maps  | <a style="color: white;" href="http://www.geospaces.org">Geospaces</a>
+    </form>
+</div>
+
 </body>
 </html>
