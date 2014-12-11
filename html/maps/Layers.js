@@ -1,10 +1,31 @@
 function init() {
+	//For entering address data
    OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
 
    map = new OpenLayers.Map("mapdiv");
    var mapnik = new OpenLayers.Layer.OSM();
    map.addLayer(mapnik);
-
+	
+	//BELOW: Map Mouse Position
+	map.addControl(
+                new OpenLayers.Control.MousePosition({
+					autoActivate: false,
+                    prefix: 'coordinates: ',
+                    separator: ' | ',
+                    numDigits: 2,
+					projection: 'EPSG:4326',
+                    emptyString: 'Mouse is not over map.'
+                })
+            );
+	map.events.register("mousemove", map, function(e) {
+                var position = this.events.getMousePosition(e);
+				position = map.getLonLatFromPixel(position).transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
+				position.lat = Number(position.lat).toFixed(4);
+				position.lon = Number(position.lon).toFixed(4);
+                OpenLayers.Util.getElement("coords").innerHTML = position;
+            });
+	//ABOVE: Map Mouse Position
+	
    //Code below is used for the marker object (The red marker you can see on HWY 12).
    var lonlat = new OpenLayers.LonLat(-91.9181, 44.8792).transform(
            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984 //converting from map x,y coordinates to lonlat coordinates.
