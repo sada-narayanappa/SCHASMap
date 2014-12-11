@@ -1,44 +1,78 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>SCHAS</title>
-
+    <title>SCHAS Maps</title>
     <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="Layers.js"></script>
-<<<<<<< HEAD
-        
-    
-	<link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
-    
-=======
 
-    <style>
-	
-    #mapdiv { 
-	width:  99%; 
-	height: 94%; 
-	padding 0px;
-	position: absolute;
-	}
-    div.olControlAttribution { bottom:3px; }
-    </style>
->>>>>>> origin/master
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <script src="Layers.js"></script>
+    <script src="os.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
+
+    <script>
+        $(function() {
+            $( "#tabs" ).tabs();
+        });
+    </script>
 
 </head>
 
 <body onload="init();">
-	<div id="heading">
-    SCHAS Map
-    </div>
-    <div id="mapdiv"></div>
-	<div id='form'>
-	<form name="input" action="javascript: submitform();" method="post">
-    <label for="query">Search for address:</label> <input type="text" id="query" size=50 		name="query"
-                                                          value="Menomonie, WI"/>
-    <input type="submit" value="Submit"/>
-	</form>
-    </div>
-    
+<div id="mapdiv"></div>
+
+<script>
+    function formopen() {
+        d =document.getElementById('formcontent').style.display;
+        if ( d == "none") {
+            document.getElementById('formcontent').style.display = "block"
+        } else {
+            document.getElementById('formcontent').style.display= "none"
+        }
+    }
+</script>
+<div id='form'>
+    <form name="input" action="javascript: submitform();" method="post">
+        <div style="font-variant: small-caps; text-align: right; width: 100%; background-color: grey">
+            Control Panel
+            <img src="http://www.clker.com/cliparts/O/S/I/l/m/L/minus-sign-subtract-md.png"
+                 width="16px"
+                onclick="formopen()" />
+            <hr/>
+        </div>
+        <div id="formcontent">
+        <label for="query">Address/zip :</label>
+        <input type="text" id="query" size=50 name="query" value="Menomonie, WI"/>
+        <input type="submit" value="Submit"/>
+        <hr size="1"/>
+
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Utilities</a></li>
+                <li><a href="#tabs-2">Find Trajectories</a></li>
+                <li><a href="#tabs-3">Pick/ User</a></li>
+            </ul>
+            <div id="tabs-1">
+                <input type="button" onclick="findLocation()" value="Find my Location">
+                </p>
+            </div>
+            <div id="tabs-2">
+                <p>Find interesting trajectories - query</p>
+            </div>
+            <div id="tabs-3">
+                <p>Find Users</p>
+            </div>
+        </div>
+
+        <hr size="1"/>
+        SCHAS Maps  | <a style="color: white;" href="http://www.geospaces.org">Geospaces</a> |
+            WADE SHOW MOUSE LOCATION HERE
+        </div>
+    </form>
+</div>
+
 </body>
 </html>
