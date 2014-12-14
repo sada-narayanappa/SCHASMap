@@ -9,23 +9,23 @@ function init() {
 	//BELOW: Map Mouse Position
 	map.addControl(
                 new OpenLayers.Control.MousePosition({
-					autoActivate: false,
-                    prefix: 'coordinates: ',
-                    separator: ' | ',
-                    numDigits: 2,
-					projection: 'EPSG:4326',
-                    emptyString: 'Mouse is not over map.'
+					      autoActivate: false,
+                     prefix:        'coordinates: ',
+                     separator:     ' | ',
+                     numDigits:     2,
+					      projection:    'EPSG:4326',
+                     emptyString:   'Mouse is not over map.'
                 })
             );
-	map.events.register("mousemove", map, function(e) {
-                var position = this.events.getMousePosition(e);
-				position = map.getLonLatFromPixel(position).transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
-				position.lat = Number(position.lat).toFixed(4);
-				position.lon = Number(position.lon).toFixed(4);
-                OpenLayers.Util.getElement("coords").innerHTML = position;
+            map.events.register("mousemove", map, function(e) {
+               var position = this.events.getMousePosition(e);
+
+               position = map.getLonLatFromPixel(position).transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
+				   position.lat = Number(position.lat).toFixed(4);
+				   position.lon = Number(position.lon).toFixed(4);
+               OpenLayers.Util.getElement("coords").innerHTML = position;
             });
-	//ABOVE: Map Mouse Position
-	
+
    //Code below is used for the marker object (The red marker you can see on HWY 12).
    var lonlat = new OpenLayers.LonLat(-91.9181, 44.8792).transform(
            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984 //converting from map x,y coordinates to lonlat coordinates.
@@ -184,11 +184,22 @@ function init() {
            }
    );
 
+   var layer_SCH = new OpenLayers.Layer.XYZ(
+           "SCH",
+           "cgi-bin/testSCH.py/${z}/${x}/${y}.png",
+           {
+              isBaseLayer: false,
+              opacity: 0.4,
+              sphericalMercator: true
+           }
+   );
+
    layer_precipitation.setVisibility(false);
    layer_cloud.setVisibility(false);
    layer_temperature.setVisibility(false);
+   layer_SCH.setVisibility(false);
 
-   map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature, vectorLayer]);
+   map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature, layer_SCH, vectorLayer]);
 
    map.setCenter(lonlat, zoom);
 
@@ -220,5 +231,5 @@ function requestSuccess(response) {
    }
 }//end requestSuccess()
 function requestFailure(response) {
-   alert("An error occurred while communicating with the OpenLS service. Please try again.");
+   alert("An error occurred while communicating with the OpenLS service.");
 }//end requestFailure()
