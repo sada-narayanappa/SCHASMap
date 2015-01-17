@@ -4,6 +4,7 @@
 
 var cityLayer
 var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
+var DB_URL= "http://www.geospaces.org/aura/webroot/future/db.jsp?api_key=test&";
 var PROXY = "cgi-bin/proxy.py?url=";
 
 function AddCityLayer(map) {
@@ -12,14 +13,14 @@ function AddCityLayer(map) {
 
    cityLayerUpdate()
    cityLayer.events.register("visibilitychanged", cityLayer, function(evt) {
-      console.log(" === " + evt)
-      if ( lyr.getVisibility() ) {
+      if ( cityLayer.getVisibility() ) {
          cityLayerUpdate()
       }
    })
    map.events.register('moveend', map, function() {
       cityLayerUpdate()
    });
+   cityLayer.setVisibility(false);
    return cityLayer;
 }
 
@@ -27,12 +28,15 @@ function addPoint(lon, lat, layer, attr, label ) {
    if (layer.map.zoom < 11) {
       label = "";
    }
+   radius = (layer.map.zoom < 9) ? 2 : 3;
+   sWidth = (layer.map.zoom < 9) ? 0 : 1
+
    var point = xPoint(lon, lat);
    var marker = {
       strokeColor: "#00FF00",
-      strokeWidth: 1,
+      strokeWidth: sWidth,
       strokeDashstyle: "da}" + "shdot",
-      pointRadius: 3,
+      pointRadius: radius,
       pointerEvents: "visiblePainted",
       label: label,
       fontSize: "14px",
@@ -60,9 +64,8 @@ function addFeatures(data, lyr){
    }
 }
 
-
 function cityLayerUpdate() {
-   if (map.zoom < 9) {
+   if (map.zoom < 8 || !cityLayer.getVisibility() ) {
       cityLayer.removeAllFeatures()
       cityLayer.destroyFeatures();
       return map.zoom
@@ -72,7 +75,7 @@ function cityLayerUpdate() {
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
-   console.log( PROXY + DB_URL + "q=" + (q))
+   //console.log( PROXY + DB_URL + "q=" + (q))
 
    $.ajax({
       type: "GET",
@@ -84,7 +87,7 @@ function cityLayerUpdate() {
       processdata: true,
       cache: false,
       success: function (data) {
-         console.log(data)
+         //console.log(data)
          somedata=data
          addFeatures(data, cityLayer)
       },
