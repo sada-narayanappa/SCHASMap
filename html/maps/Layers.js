@@ -1,11 +1,14 @@
+var map;
 function init() {
 	//For entering address data
-   OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
+   OpenLayers.ProxyHost = "cgi-bin/proxy.py?url=";
 
    map = new OpenLayers.Map("mapdiv");
    var mapnik = new OpenLayers.Layer.OSM();
    map.addLayer(mapnik);
-	
+
+   AddCityLayer(map);
+
 	//BELOW: Map Mouse Position
 	map.addControl(
                 new OpenLayers.Control.MousePosition({
@@ -81,6 +84,9 @@ function init() {
             var latString = dataArray[3];
             var lonString = dataArray[4];
 
+            if (!latString || !lonString ) {
+               continue;
+            }
             var latArray = latString.split(" ");
             var lonArray = lonString.split(" ");
 
@@ -233,3 +239,4 @@ function requestSuccess(response) {
 function requestFailure(response) {
    alert("An error occurred while communicating with the OpenLS service.");
 }//end requestFailure()
+
