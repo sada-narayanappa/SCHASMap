@@ -1,0 +1,47 @@
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script src="../js/ajaxutils.js"></script>
+    <script src="../js/generalutils.js"></script>
+</head>
+
+<body>
+<H2> Form to post to web service and get results</H2>
+
+<form id="form" method="GET">
+    <input type="text" name="id" value="1234">
+    <input type="text" name="timeRecorded" value="JustNow">
+    <input type="text" name="hstore" value="{'aa': 'AA' ,'bb': 37}">
+
+<textarea rows="5"  name="text" style="width: 99%; ">
+timeRecorded=12:00&id=3&ver=1.0&lat=22312322112&lon=yyewueyiuqieyiwq&veloc=2323232323232&temperature=4723y4289centigerade&humidity=32242342&NO2=sdada
+timeRecorded=12:00&id=3&ver=1.0&lat=22312322112&lon=yyewueyiuqieyiwq&veloc=2323232323232&temperature=4723y4289centigerade&humidity=32242342&NO2=sdada
+timeRecorded=12:00&id=3&ver=1.0&lat=22312322112&lon=yyewueyiuqieyiwq&veloc=2323232323232&temperature=4723y4289centigerade&humidity=32242342&NO2=sdada
+timeRecorded=12:00&id=3&ver=1.0&lat=22312322112&lon=yyewueyiuqieyiwq&veloc=2323232323232&temperature=4723y4289centigerade&humidity=32242342&NO2=sdada
+</textarea>
+
+<textarea rows="5" id="status" style="width: 99%; ">
+status
+</textarea>
+
+    <input type="button" Value="SUBMIT" onclick="submitForm(null,null,testCallBack);">
+</form>
+
+<script type="text/javascript">
+var URL= "http://www.geospaces.org/aura/webroot/env.jsp";
+var PROXY = "cgi-bin/proxy.py?url=";
+//var URL1 = PROXY+"http://weather.yahooapis.com/forecastrss?p=80130"
+URL1 = PROXY+"http://www.geospaces.org/aura/webroot/health.jsp";
+
+function testCallBack(data) {
+    var j = JSON.parse(data);
+    console.log(j);
+    if (Array.isArray(j) ){
+        console.log(" Rows " + j.length);
+    }
+    $('#status').val(JSON.stringify(j) )
+}
+</script>
+</body>
