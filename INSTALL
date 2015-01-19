@@ -1,15 +1,11 @@
-To Install - you need a Apache web server.
-
 Configure apache for 
   * SSI Includes
   * mod SSI
-  
   
 Add Following:
 -------------
 
 Options Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
-
 AddHandler cgi-script .cgi .py .pl
 
 On Mac: 
@@ -38,13 +34,3 @@ NameVirtualHost *:80
         Allow from all
     </Location>
 </VirtualHost>
-
-
-================================================================================
-To Deploy the SCH GIS application:
-
-[ ] #==> go to apache home directory
-[ ] create a link to schgeo/src in the home directory
-
-TEST
-----

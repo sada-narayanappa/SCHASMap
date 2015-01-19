@@ -4,8 +4,8 @@
 
 var cityLayer
 var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
-var DB_URL= "http://www.geospaces.org/aura/webroot/future/db.jsp?api_key=test&";
-var PROXY = "cgi-bin/proxy.py?url=";
+var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+var PROXY = "../cgi-bin/proxy.py?url=";
 
 function AddCityLayer(map) {
    cityLayer =  new OpenLayers.Layer.Vector( "Cities");
@@ -25,7 +25,7 @@ function AddCityLayer(map) {
 }
 
 function addPoint(lon, lat, layer, attr, label ) {
-   if (layer.map.zoom < 11) {
+   if (layer.map.zoom < 10) {
       label = "";
    }
    radius = (layer.map.zoom < 9) ? 2 : 3;
@@ -54,12 +54,15 @@ function addFeatures(data, lyr){
    eval(data);
    var locs = $rs["rows"]
 
+   lyr.removeAllFeatures()
    lyr.destroyFeatures();
 
    locs[locs.length] = locs[0];
+   console.log(" : " + locs.length )
    for(var i=0; i<locs.length; ++i) {
       var lc = locs[i];
-      var feat = addPoint(lc[0], lc[1], lyr, ""+lc , lc[2]);
+      var label = (locs.length > 200) ? "" : lc[2]
+      var feat = addPoint(lc[0], lc[1], lyr, ""+lc , label);
 
    }
 }
