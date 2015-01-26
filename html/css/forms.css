@@ -1,0 +1,41 @@
+#cform {
+    background: transparent;
+    border: none;
+    font-family: Calibri;
+    font-size: 12px;
+}
+
+#cform input {
+    border: 1px solid #f3f3f3;
+    height: 2em;
+    font-size:14px;
+    padding:5px; border:1px solid #999;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -web-kit-border-radius:4px;
+    -khtml-border-radius:4px;
+    vertical-align:middle;
+}
+#cform input:hover,.inout:focus {
+    border: 1px solid #a7fcff;
+    background: #ff6;
+}
+#cform textarea {
+    font-size: 14px;
+    border: 1px solid #d1cfd0;
+}
+#cform label {
+    border: 0px solid #c77405;
+    width: 120px;display: block;
+    vertical-align:middle;
+    float:left;clear:left;
+    horiz-align: right;
+    text-align: right;
+    vert-align: middle;
+    font-size: 16px;
+    padding-right: 3px;
+    padding-top: 2px;
+}
+#cform td {
+    vertical-align: middle;
+}

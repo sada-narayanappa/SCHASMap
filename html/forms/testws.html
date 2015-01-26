@@ -1,39 +1,64 @@
+<!--HEAD -->
 <html>
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <title>Geospaces: Smart and Connected Health</title>
+    <script type="text/javascript" src="../3p/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="../3p/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../3p/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../3p/jquery-ui.css">
+
+    <script type="text/javascript" src="../3p/datatable/media/js/jquery.dataTables.js"></script>
+    <link href='../3p/datatable/media/css/jquery.dataTables.css' rel='stylesheet' type='text/css'>
+    <link href='../3p/datatable/media/css/jquery.dataTables_themeroller.css' rel='stylesheet' type='text/css'>
+
     <script src="../js/ajaxutils.js"></script>
     <script src="../js/generalutils.js"></script>
+    <script src="../js/config.prod.js"></script>
+    <script src="../js/datatable.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/gen.css" />
+    <link rel="stylesheet" type="text/css" href="../css/forms.css" />
+
 </head>
+<body >
+<h2></h2>
+<hr size="1">
+<div id="content" class="centerContainer1">
 
-<body>
-<H2> Form to post to web service and get results</H2>
+<!--HEAD_END-->
 
-<form id="form" method="GET">
-    <input type="text" name="id" value="1234">
-    <input type="text" name="timeRecorded" value="JustNow">
-    <input type="text" name="hstore" value="{'aa': 'AA' ,'bb': 37}">
+<H2> TEST WEb SERVICES</H2>
+<form id="form" method="GET" action="">
+    ID: <input type="text" name="id" value="1234">
+    timeRecorded: <input type="text" name="timeRecorded" value="JustNow">
+    Some name-values: <input type="text" name="hstore" value="{'aa': 'AA' ,'bb': 37}">
 
 <textarea rows="5"  name="text" style="width: 99%; ">
-timeRecorded=12:00&id=3&ver=1.0&lat=22312322112&lon=yyewueyiuqieyiwq&veloc=2323232323232&temperature=4723y4289centigerade&humidity=32242342&NO2=sdada
-timeRecorded=12:00&id=3&ver=1.0&lat=22312322112&lon=yyewueyiuqieyiwq&veloc=2323232323232&temperature=4723y4289centigerade&humidity=32242342&NO2=sdada
-timeRecorded=12:00&id=3&ver=1.0&lat=22312322112&lon=yyewueyiuqieyiwq&veloc=2323232323232&temperature=4723y4289centigerade&humidity=32242342&NO2=sdada
-timeRecorded=12:00&id=3&ver=1.0&lat=22312322112&lon=yyewueyiuqieyiwq&veloc=2323232323232&temperature=4723y4289centigerade&humidity=32242342&NO2=sdada
+timeRecorded=10:00&id=2&ver=1.0&lat=1&lon=21&veloc=21&temperature=1&humidity=a&NO2=sdada
+timeRecorded=11:00&id=1&ver=1.0&lat=2&lon=22&veloc=22&temperature=2&humidity=b&NO2=sdada
+timeRecorded=12:00&id=4&ver=1.0&lat=3&lon=23&veloc=23&temperature=3&humidity=c&NO2=sdada
+timeRecorded=13:00&id=3&ver=1.0&lat=4&lon=24&veloc=24&temperature=4&humidity=d&NO2=sdada
 </textarea>
-
+<br/>
 <textarea rows="5" id="status" style="width: 99%; ">
 status
 </textarea>
-
-    <input type="button" Value="SUBMIT" onclick="submitForm(null,null,testCallBack);">
+<input id=URL type="text" size="40" />
+<input id=PROXY type="text" size="25"/>
+<input id=URL1 type="text" size="65"/><br/>
+    <button type="button" onclick="submitForm({CB:testCallBack})"> POST </button>
 </form>
 
 <script type="text/javascript">
 var URL= "http://www.geospaces.org/aura/webroot/env.jsp";
-var PROXY = "cgi-bin/proxy.py?url=";
+var PROXY = "../cgi-bin/proxy.py?url=";
 //var URL1 = PROXY+"http://weather.yahooapis.com/forecastrss?p=80130"
 URL1 = PROXY+"http://www.geospaces.org/aura/webroot/health.jsp";
+
+$('#URL').val(URL)
+$('#PROXY').val(PROXY)
+$('#URL1').val(URL1)
+
+submitForm.__DEFAULT_URL= URL1;
 
 function testCallBack(data) {
     var j = JSON.parse(data);
@@ -43,5 +68,21 @@ function testCallBack(data) {
     }
     $('#status').val(JSON.stringify(j) )
 }
+rl="";
+//var URL1 = PROXY+"http://weather.yahooapis.com/forecastrss?p=80130"
+URL1 = PROXY+"http://www.geospaces.org/aura/webroot/health.jsp";
+
+function testCallBack(data) {
+    var j = JSON.parse(data);
+    //console.log(j);
+    if (Array.isArray(j) ){
+        console.log(" Rows " + j.length);
+    }
+    $('#status').val(JSON.stringify(j) )
+}
 </script>
+<!--FOOT -->
+</div>
 </body>
+</html>
+<!--FOOT_END-->

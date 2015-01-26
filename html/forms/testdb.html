@@ -1,0 +1,138 @@
+<!--HEAD -->
+<html>
+<head>
+    <title>Geospaces: Smart and Connected Health</title>
+    <script type="text/javascript" src="../3p/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="../3p/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../3p/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../3p/jquery-ui.css">
+
+    <script type="text/javascript" src="../3p/datatable/media/js/jquery.dataTables.js"></script>
+    <link href='../3p/datatable/media/css/jquery.dataTables.css' rel='stylesheet' type='text/css'>
+    <link href='../3p/datatable/media/css/jquery.dataTables_themeroller.css' rel='stylesheet' type='text/css'>
+
+    <script src="../js/ajaxutils.js"></script>
+    <script src="../js/generalutils.js"></script>
+    <script src="../js/config.prod.js"></script>
+    <script src="../js/datatable.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/gen.css" />
+    <link rel="stylesheet" type="text/css" href="../css/forms.css" />
+
+</head>
+<body >
+<h2></h2>
+<hr size="1">
+<div id="content" class="centerContainer1">
+
+<!--HEAD_END-->
+<H2>TEST DB SERVICES</H2>
+<form id="form" method="GET" action="http://www.geospaces.org/aura/webroot/db.jsp">
+<textarea rows="2"  name="q" cols="80" style="wwidth: 99%; ">
+    select * from test
+</textarea>
+<br/>
+<textarea rows="8" width=120 id="status" cols="80" style="wwidth: 99%; ">
+</textarea>
+<br/>
+<input type="text" name="table" value="test">
+<input type="button" Value="SUBMIT" onclick="submitForm({CB: testCallBack});">
+<input type="button" Value="CREATE FORM" onclick="createForm()">
+
+</form>
+    <div id="cform"  class="card"  style="border: 1px solid black; hheight: 300px; width: 650px" >
+        <form id="form1" method="GET" action="http://www.geospaces.org/aura/webroot/db.jsp">
+            <input type="button" Value="button">
+        </form>
+        <div id=DBRESULTS1">
+        </div>
+    </div>
+    <div id="dt_example">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+        <thead>
+        <tr>
+            <th width="20%">Rendering engine</th>
+            <th width="25%">Browser</th>
+            <th width="25%">Platform(s)</th>
+            <th width="15%">Engine version</th>
+            <th width="15%">CSS grade</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script>
+function load() {
+    $('#example').dataTable( {
+        "bProcessing": true,
+        "sAjaxSource": '../data/tables-sample.txt'
+    } );
+}
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        //submitForm({CB: testCallBack})
+        load();
+    });
+
+    $(function() {
+        $( "#cform" ).resizable();
+        $( "#cform" ).draggable();
+    });
+
+var URL= "http://www.geospaces.org/aura/webroot/env.jsp";
+var PROXY = "../cgi-bin/proxy.py?url=";
+//var URL1 = PROXY+"http://weather.yahooapis.com/forecastrss?p=80130"
+URL1 = PROXY+"http://www.geospaces.org/aura/webroot/health.jsp";
+
+function testCallBack(data) {
+    $('#status').val(data);
+}
+function createForm(data) {
+    forms = "";
+    if(data)
+        $('#status').val(data);
+    var text = $('#status').val();
+    if ( text.indexOf("$rs") < 0) {
+        submitForm({CB: createForm})
+        return
+    }
+    eval(text);
+    var cols = $rs.colnames;
+    var type = $rs.coltypes;
+
+    $('#form1').empty();
+    var forms="<div>"
+    var i = 0;
+    for (var i; i < cols.length; i++ ) {
+        var c = cols[i];
+        var t = type[i];
+        divid = "id_"+ i;
+        forms += "<div id="+ divid +" style='border: 0px solid black; width: 350px;'>"
+        log(forms)
+        label = "<label>" + c + "( " + t + "):  </label>";
+        input = '<input type="text" id=' + c + " name="+ c + ' value=' +c + " />";
+        forms += label + input;
+        forms += "\n</div>"
+        forms += "<script>$('#"+ divid + "').draggable();</" + "" + "script>\n";
+        forms += "<script>$('#"+ divid + "').resizable();</" + "" + "script>\n";
+    }
+    forms += "</div>"
+    $('#form1').append(forms);
+    //$('#form1').append('<input type="button" Value="button">');
+
+
+    $('#DBRESULTS1').html(forms)
+
+}
+
+</script>
+    <hr/>
+<!--FOOT -->
+</div>
+</body>
+</html>
+<!--FOOT_END-->
+
+
+

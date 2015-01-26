@@ -14,16 +14,15 @@ a, a:visited{
 
 body {
     font-family: arial,sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     margin: 0 0 0 0;
     background-color: #f7f7f7;
     line-height: 1.5em;
-
 }
 
 h1, h2, h3, h4 {
-    margin: 5px;
-    padding: 12px;
+    margin-top: 5px;
+    padding-top: 12px;
     font-family: Avenir,'Open Sans Light',arial,​sans-serif;
     font-family: 'open sans',arial,sans-serif;
 }
@@ -43,6 +42,18 @@ div.centerContainer {
     min-height: 500px;
     overflow: visible;
 }
+
+div.centerContainer1 {
+    margin: 0px auto;
+    padding: 12px;
+    border: 0px solid #dcdcdc;
+    overflow: hidden;
+    width: 95%;
+    bbackground-color: #dfe3ee;
+    min-height: 500px;
+    overflow: visible;
+}
+
 
 div#topContainer {
     background-color: #dddddd;
@@ -125,7 +136,7 @@ div#topContainer a:visited{
 .card {
     bbackground: gray;
     width: 300px;
-    height: 100px;
+    hheight: 100px;
     min-width: 250px;
     margin: 0px;
     padding: 10px;
@@ -136,6 +147,19 @@ div#topContainer a:visited{
     box-shadow: 2px 2px 2px #888888;
     background-color: white ;
 }
+
+.cardBox {
+    min-width: 250px;
+    margin: 0px;
+    padding: 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+    border: 1px solid gray;
+    border-radius: 1px 1px; -moz-border-radius: 1px; -webkit-border-radius: 1px;
+    box-shadow: 2px 2px 2px #888888;
+    background-color: white ;
+}
+
 
 .card:hover {
     box-shadow: 2px 2px 2px 2px #333333;
@@ -200,22 +224,31 @@ The following for NLP related CSS
     padding: 5px;
     wwidth: 160px;
     text-align: center;
-    font-size: 11px;
+    font-size: 12px;
     background-color: #4D90FE;
     background-image: -moz-linear-gradient(center top , #4D90FE, #4787ED);
     border: 1px solid #3079ED;
     color: #FFFFFF !important;
 }
-.input {
-    border: 1px solid #006;
-    border-radius: 2px 2px 2px 2px;
-    line-height: 1.5em;
-    height: 3em;;
+input {
+    border: 1px solid #f3f3f3;
+    height: 2em;
+    font-size:12px;
+    padding:5px; border:1px solid #999;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -web-kit-border-radius:4px;
+    -khtml-border-radius:4px;
 }
-.input:hover,.inout:focus {
+input:hover,.inout:focus {
     border: 1px solid #f00;
     background: #ff6;
 }
+textarea {
+    font-size: 14px;
+    border: 1px solid #d1cfd0;
+}
+
 .NN { color: green;}
 .NNP{ color: firebrick; }
 .NNPS{ color: firebrick; }
