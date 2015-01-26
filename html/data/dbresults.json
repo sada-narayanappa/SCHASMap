@@ -1,0 +1,9 @@
+{rows:[
+["name1","value","true",0,0.0,0.0],
+["name1","value","true",0,0.0,0.0],
+["name1","value","true",0,0.0,0.0],
+["name1","value","true",0,0.0,0.0],
+],
+colnames: ["name","value","valid","num1","num2","num3"],
+coltypes: ["varchar","varchar","bool","int4","float8","float8"]
+}
