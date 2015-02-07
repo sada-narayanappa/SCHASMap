@@ -1,0 +1,45 @@
+<!--HEAD -->
+<html>
+<head>
+    <title>Geospaces: Smart and Connected Health</title>
+    <script type="text/javascript" src="../3p/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="../3p/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../3p/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../3p/jquery-ui.css">
+
+    <script type="text/javascript" src="../3p/datatable/media/js/jquery.dataTables.js"></script>
+    <link href='../3p/datatable/media/css/jquery.dataTables.css' rel='stylesheet' type='text/css'>
+    <link href='../3p/datatable/media/css/jquery.dataTables_themeroller.css' rel='stylesheet' type='text/css'>
+
+    <script src="../js/ajaxutils.js"></script>
+    <script src="../js/generalutils.js"></script>
+    <script src="../js/config.prod.js"></script>
+    <script src="../js/datatable.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/gen.css" />
+    <link rel="stylesheet" type="text/css" href="../css/forms.css" />
+
+</head>
+<body >
+<h2></h2>
+<hr size="1">
+<div id="content" class="centerContainer1">
+
+<!--HEAD_END-->
+<div id="qresults1" class="cardBox1" style="width:100%"></div>
+
+<script>
+$(document).ready(function() {
+    url = "../data/dbresults.json"
+    url = "../data/tables-sample.json"
+    createTable.div = "qresults1";
+    submitForm({get: "GET", URL:url, fdata:{}, CB: createTable })
+});
+
+
+</script>
+
+<!--FOOT -->
+</div>
+</body>
+</html>
+<!--FOOT_END-->
