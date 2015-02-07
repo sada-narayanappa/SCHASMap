@@ -240,7 +240,7 @@ input {
     -web-kit-border-radius:4px;
     -khtml-border-radius:4px;
 }
-input:hover,.inout:focus {
+input:hover,.input:focus {
     border: 1px solid #f00;
     background: #ff6;
 }
