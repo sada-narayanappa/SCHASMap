@@ -23,6 +23,7 @@ try:
             r = urllib2.Request(url, body, headers)
             y = urllib2.urlopen(r)
         else:
+            print "OPENING ", url;
             y = urllib2.urlopen(url)
 
         # print content type header
