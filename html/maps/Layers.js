@@ -1,4 +1,7 @@
 var map;
+
+
+
 function init() {
 	//For entering address data
    OpenLayers.ProxyHost = "cgi-bin/proxy.py?url=";
