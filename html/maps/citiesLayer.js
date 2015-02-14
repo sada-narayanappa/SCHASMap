@@ -20,7 +20,7 @@ function AddCityLayer(map) {
    map.events.register('moveend', map, function() {
       cityLayerUpdate()
    });
-   //cityLayer.setVisibility(false);
+   cityLayer.setVisibility(false);
    return cityLayer;
 }
 
@@ -63,7 +63,7 @@ function addFeatures(data, lyr){
       var lc = locs[i];
       if (!lc)
          continue;
-      var label = (lc.length >= 2) ? "" : lc[2]
+      var label = (lc.length < 2) ? "" : lc[2]
       var feat = addPoint(lc[0], lc[1], lyr, ""+lc , label);
 
    }
