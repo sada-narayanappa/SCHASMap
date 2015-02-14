@@ -1,7 +1,5 @@
 var map;
 
-
-
 function init() {
 	//For entering address data
    OpenLayers.ProxyHost = "cgi-bin/proxy.py?url=";
@@ -11,6 +9,7 @@ function init() {
    map.addLayer(mapnik);
 
    AddCityLayer(map);
+   AddTrackingLayer(map);
 
 	//BELOW: Map Mouse Position
 	map.addControl(
