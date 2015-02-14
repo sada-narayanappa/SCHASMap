@@ -8,9 +8,6 @@ function init() {
    var mapnik = new OpenLayers.Layer.OSM();
    map.addLayer(mapnik);
 
-   AddCityLayer(map);
-   AddTrackingLayer(map);
-
 	//BELOW: Map Mouse Position
 	map.addControl(
                 new OpenLayers.Control.MousePosition({
@@ -210,6 +207,9 @@ function init() {
    map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature, layer_SCH, vectorLayer]);
 
    map.setCenter(lonlat, zoom);
+
+   AddCityLayer(map);
+   AddTrackingLayer(map);
 
 }//end Init() function
 
