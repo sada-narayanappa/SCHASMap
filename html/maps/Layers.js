@@ -55,7 +55,8 @@ function init() {
          var point1 = new OpenLayers.Geometry.Point(p1.lon, p1.lat).transform(Geographic, Mercator);
          var point2 = new OpenLayers.Geometry.Point(p2.lon, p2.lat).transform(Geographic, Mercator);
          dist =  point1.distanceTo(point2);
-         console.log("***** Point P2:" + position + " Distance:" + dist);
+         dift = dist * 3.28084
+         console.log("***** Point P2:" + position + " Distance:" + dist + "m : " + dift + "ft");
 
          globalPoints.p2 = null;
          globalPoints.p1 = null;
