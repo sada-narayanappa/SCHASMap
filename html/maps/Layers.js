@@ -1,12 +1,68 @@
 var map;
 
+var globalPoints = {
+
+}
+
 function init() {
-	//For entering address data
+   //For entering address data
    OpenLayers.ProxyHost = "cgi-bin/proxy.py?url=";
 
    map = new OpenLayers.Map("mapdiv");
    var mapnik = new OpenLayers.Layer.OSM();
+
    map.addLayer(mapnik);
+   glayers= [
+      new OpenLayers.Layer.Google(
+              "Google Streets", // the default
+              {numZoomLevels: 20}
+      ),
+      new OpenLayers.Layer.Google(
+              "Google Physical",
+              {type: google.maps.MapTypeId.TERRAIN}
+      ),
+      new OpenLayers.Layer.Google(
+              "Google Hybrid",
+              {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
+      ),
+      new OpenLayers.Layer.Google(
+              "Google Satellite",
+              {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
+      )
+   ];
+
+   for ( i in glayers) {
+      map.addLayer(glayers[i]);
+   }
+
+   map.events.register("click", map , function(e){
+      var position = this.events.getMousePosition(e);
+      var p = map.getLonLatFromPixel(position);
+      position = p.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+      position.lat = Number(position.lat).toFixed(5);
+      position.lon = Number(position.lon).toFixed(5);
+      if ( !globalPoints.p1) {
+         globalPoints.p1 = p;
+         console.log("***** Point P1:" + position);
+      } else if ( !globalPoints.p2) {
+         globalPoints.p2 = p;
+
+         p1 = globalPoints.p1;
+         p2 = globalPoints.p2;
+         var Geographic  = new OpenLayers.Projection("EPSG:4326");
+         var Mercator = new OpenLayers.Projection("EPSG:900913");
+
+         var point1 = new OpenLayers.Geometry.Point(p1.lon, p1.lat).transform(Geographic, Mercator);
+         var point2 = new OpenLayers.Geometry.Point(p2.lon, p2.lat).transform(Geographic, Mercator);
+         dist =  point1.distanceTo(point2);
+         console.log("***** Point P2:" + position + " Distance:" + dist);
+
+         globalPoints.p2 = null;
+         globalPoints.p1 = null;
+      }
+      //alert("*****" + position);
+
+   });
 
 	//BELOW: Map Mouse Position
 	map.addControl(
