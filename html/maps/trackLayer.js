@@ -1,74 +1,128 @@
-var trackLayer
-//var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
+trackLayer = {
+   layer:   null,
+   map:     null,
+   DB_URL:  "http://localhost:8080/aura1/future/db.jsp?api_key=test&",
+
+   last:    ""
+};
+STYLEsm = new OpenLayers.StyleMap({
+   'default': {
+      strokeColor: "#00FFFF",
+      strokeWidth: 1,
+      pointRadius: 6,
+      pointerEvents: "visiblePainted",
+      label: "${label}",
+      fontSize: "14px",
+      fontFamily: "Calibri",
+      fontWeight: "",
+      labelYOffset: "-10"
+   },
+   select: {
+      pointRadius: 12,
+      strokeColor: "#FF0000",
+      color: "#0000FF",
+      strokeWidth: 2
+   }
+});
 
 function AddTrackingLayer(map) {
-   trackLayer =  new OpenLayers.Layer.Vector( "My Tracks");
-   map.addLayer(trackLayer);
+   renderer       = OpenLayers.Util.getParameters(window.location.href).renderer;
+   renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
 
-   trackLayerUpdate(trackLayer, true)
-   trackLayer.events.register("visibilitychanged", trackLayer, function(evt) {
-      if ( trackLayer.getVisibility() ) {
-         trackLayerUpdate(trackLayer, true)
+   trackLayer.map = map;
+   layer =  new OpenLayers.Layer.Vector( "My Tracks",
+                     {  styleMap:   STYLEsm,
+                        renderers:  renderer
+                     });
+
+   map.addLayer(layer);
+   trackLayer.layer = layer;
+
+   trackLayerUpdate(layer, true);
+
+   layer.events.register("visibilitychanged", layer, function(evt) {
+      if ( layer.getVisibility() ) {
+         trackLayerUpdate(layer, true)
       }
    })
    map.events.register('moveend', map, function() {
       //trackLayerUpdate(trackLayer)
    });
-   //trackLayer.setVisibility(false);
-   return trackLayer;
+
+   var selectCtrl = new OpenLayers.Control.SelectFeature(layer,
+           {
+              clickout: true
+
+           }
+   );
+   map.addControl(selectCtrl);
+   selectCtrl.activate();
+
+   layer.events.on({
+      'featureselected': function (evt) {
+         var feature = evt.feature;
+         obj = (feature.attributes && feature.attributes.obj) || null;
+         if ( !obj)
+            return;
+         var popup = new OpenLayers.Popup.FramedCloud("popup",
+                 OpenLayers.LonLat.fromString(feature.geometry.toShortString()),
+                 null,
+                 getPop(obj), // + feature.attributes.Latitude + ", " + feature.attributes.Longitude + "<br>" + "Humidity: " + feature.attributes.Humidity + "<br>" + "Temperature: " + feature.attributes.temp + "<br>" + "Speed: " + feature.attributes.Speed + "<br>" + "Date/Time: " + feature.attributes.DateTime,
+                 null,
+                 true,
+                 null
+         );
+         popup.autoSize = true;
+         popup.maxSize = new OpenLayers.Size(400, 800);
+         popup.fixedRelativePosition = true;
+         feature.popup = popup;
+         map.addPopup(popup);
+         console.log("SELECTED")
+      },
+      'featureunselected': function (evt) {
+         var feature = evt.feature;
+         map.removePopup(feature.popup);
+         feature.popup.destroy();
+         feature.popup = null;
+         console.log("UNSELECTED")
+      }
+   });
+
+//trackLayer.setVisibility(false);
+
+   return layer;
+}
+function getPop(o) {
+   str =    "ID : " + o[0]  + "\n" +
+            "Lon: " + o.lon + "\n" +
+            "Lat: " + o.lat + "\n" +
+           "";
+   return str;
 }
 
-function trackAddPoint(lon, lat, layer, attr, label ) {
+function trackAddPoint(lon, lat, layer, obj, label ) {
    if (layer.map.zoom < 10) {
       label = "";
    }
-   radius = (layer.map.zoom < 9) ? 2 : 3;
-   sWidth = (layer.map.zoom < 9) ? 0 : 1
+   radius = (layer.map.zoom < 9) ? 2 : 6;
+   sWidth = (layer.map.zoom < 9) ? 0 : 2
 
    var point = xPoint(lon, lat);
-   var marker = {
-      strokeColor: "#00FF00",
-      strokeWidth: sWidth,
-      strokeDashstyle: "da}" + "shdot",
-      pointRadius: radius,
-      pointerEvents: "visiblePainted",
+
+   var pointFeature = new OpenLayers.Feature.Vector(point);
+   pointFeature.attributes = {
       label: label,
-      fontSize: "14px",
-      fontFamily: "Calibri",
-      fontWeight: "",
-      labelYOffset: "-4"
+      obj:  obj
+      //Humidity: dataArray[2],
+      //temp: dataArray[1],
+      //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
+      //DateTime: dataArray[0]
    };
-   var pointFeature = new OpenLayers.Feature.Vector(point,null,marker);
-   layer.addFeatures(pointFeature, layer);
+   layer.addFeatures([pointFeature]);
 
    return pointFeature;
 }
 
-function trackAddLine(lon, lat, layer, attr, label ) {
-   if (layer.map.zoom < 10) {
-      label = "";
-   }
-   radius = (layer.map.zoom < 9) ? 2 : 3;
-   sWidth = (layer.map.zoom < 9) ? 0 : 1
-
-   var point = xPoint(lon, lat);
-   var marker = {
-      strokeColor: "#00FF00",
-      strokeWidth: sWidth,
-      strokeDashstyle: "da}" + "shdot",
-      pointRadius: radius,
-      pointerEvents: "visiblePainted",
-      label: label,
-      fontSize: "14px",
-      fontFamily: "Calibri",
-      fontWeight: "",
-      labelYOffset: "-4"
-   };
-   var pointFeature = new OpenLayers.Feature.Vector(point,null,marker);
-   layer.addFeatures(pointFeature, layer);
-
-   return pointFeature;
-}
 
 function trackAddFeatures(data, lyr, updateBounds) {
    eval(data);
@@ -92,11 +146,19 @@ function trackAddFeatures(data, lyr, updateBounds) {
    var bounds;
    for (var i = 0; i < locs.length; ++i) {
       var lc = locs[i];
+
+      obj = {};
+      //i = 0;
+      //for( c in cols) {
+      //   obj[c] = lc[i++];
+      //}
+
+
       var label = (locs.length > 2) ? lc[2].substring(14,19) : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
 
-      var feat = trackAddPoint(lc[loni], lc[lati], lyr, "" + lc, label);
+      var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label);
       if (!bounds) {
          bounds = feat.geometry.getBounds();
       } else {

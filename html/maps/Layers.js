@@ -1,14 +1,13 @@
 var map;
 
 var globalPoints = {
-
 }
 
 function init() {
    //For entering address data
    OpenLayers.ProxyHost = "cgi-bin/proxy.py?url=";
 
-   map = new OpenLayers.Map("mapdiv");
+   map = new OpenLayers.Map( {div: "mapdiv", units: 'm'});
    var mapnik = new OpenLayers.Layer.OSM();
 
    map.addLayer(mapnik);
@@ -38,22 +37,21 @@ function init() {
    map.events.register("click", map , function(e){
       var position = this.events.getMousePosition(e);
       var p = map.getLonLatFromPixel(position);
+      var op = map.getLonLatFromPixel(position);
       position = p.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
-      position.lat = Number(position.lat).toFixed(5);
-      position.lon = Number(position.lon).toFixed(5);
+      position.lat = Number(position.lat);
+      position.lon = Number(position.lon);
       if ( !globalPoints.p1) {
-         globalPoints.p1 = p;
+         globalPoints.p1  = op;
          console.log("***** Point P1:" + position);
       } else if ( !globalPoints.p2) {
-         globalPoints.p2 = p;
+         globalPoints.p2 = op;
 
          p1 = globalPoints.p1;
          p2 = globalPoints.p2;
-         var Geographic  = new OpenLayers.Projection("EPSG:4326");
-         var Mercator = new OpenLayers.Projection("EPSG:900913");
 
-         var point1 = new OpenLayers.Geometry.Point(p1.lon, p1.lat).transform(Geographic, Mercator);
-         var point2 = new OpenLayers.Geometry.Point(p2.lon, p2.lat).transform(Geographic, Mercator);
+         var point1 = new OpenLayers.Geometry.Point(p1.lon, p1.lat);
+         var point2 = new OpenLayers.Geometry.Point(p2.lon, p2.lat);
          dist =  point1.distanceTo(point2);
          dift = dist * 3.28084
          console.log("***** Point P2:" + position + " Distance:" + dist + "m : " + dift + "ft");
@@ -61,8 +59,6 @@ function init() {
          globalPoints.p2 = null;
          globalPoints.p1 = null;
       }
-      //alert("*****" + position);
-
    });
 
 	//BELOW: Map Mouse Position
@@ -118,6 +114,10 @@ function init() {
             labelYOffset: "${yOffset}",
             labelOutlineColor: "white",
             labelOutlineWidth: 3
+         },
+         select: {
+            pointRadius: 5,
+            strokeColor: "#00FF00"
          }
       }),
       renderers: renderer
@@ -262,12 +262,15 @@ function init() {
    layer_SCH.setVisibility(false);
 
    map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature, layer_SCH, vectorLayer]);
-
    map.setCenter(lonlat, zoom);
 
    AddCityLayer(map);
-   AddTrackingLayer(map);
+   lyr = AddTrackingLayer(map);
 
+   //ctrlDragFeature = new OpenLayers.Control.DragFeature(lyr);
+   //map.addControl(ctrlDragFeature);
+   //ctrlDragFeature.onComplete = "console.log('COMPLEzter')"
+   //ctrlDragFeature.activate();
 }//end Init() function
 
 function submitform() {
