@@ -61,6 +61,7 @@ function AddTrackingLayer(map) {
    layer.events.on({
       'featureselected': function (evt) {
          var feature = evt.feature;
+         console.log("SELECTED: " + feature);
          obj = (feature.attributes && feature.attributes.obj) || null;
          if ( !obj)
             return;
@@ -77,26 +78,60 @@ function AddTrackingLayer(map) {
          popup.fixedRelativePosition = true;
          feature.popup = popup;
          map.addPopup(popup);
-         console.log("SELECTED")
       },
       'featureunselected': function (evt) {
          var feature = evt.feature;
-         map.removePopup(feature.popup);
-         feature.popup.destroy();
-         feature.popup = null;
-         console.log("UNSELECTED")
+         console.log("UNSELECTED: " + feature)
+         if ( feature && feature.popup) {
+            map.removePopup(feature.popup);
+            feature.popup.destroy();
+            feature.popup = null;
+         }
+      }
+   });
+//trackLayer.setVisibility(false);
+   return layer;
+}
+
+function RemovethisFeature(id) {
+   console.log("Will remove feature: " + id);
+
+   var TL_URL= "http://www.geospaces.org/aura/webroot/db.jsp?qn=8";
+   var url = config.PROXY + TL_URL
+   url = url+ "&pid="+id;
+
+   console.log( url)
+
+   $.ajax({
+      type: "GET",
+      url:  url,
+      timeout: 2000,
+      data: 	{},
+      contentType: "",
+      dataType: "text",
+      processdata: true,
+      cache: false,
+      success: function (data) {
+         console.log(data);
+         data = data.replace(/(\r\n|\n|\r)/gm, "");
+         alert("Deleted")
+         location.reload();
+      },
+      error: function(xhr, stat, err) {
+         console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
 
-//trackLayer.setVisibility(false);
-
-   return layer;
 }
 function getPop(o) {
-   str =    "ID : " + o[0]  + "\n" +
-            "Lon: " + o.lon + "\n" +
-            "Lat: " + o.lat + "\n" +
-           "";
+   obj = o;
+   str =    "ID : " + o.id  + "\n<br>" +
+            "ACC: " + o.accuracy + "\n<br>" +
+            "Mobile_id: " + o.mobile_id + "\n<br>" +
+            "Lon: " + o.lon + "\n<br>" +
+            "Lat: " + o.lat + "\n<br><br>" +
+           "<input type=button value='Remove this' onclick=RemovethisFeature("+ o.id +")><br>" +
+   "";
    return str;
 }
 
@@ -148,12 +183,10 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var lc = locs[i];
 
       obj = {};
-      //i = 0;
-      //for( c in cols) {
-      //   obj[c] = lc[i++];
-      //}
-
-
+      j = 0;
+      for( c in cols) {
+         obj[cols[c]] = lc[j++];
+      }
       var label = (locs.length > 2) ? lc[2].substring(14,19) : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);

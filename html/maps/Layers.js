@@ -202,9 +202,11 @@ function init() {
       },
       'featureunselected': function (evt) {
          var feature = evt.feature;
-         map.removePopup(feature.popup);
-         feature.popup.destroy();
-         feature.popup = null;
+         if ( feature && feature.popup) {
+            map.removePopup(feature.popup);
+            feature.popup.destroy();
+            feature.popup = null;
+         }
       }
    });
 
