@@ -112,9 +112,9 @@ function RemovethisFeature(id) {
       processdata: true,
       cache: false,
       success: function (data) {
-         console.log(data);
          data = data.replace(/(\r\n|\n|\r)/gm, "");
-         alert("Deleted")
+         console.log(data);
+         alert("Deleted: " + data)
          location.reload();
       },
       error: function(xhr, stat, err) {
