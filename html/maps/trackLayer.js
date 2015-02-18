@@ -247,15 +247,8 @@ function trackLayerUpdate(trackLayer) {
    //var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
    var TL_URL= "http://www.geospaces.org/aura/webroot/db.jsp?qn=6&type=js";
    var url = config.PROXY + TL_URL
-   var id = $.urlParam("mobile_id");
-   var tm = $.urlParam("stored_at");
-   var mm = $.urlParam("measured_at");
-   var sn = $.urlParam("session_num");
 
-   url = url+ ( (id) ? "&mobile_id="+id : "");
-   url = url+ ( (tm) ? "&stored_at="+tm : "");
-   url = url+ ( (mm) ? "&measured_at="+mm : "");
-   url = url+ ( (sn) ? "&session_num="+sn : "");
+   url = url+ $.urlAllParams();
 
    console.log( url)
 

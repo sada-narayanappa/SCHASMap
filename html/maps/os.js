@@ -7,6 +7,15 @@ $.urlParam = function(name){
    return (results !== null) ? results[1] : null;
 }
 
+$.urlAllParams = function() {
+   s= top.window.location.href
+   if (s.lastIndexOf("?") <= 0) {
+      return ""
+   }
+   var q = s.substring(s.lastIndexOf("?") + 1);
+   return q;
+}
+
 function findLocation() {
    if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
