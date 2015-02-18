@@ -141,6 +141,7 @@ function getPop(o) {
          "Mobile_id: " + o.mobile_id + "\n<br>" +
          "Lon: " + o.lon + "\n<br>" +
          "Lat: " + o.lat + "\n<br><br>" +
+         "AT : " + o.measured_at + "\n<br><br>" +
          "<input type=button value='Remove this' onclick=RemovethisFeature("+ o.id +")><br>" +
          "<input type=button value='ActivateDrag' onclick={}><br>" +
    "";
@@ -241,16 +242,19 @@ function trackLayerUpdate(trackLayer) {
       return map.zoom
    }
    e = getMapBoundedBox(true);
-   //q = "select ST_X(the_geom) as lon, ST_Y(the_geom), city as lat from worldcities where the_geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
+   //q = "select ST_X(the_geom) as lon, ST_Y(the_geom), city as lat from
+   // worldcities where the_geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
    //var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
    var TL_URL= "http://www.geospaces.org/aura/webroot/db.jsp?qn=6&type=js";
    var url = config.PROXY + TL_URL
    var id = $.urlParam("mobile_id");
    var tm = $.urlParam("stored_at");
+   var mm = $.urlParam("measured_at");
    var sn = $.urlParam("session_num");
 
    url = url+ ( (id) ? "&mobile_id="+id : "");
-   url = url+ ( (tm) ? "&mobile_id="+tm : "");
+   url = url+ ( (tm) ? "&stored_at="+tm : "");
+   url = url+ ( (mm) ? "&measured_at="+mm : "");
    url = url+ ( (sn) ? "&session_num="+sn : "");
 
    console.log( url)
