@@ -5,9 +5,13 @@ trackLayer = {
 
    last:    ""
 };
+function getColor(id, o) {
+   console.log("COLOR FOR:" + id + " OBJ:" + o);
+}
 STYLEsm = new OpenLayers.StyleMap({
    'default': {
       strokeColor: "#00FFFF",
+      fillColor:  "${fillcolor}",
       strokeWidth: 1,
       pointRadius: 6,
       pointerEvents: "visiblePainted",
@@ -89,6 +93,13 @@ function AddTrackingLayer(map) {
          }
       }
    });
+
+   trackLayer.ctrlDragFeature = new OpenLayers.Control.DragFeature(layer);
+   map.addControl(trackLayer.ctrlDragFeature);
+   trackLayer.ctrlDragFeature.onComplete = "console.log('Completed')"
+   trackLayer.ctrlDragFeature.deactivate();
+
+
 //trackLayer.setVisibility(false);
    return layer;
 }
@@ -114,7 +125,7 @@ function RemovethisFeature(id) {
       success: function (data) {
          data = data.replace(/(\r\n|\n|\r)/gm, "");
          console.log(data);
-         alert("Deleted: " + data)
+         //alert("Deleted: " + data)
          location.reload();
       },
       error: function(xhr, stat, err) {
@@ -126,11 +137,12 @@ function RemovethisFeature(id) {
 function getPop(o) {
    obj = o;
    str =    "ID : " + o.id  + "\n<br>" +
-            "ACC: " + o.accuracy + "\n<br>" +
-            "Mobile_id: " + o.mobile_id + "\n<br>" +
-            "Lon: " + o.lon + "\n<br>" +
-            "Lat: " + o.lat + "\n<br><br>" +
-           "<input type=button value='Remove this' onclick=RemovethisFeature("+ o.id +")><br>" +
+         "ACC: " + o.accuracy + "\n<br>" +
+         "Mobile_id: " + o.mobile_id + "\n<br>" +
+         "Lon: " + o.lon + "\n<br>" +
+         "Lat: " + o.lat + "\n<br><br>" +
+         "<input type=button value='Remove this' onclick=RemovethisFeature("+ o.id +")><br>" +
+         "<input type=button value='ActivateDrag' onclick={}><br>" +
    "";
    return str;
 }
@@ -147,7 +159,10 @@ function trackAddPoint(lon, lat, layer, obj, label ) {
    var pointFeature = new OpenLayers.Feature.Vector(point);
    pointFeature.attributes = {
       label: label,
-      obj:  obj
+      obj:  obj,
+      mobile_id:  obj.mobile_id,
+      fillcolor:  "#" + obj.mobile_id.substring(0,2) + "0000",
+      fillcolor:  "#FFa500"
       //Humidity: dataArray[2],
       //temp: dataArray[1],
       //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],

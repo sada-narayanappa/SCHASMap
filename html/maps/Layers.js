@@ -269,10 +269,6 @@ function init() {
    AddCityLayer(map);
    lyr = AddTrackingLayer(map);
 
-   //ctrlDragFeature = new OpenLayers.Control.DragFeature(lyr);
-   //map.addControl(ctrlDragFeature);
-   //ctrlDragFeature.onComplete = "console.log('COMPLEzter')"
-   //ctrlDragFeature.activate();
 }//end Init() function
 
 function submitform() {
