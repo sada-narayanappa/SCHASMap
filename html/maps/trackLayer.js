@@ -142,6 +142,8 @@ function getPop(o) {
          "Lon: " + o.lon + "\n<br>" +
          "Lat: " + o.lat + "\n<br><br>" +
          "AT : " + o.measured_at + "\n<br><br>" +
+         "AT MST: " + o.mst + "\n<br><br>" +
+         "AT: " + o.mst + "\n<br><br>" +
          "<input type=button value='Remove this' onclick=RemovethisFeature("+ o.id +")><br>" +
          "<input type=button value='ActivateDrag' onclick={}><br>" +
    "";
