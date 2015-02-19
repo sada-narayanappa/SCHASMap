@@ -53,12 +53,11 @@ function AddTrackingLayer(map) {
       //trackLayerUpdate(trackLayer)
    });
 
-   var selectCtrl = new OpenLayers.Control.SelectFeature(layer,
-           {
-              clickout: true
-
-           }
-   );
+   var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
+      clickout:      true,
+      hover:         true,
+      autoActivate:  true
+   });
    map.addControl(selectCtrl);
    selectCtrl.activate();
 
@@ -69,8 +68,11 @@ function AddTrackingLayer(map) {
          obj = (feature.attributes && feature.attributes.obj) || null;
          if ( !obj)
             return;
-         var popup = new OpenLayers.Popup.FramedCloud("popup",
-                 OpenLayers.LonLat.fromString(feature.geometry.toShortString()),
+         //var popup = new OpenLayers.Popup.FramedCloud("popup",
+
+         //str = (feature.geometry.toShortString) ? feature.geometry.toShortString() :
+         var popup = new OpenLayers.Popup("INFO",
+                 OpenLayers.LonLat.fromString(feature.geometry.getCentroid(true).toShortString()),
                  null,
                  getPop(obj), // + feature.attributes.Latitude + ", " + feature.attributes.Longitude + "<br>" + "Humidity: " + feature.attributes.Humidity + "<br>" + "Temperature: " + feature.attributes.temp + "<br>" + "Speed: " + feature.attributes.Speed + "<br>" + "Date/Time: " + feature.attributes.DateTime,
                  null,
@@ -85,7 +87,7 @@ function AddTrackingLayer(map) {
       },
       'featureunselected': function (evt) {
          var feature = evt.feature;
-         console.log("UNSELECTED: " + feature)
+         //console.log("UNSELECTED: " + feature)
          if ( feature && feature.popup) {
             map.removePopup(feature.popup);
             feature.popup.destroy();
@@ -136,17 +138,23 @@ function RemovethisFeature(id) {
 }
 function getPop(o) {
    obj = o;
-   str =    "ID : " + o.id  + "\n<br>" +
-         "ACC: " + o.accuracy + "\n<br>" +
-         "Mobile_id: " + o.mobile_id + "\n<br>" +
-         "Lon: " + o.lon + "\n<br>" +
-         "Lat: " + o.lat + "\n<br><br>" +
-         "AT : " + o.measured_at + "\n<br><br>" +
-         "AT MST: " + o.mst + "\n<br><br>" +
-         "AT: " + o.mst + "\n<br><br>" +
+   str = "<div style='background-color: #9FDAEE '>" +
+         "<table>" +
+         "<tr><td>ID :        </td><td>" + o.id                   + "</td></tr>" +
+         "<tr><td>Accuracy    </td><td>" + o.accuracy             + "</td></tr>" +
+         "<tr><td>Mobile_id:  </td><td>" + o.mobile_id            + "</td></tr>" +
+         "<tr><td>Lon:        </td><td>" + o.lon                  + "</td></tr>" +
+         "<tr><td>Lat:        </td><td>" + o.lat                  + "</td></tr>" +
+         "<tr><td>AT GMT:     </td><td>" + o.measured_at          + "</td></tr>" +
+         "<tr><td>AT MST:     </td><td>" + o.mst                  + "</td></tr>" +
+         "<tr><td>SPEED:      </td><td>" + (o.speed)*2.24 + "Mph" + "</td></tr>" +
+         "<tr><td>Temperature </td><td>" + o.temperature_min      + "</td></tr>" +
+         "<tr><td>Humidity    </td><td>" + o.humidity             + "</td></tr>" +
+         "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
+         "</table>" +
          "<input type=button value='Remove this' onclick=RemovethisFeature("+ o.id +")><br>" +
-         "<input type=button value='ActivateDrag' onclick={}><br>" +
-   "";
+         "<input type=button value='ActivateDrag' onclick=console.log('ok')><br>" +
+         "</div>"
    return str;
 }
 
@@ -176,8 +184,21 @@ function trackAddPoint(lon, lat, layer, obj, label ) {
    return pointFeature;
 }
 
+var DISTANCE = 0.0
+var LASTFEATURE = null;
+function distance(f) {
+   if (!f || !LASTFEATURE) {
+      DISTANCE =0.0
+      LASTFEATURE = f;
+      return;
+   }
+   var dist = f.geometry.distanceTo(LASTFEATURE.geometry);
+   DISTANCE = DISTANCE + dist;
+   return dist;
+}
 
 function trackAddFeatures(data, lyr, updateBounds) {
+   distance(null);
    eval(data);
    map = lyr.map;
    points = new Array();
@@ -215,6 +236,10 @@ function trackAddFeatures(data, lyr, updateBounds) {
       } else {
          bounds.extend(feat.geometry.getBounds());
       }
+      var dist = distance(feat);
+      obj.dist = dist;
+
+      console.log("Cur Dist:" + dist + "Total Distance:" + DISTANCE)
    }
 
    var pline = new OpenLayers.Geometry.LineString(points);
@@ -225,6 +250,13 @@ function trackAddFeatures(data, lyr, updateBounds) {
    };
 
    var lineFeature = new OpenLayers.Feature.Vector(pline, null, style);
+
+   lobj = {};
+   lobj.dist = DISTANCE;
+   lobj.id = -1;
+   lobj.measured_at = obj.measured_at;
+
+   lineFeature.attributes.obj = lobj;
    lyr.addFeatures([lineFeature]);
 
 

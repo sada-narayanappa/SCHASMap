@@ -10,6 +10,7 @@
     <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
 
     <script src="../js/config.prod.js"></script>
+    <script src="../js/ajaxutils.js"></script>
     <script src="Layers.js"></script>
     <script src="os.js"></script>
     <script src="citiesLayer.js"></script>
@@ -77,5 +78,39 @@
     </form>
 </div>
 
+<script>
+function setURL(parms) {
+    s = top.window.location.href
+    if (s.lastIndexOf("?") > 0) {
+        s = s.substring(a, s.lastIndexOf("?"));
+    }
+    s= s + "?" + parms;
+    top.window.location.href = s;
+}
+function setUserSessions(text) {
+    eval(text);
+    var cols = $rs.colnames;
+    var type = $rs.coltypes;
+    var data = $rs.rows || $rs[Object.keys($rs)[0]];
+
+    str = ""
+    for ( i in data) {
+        d = data [i];
+        s = "setURL('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
+        a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
+        str = str  + a;
+    }
+
+    $("#tabs-3").html(str);
+}
+
+function runQuery1(divName) {
+    url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9"
+    submitForm({URL: url, fdata: {}, CB: setUserSessions })
+}
+$(document).ready(function() {
+    runQuery1();
+});
+</script>
 </body>
 </html>
