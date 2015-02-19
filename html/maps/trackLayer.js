@@ -247,7 +247,7 @@ function trackLayerUpdate(trackLayer) {
    //q = "select ST_X(the_geom) as lon, ST_Y(the_geom), city as lat from
    // worldcities where the_geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
    //var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
-   var TL_URL= "http://www.geospaces.org/aura/webroot/db.jsp?qn=6&type=js";
+   var TL_URL= "http://www.geospaces.org/aura/webroot/db.jsp?qn=6&type=js&";
    var url = config.PROXY + TL_URL
 
    url = url+ $.urlAllParams();
