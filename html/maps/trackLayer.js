@@ -17,7 +17,8 @@ STYLEsm = new OpenLayers.StyleMap({
       fontSize: "14px",
       fontFamily: "Calibri",
       fontWeight: "",
-      labelYOffset: "-10"
+      labelYOffset: "-10",
+      graphicZIndex: 3
    },
    select: {
       pointRadius: 12,
@@ -34,6 +35,7 @@ function AddTrackingLayer(map) {
    trackLayer.map = map;
    layer =  new OpenLayers.Layer.Vector( "My Tracks",
                      {  styleMap:   STYLEsm,
+                        rendererOptions: { zIndexing: true },
                         renderers:  renderer
                      });
 
@@ -160,7 +162,7 @@ function getPop(o) {
          "</div>"
    return str;
 }
-colors = "#0000ff, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, #0000ff, yellow"
+colors = " blue, fuchsia, gray, 0000ff, maroon, navy, olive, orange,purple, red, yellow"
 colors = colors.split(",");
 for ( c in colors ) {
    colors[c] = colors[c].trim();
@@ -190,7 +192,7 @@ function trackAddPoint(lon, lat, layer, obj, label, ii ) {
       fillcolor:  "#" + obj.mobile_id.substring(0,2) + "0000",
       fillcolor:  "#FFa500",
       fillcolor: (ii <=0 ) ? "transparent" : getColor(obj.mobile_id),
-      strokeWidth: (ii <=0 ) ? 3 : 1
+      strokeWidth: (ii <=0 ) ? 5 : 2
       //Humidity: dataArray[2],
       //temp: dataArray[1],
       //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
@@ -287,8 +289,9 @@ function addLine(points, obj ) {
    var style = {
       strokeColor: '#0000ff',
       strokeColor: getColor(obj.mobile_id),
-      strokeOpacity: 0.5,
-      strokeWidth: 5
+      strokeOpacity: 10, //0.9,
+      strokeWidth: 6,
+      graphicZIndex: 0
    };
 
    var lineFeature = new OpenLayers.Feature.Vector(pline, null, style);
