@@ -162,7 +162,7 @@ function getPop(o) {
          "</div>"
    return str;
 }
-colors = " blue, fuchsia, gray, 0000ff, maroon, navy, olive, orange,purple, red, yellow"
+colors = " blue, fuchsia, green, 0000ff, maroon, navy, olive, orange,purple, red, yellow"
 colors = colors.split(",");
 for ( c in colors ) {
    colors[c] = colors[c].trim();
@@ -288,9 +288,10 @@ function addLine(points, obj ) {
    var pline = new OpenLayers.Geometry.LineString(points);
    var style = {
       strokeColor: '#0000ff',
+      fillcolor:    "#ffffff",
       strokeColor: getColor(obj.mobile_id),
       strokeOpacity: 10, //0.9,
-      strokeWidth: 6,
+      strokeWidth: 8,
       graphicZIndex: 0
    };
 
