@@ -42,15 +42,15 @@ function AddTrackingLayer(map) {
    map.addLayer(layer);
    trackLayer.layer = layer;
 
-   trackLayerUpdate(layer, true);
+   trackLayerUpdate();
 
    layer.events.register("visibilitychanged", layer, function(evt) {
       if ( layer.getVisibility() ) {
-         trackLayerUpdate(layer, true)
+         trackLayerUpdate()
       }
    })
    map.events.register('moveend', map, function() {
-      //trackLayerUpdate(trackLayer)
+      //trackLayerUpdate()
    });
 
    var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
@@ -307,11 +307,11 @@ function addLine(points, obj ) {
    distance(null);
 }
 
-function trackLayerUpdate(trackLayer) {
+function trackLayerUpdate(parms) {
    map = trackLayer.map;
-   if (map.zoom < 8 || !trackLayer.getVisibility() ) {
-      trackLayer.removeAllFeatures()
-      trackLayer.destroyFeatures();
+   if (map.zoom < 8 || !trackLayer.layer.getVisibility() ) {
+      trackLayer.layer.removeAllFeatures()
+      trackLayer.layer.destroyFeatures();
       return map.zoom
    }
    e = getMapBoundedBox(true);
@@ -321,7 +321,11 @@ function trackLayerUpdate(trackLayer) {
    var TL_URL= "http://www.geospaces.org/aura/webroot/db.jsp?qn=6&type=js&";
    var url = config.PROXY + TL_URL
 
-   url = url+ $.urlAllParams();
+   if (parms) {
+      url = url+ parms;
+   } else {
+      url = url+ $.urlAllParams();
+   }
 
    console.log( url)
 
@@ -335,9 +339,8 @@ function trackLayerUpdate(trackLayer) {
       processdata: true,
       cache: false,
       success: function (data) {
-         //console.log(data)
          somedata=data
-         trackAddFeatures(data, trackLayer, true)
+         trackAddFeatures(data, trackLayer.layer, true)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)

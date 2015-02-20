@@ -88,6 +88,9 @@ function setURL(parms) {
     s= s + "?" + parms;
     top.window.location.href = s;
 }
+function changeTrackLayer(p) {
+    trackLayerUpdate(p);
+}
 function setUserSessions(text) {
     eval(text);
     var cols = $rs.colnames;
@@ -98,6 +101,7 @@ function setUserSessions(text) {
     for ( i in data) {
         d = data [i];
         s = "setURL('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
+        s = "changeTrackLayer('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
         a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
         str = str  + a;
     }
