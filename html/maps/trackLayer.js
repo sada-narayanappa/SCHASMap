@@ -5,14 +5,12 @@ trackLayer = {
 
    last:    ""
 };
-function getColor(id, o) {
-   console.log("COLOR FOR:" + id + " OBJ:" + o);
-}
+
 STYLEsm = new OpenLayers.StyleMap({
    'default': {
       strokeColor: "#000000",
       fillColor:  "${fillcolor}",
-      strokeWidth: 1,
+      strokeWidth: "${strokeWidth}",
       pointRadius: 6,
       pointerEvents: "visiblePainted",
       label: "${label}",
@@ -184,7 +182,8 @@ function trackAddPoint(lon, lat, layer, obj, label, ii ) {
       mobile_id:  obj.mobile_id,
       fillcolor:  "#" + obj.mobile_id.substring(0,2) + "0000",
       fillcolor:  "#FFa500",
-      fillcolor: (ii <=0 ) ? "transparent" : getColor(obj.mobile_id)
+      fillcolor: (ii <=0 ) ? "transparent" : getColor(obj.mobile_id),
+      strokeWidth: (ii <=0 ) ? 3 : 1
       //Humidity: dataArray[2],
       //temp: dataArray[1],
       //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
@@ -253,12 +252,13 @@ function trackAddFeatures(data, lyr, updateBounds) {
       console.log("Cur Dist:" + dist + "Total Distance:" + DISTANCE)
    }
 
-   //if (points.length > 1) {
-   //   points.pop();
-   //}
+   if (points.length <= 0) {
+      return;
+   }
    var pline = new OpenLayers.Geometry.LineString(points);
    var style = {
       strokeColor: '#0000ff',
+      strokeColor: getColor(obj.mobile_id),
       strokeOpacity: 0.5,
       strokeWidth: 5
    };
@@ -272,7 +272,6 @@ function trackAddFeatures(data, lyr, updateBounds) {
 
    lineFeature.attributes.obj = lobj;
    lyr.addFeatures([lineFeature]);
-
 
    if (updateBounds) {
       var b1 = map.calculateBounds();
