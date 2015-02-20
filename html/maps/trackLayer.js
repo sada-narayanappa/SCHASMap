@@ -11,7 +11,7 @@ STYLEsm = new OpenLayers.StyleMap({
       strokeColor: "#000000",
       fillColor:  "${fillcolor}",
       strokeWidth: "${strokeWidth}",
-      pointRadius: 6,
+      pointRadius: 5,
       pointerEvents: "visiblePainted",
       label: "${label}",
       fontSize: "14px",
@@ -61,6 +61,10 @@ function AddTrackingLayer(map) {
 
    layer.events.on({
       'featureselected': function (evt) {
+
+         var position = this.events.getMousePosition(e);
+         var p = map.getLonLatFromPixel(position);
+
          var feature = evt.feature;
          console.log("SELECTED: " + feature);
          obj = (feature.attributes && feature.attributes.obj) || null;
@@ -136,7 +140,8 @@ function RemovethisFeature(id) {
 }
 function getPop(o) {
    obj = o;
-   str = "<div style='background-color: #9FDAEE '>" +
+   var bck = (o.id > 0) ? "#9FDAEE" : "lightgreen"
+   str = "<div style='background-color: " + bck + " '>" +
          "<table>" +
          "<tr><td>ID :        </td><td>" + o.id                   + "</td></tr>" +
          "<tr><td>Accuracy    </td><td>" + o.accuracy             + "</td></tr>" +
@@ -155,13 +160,15 @@ function getPop(o) {
          "</div>"
    return str;
 }
-colors = "aqua, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, teal, yellow"
+colors = "#0000ff, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, #0000ff, yellow"
 colors = colors.split(",");
 for ( c in colors ) {
    colors[c] = colors[c].trim();
 }
 function getColor(o) {
-   var idx = (""+o).hashCode() % colors.length;
+   var h = Math.abs((""+o).hashCode());
+   //console.log("***** HASH ****" + h);
+   var idx = ( h - 1) % colors.length;
    return colors[idx];
 }
 
@@ -204,6 +211,7 @@ function distance(f) {
    }
    var dist = f.geometry.distanceTo(LASTFEATURE.geometry);
    DISTANCE = DISTANCE + dist;
+   LASTFEATURE = f;
    return dist;
 }
 
@@ -211,7 +219,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    distance(null);
    eval(data);
    map = lyr.map;
-   points = new Array();
+   points = [];
 
    var locs = $rs["rows"]
    var cols = $rs["colnames"]
@@ -228,6 +236,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    //locs[locs.length] = locs[0];
    console.log(" : " + locs.length)
    var bounds;
+   prevObj = null;
    for (var i = 0; i < locs.length; ++i) {
       var lc = locs[i];
 
@@ -235,6 +244,9 @@ function trackAddFeatures(data, lyr, updateBounds) {
       j = 0;
       for( c in cols) {
          obj[cols[c]] = lc[j++];
+      }
+      if ( !prevObj ) {
+         prevObj = obj;
       }
       var label = (locs.length > 2) ? lc[2].substring(14,19) : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
@@ -250,9 +262,25 @@ function trackAddFeatures(data, lyr, updateBounds) {
       obj.dist = dist;
 
       console.log("Cur Dist:" + dist + "Total Distance:" + DISTANCE)
-   }
 
-   if (points.length <= 0) {
+      if (  obj.mobile_id !== prevObj.mobile_id) {
+         addLine(points, prevObj);
+         points = [];
+         prevObj = obj;
+      }
+   }
+   addLine(points, obj);
+
+   if (updateBounds) {
+      var b1 = map.calculateBounds();
+      if (!b1.contains(bounds)) {
+         map.zoomToExtent(bounds);
+      }
+   }
+}
+
+function addLine(points, obj ) {
+   if ( points.length <= 1) {
       return;
    }
    var pline = new OpenLayers.Geometry.LineString(points);
@@ -266,19 +294,14 @@ function trackAddFeatures(data, lyr, updateBounds) {
    var lineFeature = new OpenLayers.Feature.Vector(pline, null, style);
 
    lobj = {};
-   lobj.dist = DISTANCE;
+   lobj.dist = (DISTANCE/1000/1.6).toFixed(2) + " Miles";
    lobj.id = -1;
    lobj.measured_at = obj.measured_at;
 
    lineFeature.attributes.obj = lobj;
    lyr.addFeatures([lineFeature]);
 
-   if (updateBounds) {
-      var b1 = map.calculateBounds();
-      if (!b1.contains(bounds)) {
-         map.zoomToExtent(bounds);
-      }
-   }
+   distance(null);
 }
 
 function trackLayerUpdate(trackLayer) {
