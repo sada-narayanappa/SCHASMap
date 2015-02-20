@@ -11,6 +11,7 @@
 
     <script src="../js/config.prod.js"></script>
     <script src="../js/ajaxutils.js"></script>
+    <script src="../js/generalutils.js"></script>
     <script src="Layers.js"></script>
     <script src="os.js"></script>
     <script src="citiesLayer.js"></script>
@@ -56,9 +57,9 @@
 
         <div id="tabs">
             <ul>
+                <li><a href="#tabs-3">Pick/ User</a></li>
                 <li><a href="#tabs-1">Utilities</a></li>
                 <li><a href="#tabs-2">Trajectories</a></li>
-                <li><a href="#tabs-3">Pick/ User</a></li>
             </ul>
             <div id="tabs-1">
                 <input type="button" onclick="findLocation()" value="Find my Location">
@@ -100,7 +101,6 @@ function setUserSessions(text) {
         a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
         str = str  + a;
     }
-
     $("#tabs-3").html(str);
 }
 

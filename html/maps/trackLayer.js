@@ -10,7 +10,7 @@ function getColor(id, o) {
 }
 STYLEsm = new OpenLayers.StyleMap({
    'default': {
-      strokeColor: "#00FFFF",
+      strokeColor: "#000000",
       fillColor:  "${fillcolor}",
       strokeWidth: 1,
       pointRadius: 6,
@@ -56,7 +56,7 @@ function AddTrackingLayer(map) {
    var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
       clickout:      true,
       hover:         true,
-      autoActivate:  true
+      autoActivate:  false
    });
    map.addControl(selectCtrl);
    selectCtrl.activate();
@@ -157,8 +157,17 @@ function getPop(o) {
          "</div>"
    return str;
 }
+colors = "aqua, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, teal, yellow"
+colors = colors.split(",");
+for ( c in colors ) {
+   colors[c] = colors[c].trim();
+}
+function getColor(o) {
+   var idx = (""+o).hashCode() % colors.length;
+   return colors[idx];
+}
 
-function trackAddPoint(lon, lat, layer, obj, label ) {
+function trackAddPoint(lon, lat, layer, obj, label, ii ) {
    if (layer.map.zoom < 10) {
       label = "";
    }
@@ -168,12 +177,14 @@ function trackAddPoint(lon, lat, layer, obj, label ) {
    var point = xPoint(lon, lat);
 
    var pointFeature = new OpenLayers.Feature.Vector(point);
+
    pointFeature.attributes = {
       label: label,
       obj:  obj,
       mobile_id:  obj.mobile_id,
       fillcolor:  "#" + obj.mobile_id.substring(0,2) + "0000",
-      fillcolor:  "#FFa500"
+      fillcolor:  "#FFa500",
+      fillcolor: (ii <=0 ) ? "transparent" : getColor(obj.mobile_id)
       //Humidity: dataArray[2],
       //temp: dataArray[1],
       //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
@@ -215,7 +226,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    if (locs.length == 0 || lati < 0 || loni < 0) {
       return;
    }
-   locs[locs.length] = locs[0];
+   //locs[locs.length] = locs[0];
    console.log(" : " + locs.length)
    var bounds;
    for (var i = 0; i < locs.length; ++i) {
@@ -230,7 +241,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
 
-      var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label);
+      var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label, i);
       if (!bounds) {
          bounds = feat.geometry.getBounds();
       } else {
@@ -242,6 +253,9 @@ function trackAddFeatures(data, lyr, updateBounds) {
       console.log("Cur Dist:" + dist + "Total Distance:" + DISTANCE)
    }
 
+   //if (points.length > 1) {
+   //   points.pop();
+   //}
    var pline = new OpenLayers.Geometry.LineString(points);
    var style = {
       strokeColor: '#0000ff',
