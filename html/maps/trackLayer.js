@@ -192,6 +192,7 @@ function trackAddPoint(lon, lat, layer, obj, label, ii ) {
       fillcolor:  "#" + obj.mobile_id.substring(0,2) + "0000",
       fillcolor:  "#FFa500",
       fillcolor: (ii <=0 ) ? "transparent" : getColor(obj.mobile_id),
+      fillcolor: (ii <=0 ) ? "white" : "white",
       strokeWidth: (ii <=0 ) ? 5 : 2
       //Humidity: dataArray[2],
       //temp: dataArray[1],
