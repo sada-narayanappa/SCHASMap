@@ -57,13 +57,11 @@ function addFeatures(data, lyr){
    lyr.removeAllFeatures()
    lyr.destroyFeatures();
 
-   locs[locs.length] = locs[0];
-   console.log(" : " + locs.length )
+   //locs[locs.length] = locs[0];
+   //console.log(" : " + locs.length )
    for(var i=0; i<locs.length; ++i) {
       var lc = locs[i];
-      if (!lc)
-         continue;
-      var label = (lc.length < 2) ? "" : lc[2]
+      var label = (locs.length > 200) ? "" : lc[2]
       var feat = addPoint(lc[0], lc[1], lyr, ""+lc , label);
 
    }

@@ -43,6 +43,7 @@ function init() {
       position.lon = Number(position.lon);
       if ( !globalPoints.p1) {
          globalPoints.p1  = op;
+         pos1 = position;
          console.log("***** Point P1:" + position);
       } else if ( !globalPoints.p2) {
          globalPoints.p2 = op;
@@ -54,7 +55,13 @@ function init() {
          var point2 = new OpenLayers.Geometry.Point(p2.lon, p2.lat);
          dist =  point1.distanceTo(point2);
          dift = dist * 3.28084
-         console.log("***** Point P2:" + position + " Distance:" + dist + "m : " + dift + "ft");
+
+         // My method
+         pos2 = position;
+         df = MyDistance(pos1.lat+"," + pos1.lon, pos2.lat+"," + pos2.lon);
+         ft = df + " kms " + df * 1000 * 3.28084 + " ft"
+
+         console.log("***** Point P2:" + position + " Distance:" + dist + "m : " + dift + "ft " + ft);
 
          globalPoints.p2 = null;
          globalPoints.p1 = null;

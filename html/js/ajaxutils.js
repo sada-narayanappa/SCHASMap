@@ -14,7 +14,7 @@ function submitForm(p) {
       fdata = $(form).serializeArray()
    }
 
-   console.log(fdata)
+   //console.log(fdata)
    ajax = {
       type:       p.get || "POST",
       url:        URL,
@@ -37,7 +37,7 @@ function submitForm(p) {
          }
       }
    }
-   console.log(ajax)
+   //console.log(ajax)
 
    $.ajax( ajax );
 }

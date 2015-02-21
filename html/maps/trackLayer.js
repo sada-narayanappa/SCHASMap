@@ -68,7 +68,7 @@ function AddTrackingLayer(map) {
          var p = map.getLonLatFromPixel(position);
 
          var feature = evt.feature;
-         console.log("SELECTED: " + feature);
+         //console.log("SELECTED: " + feature);
          obj = (feature.attributes && feature.attributes.obj) || null;
          if ( !obj)
             return;
@@ -237,12 +237,11 @@ function trackAddFeatures(data, lyr, updateBounds) {
       return;
    }
    //locs[locs.length] = locs[0];
-   console.log(" : " + locs.length)
+   //console.log(" : " + locs.length)
    var bounds;
    prevObj = null;
    for (var i = 0; i < locs.length; ++i) {
       var lc = locs[i];
-
       obj = {};
       j = 0;
       for( c in cols) {
@@ -263,8 +262,6 @@ function trackAddFeatures(data, lyr, updateBounds) {
       }
       var dist = distance(feat);
       obj.dist = dist;
-
-      console.log("Cur Dist:" + dist + "Total Distance:" + DISTANCE)
 
       if (  obj.mobile_id !== prevObj.mobile_id) {
          addLine(points, prevObj);
@@ -329,7 +326,7 @@ function trackLayerUpdate(parms) {
       url = url+ $.urlAllParams();
    }
 
-   console.log( url)
+   //console.log( url)
 
    $.ajax({
       type: "GET",
