@@ -132,7 +132,9 @@ function RemoveThisFeature(id) {
          data = data.replace(/(\r\n|\n|\r)/gm, "");
          console.log(data);
          //alert("Deleted: " + data)
-         location.reload();
+         trackLayerUpdate(CURRENT_PARMS)
+         //location.reload();
+         clearAllMapPopups();
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
@@ -305,10 +307,11 @@ function addLine(points, obj ) {
 
    distance(null);
 }
+var CURRENT_PARMS = "";
 
 function trackLayerUpdate(parms) {
    map = trackLayer.map;
-   if (map.zoom < 8 || !trackLayer.layer.getVisibility() ) {
+   if (map.zoom < 1 || !trackLayer.layer.getVisibility() ) {
       trackLayer.layer.removeAllFeatures()
       trackLayer.layer.destroyFeatures();
       return map.zoom
@@ -322,8 +325,11 @@ function trackLayerUpdate(parms) {
 
    if (parms) {
       url = url+ parms;
-   } else {
+      CURRENT_PARMS = parms;
+   } else if ( $.urlAllParams()) {
       url = url+ $.urlAllParams();
+   } else {
+      url = url+ CURRENT_PARMS;
    }
 
    //console.log( url)
