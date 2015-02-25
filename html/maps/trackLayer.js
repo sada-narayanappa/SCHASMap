@@ -56,7 +56,7 @@ function AddTrackingLayer(map) {
    var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
       clickout:      true,
       hover:         true,
-      autoActivate:  false
+      autoActivate:  false,
    });
    map.addControl(selectCtrl);
    selectCtrl.activate();
