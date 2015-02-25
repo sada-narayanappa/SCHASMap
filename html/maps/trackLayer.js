@@ -110,7 +110,7 @@ function AddTrackingLayer(map) {
    return layer;
 }
 
-function RemovethisFeature(id) {
+function RemoveThisFeature(id) {
    console.log("Will remove feature: " + id);
 
    var TL_URL= "http://www.geospaces.org/aura/webroot/db.jsp?qn=8";
@@ -157,7 +157,7 @@ function getPop(o) {
          "<tr><td>Humidity    </td><td>" + o.humidity             + "</td></tr>" +
          "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
          "</table>" +
-         "<input type=button value='Remove this' onclick=RemovethisFeature("+ o.id +")><br>" +
+         "<input type=button value='Remove this' onclick=RemoveThisFeature("+ o.id +")><br>" +
          "<input type=button value='ActivateDrag' onclick=console.log('ok')><br>" +
          "</div>"
    return str;

@@ -99,8 +99,14 @@ function setUserSessions(text) {
     var data = $rs.rows || $rs[Object.keys($rs)[0]];
 
     str = ""
+    var color = (i%2) ? "brown": "";
+    mobile_id = "";
     for ( i in data) {
         d = data [i];
+        if (mobile_id != d[0]) {
+            mobile_id = d[0]
+            str = str + "<hr>"
+        }
         s = "setURL('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
         s = "changeTrackLayer('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
         a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
