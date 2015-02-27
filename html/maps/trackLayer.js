@@ -56,7 +56,7 @@ function AddTrackingLayer(map) {
    var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
       clickout:      true,
       hover:         true,
-      autoActivate:  false,
+      autoActivate:  false
    });
    map.addControl(selectCtrl);
    selectCtrl.activate();
@@ -329,7 +329,8 @@ function trackLayerUpdate(parms) {
    } else if ( $.urlAllParams()) {
       url = url+ $.urlAllParams();
    } else {
-      url = url+ CURRENT_PARMS;
+      //url = url+ CURRENT_PARMS;
+      console.log(CURRENT_PARMS);
    }
 
    //console.log( url)
