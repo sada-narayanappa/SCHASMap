@@ -81,6 +81,11 @@
 </div>
 
 <script>
+function clearAllMapPopups() {
+    while( map.popups.length ) {
+        map.removePopup(map.popups[0]);
+    }
+}
 function setURL(parms) {
     s = top.window.location.href
     if (s.lastIndexOf("?") > 0) {
@@ -99,12 +104,22 @@ function setUserSessions(text) {
     var data = $rs.rows || $rs[Object.keys($rs)[0]];
 
     str = ""
+    mobile_id = "";
     for ( i in data) {
         d = data [i];
+        if (mobile_id != d[0]) {
+            mobile_id = d[0]
+            str = str + "<hr>"
+        }
         s = "setURL('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
-        s = "changeTrackLayer('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
+        p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'";
+        s = "changeTrackLayer(" + p + ")";
         a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
         str = str  + a;
+
+        if ( i == 0) {
+            CURRENT_PARMS = p;
+        }
     }
     $("#tabs-3").html(str);
 }
