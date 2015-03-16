@@ -142,15 +142,20 @@ function RemoveThisFeature(id) {
    });
 
 }
+
+
+
 function LT(t, lon) {
-   d = new Date(t.split(' ').join('T'))
-   if ( isNaN(lon) ) {
+   d = new Date(t.toString().split(' ').join('T'))
+
+ if ( isNaN(lon) ) {
       return "NAn:" + lon + " " + t;
+
    }
    dir = ( lon < 0 ) ? -1 : 1;
-
    m = dir * Math.round(Math.abs(lon)/15);
-   nt = d.getTime() + (m * 60 * 60 * 1000)
+   nt = d.getTime();
+   nt=nt+ (m * 60 * 60 * 1000)
    dt = new Date(nt);
    return dt.toISOString().replace("T"," ").substr(0,20);
 }
@@ -167,7 +172,8 @@ function getPop(o) {
          "<tr><td>AT GMT:     </td><td>" + o.measured_at          + "</td></tr>" +
          "<tr><td>AT MST:     </td><td>" + o.mst                  + "</td></tr>" +
          "<tr><td>AT LOCAL:   </td><td>" + LT(o.measured_at,o.lon)+ "</td></tr>" +
-         "<tr><td>SPEED:      </td><td>" + (o.speed)*2.24 + "Mph" + "</td></tr>" +
+       //modified by jihadaj on 16 March 2015
+         "<tr><td>SPEED     </td><td>" + Math.round(((o.speed)*2.24) * 100) / 100  + "Mph" + "</td></tr>" +
          "<tr><td>Temperature </td><td>" + o.temperature_min      + "</td></tr>" +
          "<tr><td>Humidity    </td><td>" + o.humidity             + "</td></tr>" +
          "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
