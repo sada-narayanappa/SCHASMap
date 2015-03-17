@@ -147,7 +147,7 @@ function RemoveThisFeature(id) {
 
 function LT(t, lon) {
 
-    t = t+ "+00:00"; // new Date is initiated differently in chrome and firefox changed by jihadaj on 17 Mar 2014
+    t = t+ "+00:00"; // new Date is initiated differently in chrome and firefox,safari changed by jihadaj on 17 Mar 2014
     d = new Date(t.toString().split(' ').join('T'))
     if ( isNaN(lon) ) {
       return "NAn:" + lon + " " + t;
