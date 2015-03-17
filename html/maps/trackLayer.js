@@ -146,16 +146,17 @@ function RemoveThisFeature(id) {
 
 
 function LT(t, lon) {
-   d = new Date(t.toString().split(' ').join('T'))
 
- if ( isNaN(lon) ) {
+    t = t+ "+00:00"; // new Date is initiated differently in chrome and firefox changed by jihadaj on 17 Mar 2014
+    d = new Date(t.toString().split(' ').join('T'))
+    if ( isNaN(lon) ) {
       return "NAn:" + lon + " " + t;
 
    }
    dir = ( lon < 0 ) ? -1 : 1;
    m = dir * Math.round(Math.abs(lon)/15);
-   nt = d.getTime();
-   nt=nt+ (m * 60 * 60 * 1000)
+    nt = d.getTime();
+    nt=nt+ (m * 60 * 60 * 1000)
    dt = new Date(nt);
    return dt.toISOString().replace("T"," ").substr(0,20);
 }
