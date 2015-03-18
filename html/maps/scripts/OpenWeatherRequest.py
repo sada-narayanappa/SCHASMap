@@ -11,7 +11,7 @@ def OpenWeatherRequest(jsonData):
     k=0
     OWeatherData = []
     # len(jsonData["rows"])
-    while k < 10: #Limited to 100 at a time due to timeout error's with larger amounts.
+    while k < 10: #Limited to 10 at a time due to timeout error's with larger amounts.
         OWeatherData.append([]) #new list for the current entry
             
         entryID = jsonData["rows"][k][0]
