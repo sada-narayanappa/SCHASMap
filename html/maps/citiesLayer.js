@@ -74,7 +74,7 @@ function cityLayerUpdate() {
       return map.zoom
    }
    e = getMapBoundedBox(true);
-   q = "select ST_X(the_geom) as lon, ST_Y(the_geom), city as lat from worldcities where the_geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
+   q = "select ST_X(the_geom) as lon, ST_Y(the_geom) as lat, city from worldcities where the_geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
