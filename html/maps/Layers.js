@@ -7,7 +7,7 @@ function init() {
    //For entering address data
    OpenLayers.ProxyHost = "cgi-bin/proxy.py?url=";
 
-   map = new OpenLayers.Map( {div: "mapdiv", units: 'm'});
+   map = new OpenLayers.Map( {div: "mapdiv", units: 'm'});   
    var mapnik = new OpenLayers.Layer.OSM();
 
    map.addLayer(mapnik);
@@ -274,6 +274,7 @@ function init() {
    map.setCenter(lonlat, zoom);
 
    AddCityLayer(map);
+   AddStationLayer(map);
    lyr = AddTrackingLayer(map);
 
 }//end Init() function
