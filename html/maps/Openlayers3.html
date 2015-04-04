@@ -16,8 +16,10 @@
     <script src="Layers.js"></script>
     <script src="os.js"></script>
     <script src="citiesLayer.js"></script>
+    <script src="stationsLayerVoronoi.js"></script>
     <script src="stationsLayer.js"></script>
     <script src="trackLayer.js"></script>
+    <script src="learnJS.js"></script>
 
     <link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
 
@@ -25,16 +27,24 @@
         $(function() {
             $( "#tabs" ).tabs();
         });
+        $(document).ready(function() {
+             init();
+            initUserSettings();
+        });
+
+        function initUserSettings() {
+            ControlPanelOnOff("block");
+        }
     </script>
 
 </head>
-
-<body onload="init();">
+<body>
 <div id="mapdiv"></div>
 
 <script>
-    function formopen() {
-        d =document.getElementById('formcontent').style.display;
+    function ControlPanelOnOff(onOff) {  //onOff = none, block -> if none ->opens
+
+        d = onOff || document.getElementById('formcontent').style.display;
         if ( d == "none") {
             document.getElementById('formcontent').style.display = "block"
         } else {
@@ -48,7 +58,7 @@
             Control Panel
             <img src="http://www.clker.com/cliparts/O/S/I/l/m/L/minus-sign-subtract-md.png"
                  width="16px"
-                onclick="formopen()" />
+                onclick="ControlPanelOnOff()" />
             <hr/>
         </div>
         <div id="formcontent">

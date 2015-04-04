@@ -106,7 +106,7 @@ function AddTrackingLayer(map) {
    trackLayer.ctrlDragFeature.deactivate();
 
 
-//trackLayer.setVisibility(false);
+   layer.setVisibility(false);
    return layer;
 }
 
@@ -286,22 +286,22 @@ function trackAddFeatures(data, lyr, updateBounds) {
       obj.dist = dist;
 
       if (  obj.mobile_id !== prevObj.mobile_id) {
-         addLine(points, prevObj);
+         addLine(points, prevObj, lyr);
          points = [];
          prevObj = obj;
       }
    }
-   addLine(points, obj);
+   addLine(points, obj, lyr);
 
    if (updateBounds) {
       var b1 = map.calculateBounds();
       if (!b1.contains(bounds)) {
-         map.zoomToExtent(bounds);
+         //map.zoomToExtent(bounds);
       }
    }
 }
 
-function addLine(points, obj ) {
+function addLine(points, obj , lyr) {
    if ( points.length <= 1) {
       return;
    }

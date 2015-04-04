@@ -1,8 +1,5 @@
 var map;
 
-var globalPoints = {
-}
-
 function init() {
    //For entering address data
    OpenLayers.ProxyHost = "cgi-bin/proxy.py?url=";
@@ -12,22 +9,10 @@ function init() {
 
    map.addLayer(mapnik);
    glayers= [
-      new OpenLayers.Layer.Google(
-              "Google Streets", // the default
-              {numZoomLevels: 20}
-      ),
-      new OpenLayers.Layer.Google(
-              "Google Physical",
-              {type: google.maps.MapTypeId.TERRAIN}
-      ),
-      new OpenLayers.Layer.Google(
-              "Google Hybrid",
-              {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
-      ),
-      new OpenLayers.Layer.Google(
-              "Google Satellite",
-              {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
-      )
+      new OpenLayers.Layer.Google( "Google Streets", {numZoomLevels: 20}),
+      new OpenLayers.Layer.Google("Google Physical", {type: google.maps.MapTypeId.TERRAIN} ),
+      new OpenLayers.Layer.Google("Google Hybrid", {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}),
+      new OpenLayers.Layer.Google("Google Satellite", {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22})
    ];
 
    for ( i in glayers) {
@@ -41,31 +26,6 @@ function init() {
       position = p.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
       position.lat = Number(position.lat);
       position.lon = Number(position.lon);
-      if ( !globalPoints.p1) {
-         globalPoints.p1  = op;
-         pos1 = position;
-         console.log("***** Point P1:" + position);
-      } else if ( !globalPoints.p2) {
-         globalPoints.p2 = op;
-
-         p1 = globalPoints.p1;
-         p2 = globalPoints.p2;
-
-         var point1 = new OpenLayers.Geometry.Point(p1.lon, p1.lat);
-         var point2 = new OpenLayers.Geometry.Point(p2.lon, p2.lat);
-         dist =  point1.distanceTo(point2);
-         dift = dist * 3.28084
-
-         // My method
-         pos2 = position;
-         df = MyDistance(pos1.lat+"," + pos1.lon, pos2.lat+"," + pos2.lon);
-         ft = df + " kms " + df * 1000 * 3.28084 + " ft"
-
-         console.log("***** Point P2:" + position + " Distance:" + dist + "m : " + dift + "ft " + ft);
-
-         globalPoints.p2 = null;
-         globalPoints.p1 = null;
-      }
    });
 
 	//BELOW: Map Mouse Position
@@ -98,124 +58,6 @@ function init() {
    var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
 
-   var vectorLayer = new OpenLayers.Layer.Vector("User Tracks", {
-      styleMap: new OpenLayers.StyleMap({
-         'default': {
-            strokeColor: "#00FF00",
-            strokeOpacity: 1,
-            strokeWidth: 2,
-            fillColor: "#FF5500",
-            fillOpacity: 0.5,
-            pointRadius: 3,
-            pointerEvents: "visiblePainted",
-
-            // label with \n linebreaks
-            //      label : "Humidity: ${Humidity}\n\nTemperature: ${temp}",
-
-            fontColor: "${favColor}",
-            fontSize: "12px",
-            fontFamily: "Courier New, monospace",
-            fontWeight: "bold",
-            labelAlign: "${align}",
-            labelXOffset: "${xOffset}",
-            labelYOffset: "${yOffset}",
-            labelOutlineColor: "white",
-            labelOutlineWidth: 3
-         },
-         select: {
-            pointRadius: 5,
-            strokeColor: "#00FF00"
-         }
-      }),
-      renderers: renderer
-   });
-
-   //creating a point
-   //document.write("test");
-   //fetch text file
-   jQuery.get('environmentalData.txt', function (data) {
-      //split on new lines
-      var lines = data.split('\n');
-      //create select
-      var dropdown = $('<select>');
-      var Point = -91.9181;
-      //iterate over lines of file and create a option element
-      for (var i = 1; i < lines.length; i++) {
-         var dataArray = lines[i].split(",");
-
-         if (dataArray[3] != " " && dataArray[4] != " ") {
-            var latString = dataArray[3];
-            var lonString = dataArray[4];
-
-            if (!latString || !lonString ) {
-               continue;
-            }
-            var latArray = latString.split(" ");
-            var lonArray = lonString.split(" ");
-
-            var lat = +latArray[0] + parseFloat(latArray[2]) / 60;
-            var lon = +lonArray[0] + parseFloat(lonArray[2]) / 60;
-
-            var point = new OpenLayers.Geometry.Point(-1 * lon, lat).transform(
-                    new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984 //converting from map x,y coordinates to lonlat coordinates.
-                    new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator //converting from map x,y coordinates to lonlat coordinates.
-            );
-            //Giving the point attributes (probably want to use points over markers because of the attributes option)
-            var pointFeature = new OpenLayers.Feature.Vector(point);
-            pointFeature.attributes = {
-               Longitude: -1 * lon,
-               Latitude: lat,
-               Humidity: dataArray[2],
-               temp: dataArray[1],
-               Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
-               DateTime: dataArray[0]
-
-            };
-
-            //Point = Point + 0.0001
-            vectorLayer.addFeatures([pointFeature]);
-         }//for the if(dataArray[3]!=" " && dataArray[4] != " ")
-      }
-      //append select to page
-   });
-
-   var zoom = 14;
-
-   var selectCtrl = new OpenLayers.Control.SelectFeature(vectorLayer,
-           {
-              clickout: true
-
-           }
-   );
-   map.addControl(selectCtrl);
-   selectCtrl.activate();
-
-   vectorLayer.events.on({
-      'featureselected': function (evt) {
-         var feature = evt.feature;
-         var popup = new OpenLayers.Popup.FramedCloud("popup",
-                 OpenLayers.LonLat.fromString(feature.geometry.toShortString()),
-                 null,
-                 "Latitude,Longitude:" + feature.attributes.Latitude + ", " + feature.attributes.Longitude + "<br>" + "Humidity: " + feature.attributes.Humidity + "<br>" + "Temperature: " + feature.attributes.temp + "<br>" + "Speed: " + feature.attributes.Speed + "<br>" + "Date/Time: " + feature.attributes.DateTime,
-                 null,
-                 true,
-                 null
-         );
-         popup.autoSize = true;
-         popup.maxSize = new OpenLayers.Size(400, 800);
-         popup.fixedRelativePosition = true;
-         feature.popup = popup;
-         map.addPopup(popup);
-      },
-      'featureunselected': function (evt) {
-         var feature = evt.feature;
-         if ( feature && feature.popup) {
-            map.removePopup(feature.popup);
-            feature.popup.destroy();
-            feature.popup = null;
-         }
-      }
-   });
 
    var layerSwitch = new OpenLayers.Control.LayerSwitcher({
       div: OpenLayers.Util.getElement('layerswitcher')
@@ -255,27 +97,19 @@ function init() {
            }
    );
 
-   var layer_SCH = new OpenLayers.Layer.XYZ(
-           "SCH",
-           "cgi-bin/testSCH.py/${z}/${x}/${y}.png",
-           {
-              isBaseLayer: false,
-              opacity: 0.4,
-              sphericalMercator: true
-           }
-   );
-
    layer_precipitation.setVisibility(false);
    layer_cloud.setVisibility(false);
    layer_temperature.setVisibility(false);
-   layer_SCH.setVisibility(false);
 
-   map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature, layer_SCH, vectorLayer]);
+   map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature]);
+   zoom =14;
    map.setCenter(lonlat, zoom);
 
    AddCityLayer(map);
+   AddTrackingLayer(map);
+   var stv = new stationLayerVoronoi().AddLayer(map);
    AddStationLayer(map);
-   lyr = AddTrackingLayer(map);
+
 
 }//end Init() function
 

@@ -1,50 +1,58 @@
-
 var stationLayer
-var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
-var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
-var PROXY = "../cgi-bin/proxy.py?url=";
 
 function AddStationLayer(map) {
-   stationLayer =  new OpenLayers.Layer.Vector( "Stations");
-   map.addLayer(stationLayer);
+   var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+   renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
 
-   stationLayerUpdate()
-   stationLayer.events.register("visibilitychanged", stationLayer, function(evt) {
-      if ( stationLayer.getVisibility() ) {
-         stationLayerUpdate()
+   var context = {
+      getRadius: function(feature) {
+         ret = (map.zoom < 9) ? 2 : 3;
+         return ret;
+      },
+      getLabel: function(feature){
+         ret = (map.zoom < 10) ? "" : feature.data.label;
+         return ret;
+      },
+      getStrokeWidth: function(feature){
+         ret = (map.zoom < 9) ? 0:1;
+         return ret;
       }
-   })
-   map.events.register('moveend', map, function() {
-      stationLayerUpdate()
-   });
-   stationLayer.setVisibility(false);
-   return stationLayer;
-}
-
-function addPoint(lon, lat, layer, attr, label ) {
-   if (layer.map.zoom < 10) {
-      label = "";
-   }
-   radius = (layer.map.zoom < 9) ? 2 : 3;
-   sWidth = (layer.map.zoom < 9) ? 0 : 1
-
-   var point = xPoint(lon, lat);
-   var marker = {
-      strokeColor: "#00FF00",
-      strokeWidth: sWidth,
+   };
+   var template = {
+      pointRadius: "${getRadius}",
+      strokeColor: "#FF0000",
+      fillColor: "#0000FF",
+      strokeWidth: "${getStrokeWidth}",
       strokeDashstyle: "da}" + "shdot",
-      pointRadius: radius,
       pointerEvents: "visiblePainted",
-      label: label,
-      fontSize: "14px",
+      label: "${getLabel}",
+      fontSize: "12px",
       fontFamily: "Calibri",
       fontWeight: "",
       labelYOffset: "-4"
    };
-   var pointFeature = new OpenLayers.Feature.Vector(point,null,marker);
-   layer.addFeatures(pointFeature);
+   var style = new OpenLayers.Style(template, {context: context});
+   var layer = new OpenLayers.Layer.Vector('Weather Stations', {
+      styleMap: new OpenLayers.StyleMap(style),
+      renderers: renderer
+   });
 
-   return pointFeature;
+   stationLayer = layer;
+   map.addLayer(stationLayer);
+
+   stationLayer.setVisibility(true);
+   stationLayerUpdate()
+
+   stationLayer.events.register("visibilitychanged", stationLayer, function(evt) {
+      if ( stationLayer.getVisibility() ) {
+         //stationLayerUpdate()
+      }
+   })
+   map.events.register('moveend', map, function() {
+      //stationLayerUpdate()
+   });
+
+   return stationLayer;
 }
 
 function addFeatures(data, lyr){
@@ -54,28 +62,53 @@ function addFeatures(data, lyr){
    lyr.removeAllFeatures()
    lyr.destroyFeatures();
 
-   //locs[locs.length] = locs[0];
-   //console.log(" : " + locs.length )
+   bounds = null;
+   console.log("GOT: " + locs.length)
    for(var i=0; i<locs.length; ++i) {
       var lc = locs[i];
-      var label = (locs.length > 200) ? "" : lc[2]
-      var feat = addPoint(lc[0], lc[1], lyr, ""+lc , label);
+      var point = xPoint(lc[0], lc[1]);
+      attr=
+      {
+         label: lc[2]
+      }
+      var feat = new OpenLayers.Feature.Vector(point,attr);
+      lyr.addFeatures(feat);
+      if (!bounds) {
+         bounds = feat.geometry.getBounds();
+      } else {
+         bounds.extend(feat.geometry.getBounds());
+      }
+   }
 
+   if (true) {
+      var b1 = map.calculateBounds();
+      //if (!b1.contains(bounds))
+      {
+         map.zoomToExtent(bounds);
+      }
    }
 }
 
 function stationLayerUpdate() {
-   if (map.zoom < 8 || !stationLayer.getVisibility() ) {
-      stationLayer.removeAllFeatures()
-      stationLayer.destroyFeatures();
-      return map.zoom
-   }
+   var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
+   var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+   var PROXY = "../cgi-bin/proxy.py?url=";
+
+   //if (map.zoom < 0 || !stationLayer.getVisibility() ) {
+   //   stationLayer.removeAllFeatures()
+   //   stationLayer.destroyFeatures();
+   //   return map.zoom
+   //}
    e = getMapBoundedBox(true);
-   q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
+   q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
+       "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
+
+   q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
+   "from weather_stations WHERE is_interested=TRUE"
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
-   //console.log( PROXY + DB_URL + "q=" + (q))
+   console.log( PROXY + DB_URL + "q=" + (q))
 
    $.ajax({
       type: "GET",
@@ -87,8 +120,7 @@ function stationLayerUpdate() {
       processdata: true,
       cache: false,
       success: function (data) {
-         //console.log(data)
-         somedata=data
+         //somedata=data
          addFeatures(data, stationLayer)
       },
       error: function(xhr, stat, err) {
