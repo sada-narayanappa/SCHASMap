@@ -63,7 +63,7 @@ function addFeatures(data, lyr){
    lyr.destroyFeatures();
 
    bounds = null;
-   console.log("GOT: " + locs.length)
+   //console.log("GOT: " + locs.length)
    for(var i=0; i<locs.length; ++i) {
       var lc = locs[i];
       var point = xPoint(lc[0], lc[1]);

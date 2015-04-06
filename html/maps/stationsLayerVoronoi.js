@@ -18,7 +18,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
       },
       getLabel: function(feature){
          ret = (map.zoom < 10) ? "" : feature.data.label;
-         return ret;
+         return ret; //(feature.data.isValid) ? "": "INVALID";;
       },
       getStrokeWidth: function(feature){
          ret = (map.zoom < 9) ? 0:1;
@@ -27,6 +27,8 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
       FillColor: function(feature) {
          c = ["green", "#FFE4C4", "#DEB887",,"#DAA520", "#CD853F",  "#A0522D", "#B22222", "yellow","pink" ];
          r = Math.floor(Math.random() * c.length);
+
+         //return (feature.data.isValid) ? c[r]: "red";
          return c[r];
       }
    };
@@ -77,7 +79,7 @@ stationLayerVoronoi.prototype.AddFeatures = function (data){
    lyr.destroyFeatures();
 
    bounds = null;
-   console.log("GOT: " + locs.length)
+   //console.log("GOT: " + locs.length)
    for(var i=0; i<locs.length; ++i) {
       var lc = locs[i];
       eval("var $rss= " + eval(lc[0]));
@@ -95,7 +97,8 @@ stationLayerVoronoi.prototype.AddFeatures = function (data){
 
       attr=
       {
-         label: lc[1]
+         label:   lc[1],
+         isValid: (""+lc[2]).startsWith('f') ? false: true
       }
       var feat = new OpenLayers.Feature.Vector(polygon,attr);
       lyr.addFeatures(feat);
@@ -123,7 +126,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
    q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
        "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
-   q = "select concat('''',ST_AsGeoJSON(voronoi_geom), ''''), station_id " +
+   q = "select concat('''',ST_AsGeoJSON(voronoi_geom), ''''), station_id,is_valid " +
    "from weather_stations WHERE is_interested=TRUE"
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
@@ -141,7 +144,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
       processdata: true,
       cache: false,
       success: function (data) {
-         //console.log(data)
+         console.log(data)
          myThis.AddFeatures(data)
       },
       error: function(xhr, stat, err) {
