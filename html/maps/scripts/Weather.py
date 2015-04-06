@@ -107,36 +107,46 @@ def run():
         if (i == 4):
             break;
 
-def getDate(str):
-    ja = json.loads(str)
+def getDate(jstr):
+    ja = json.loads(jstr)
 
     source = 0
     dt = None;
     ds = None;
-
+    off =""
     if ( ja.get("dt") != None):
         dt =  ja.get("dt")
         ds = dt;
+        dt = time.mktime(time.gmtime(dt))
+        dl = ds;
         source = 1
     else:
         if ( ja.get("current_observation") != None ):
             ds = ja.get("current_observation").get("observation_time_rfc822")
             dp= rfc822.parsedate_tz((ds));
-            print dp;
-            dt = time.mktime((dp));
+            dp1 = list(dp);
+            off = dp1[-1];
+            t = datetime.datetime.timetuple(datetime.datetime(dp1[0],dp1[1],dp1[2], dp1[3],dp1[4]))
+            dl = time.mktime(t) - off
+            dt = time.mktime(time.gmtime(dl))
             source = 2
     if (dt == None):
         return None;
 
-    dttm= datetime.datetime.fromtimestamp(dt)
+    ldttm= datetime.datetime.fromtimestamp(dl)
+    gdttm= datetime.datetime.fromtimestamp(dt)
 
-    print dttm, dt, ds, source
+    print ldttm, gdttm, dt, off, "===> " + str(ds), source
     #print ja1
     #print ja2
 
 def test():
-    getDate('{"coord":{"lon":-92.96,"lat":45},"sys":{"message":0.015,"country":"US","sunrise":1428320529,"sunset":1428367565},"weather":[{"id":802,"main":"Clouds","description":"scattered clouds","icon":"03n"}],"base":"stations","main":{"temp":280.808,"temp_min":280.808,"temp_max":280.808,"pressure":993.29,"sea_level":1027.96,"grnd_level":993.29,"humidity":59},"wind":{"speed":5.94,"deg":84.0001},"clouds":{"all":48},"dt":1428289883,"id":5039587,"name":"North Saint Paul","cod":200}');
-    getDate('{"current_observation": {"icon_url_name": "novc.png", "image": {"url": "http://weather.gov/images/xml_logo.gif", "link": "http://weather.gov", "title": "NOAA\'s National Weather Service"}, "privacy_policy_url": "http://weather.gov/notice.html", "weather": "Overcast", "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance", "windchill_c": "2", "ob_url": "http://www.weather.gov/data/METAR/KSTP.1.txt", "windchill_f": "36", "pressure_in": "29.94", "dewpoint_string": "32.0 F (0.0 C)", "suggested_pickup_period": "60", "disclaimer_url": "http://weather.gov/disclaimer.html", "credit": "NOAA\'s National Weather Service", "version": "1.0", "location": "Downtown Holman Field, MN", "dewpoint_c": "0.0", "latitude": "44.93237", "wind_mph": "13.8", "dewpoint_f": "32.0", "temp_f": "43.0", "station_id": "KSTP", "pressure_string": "1014.3 mb", "xmlns:xsd": "http://www.w3.org/2001/XMLSchema", "temp_c": "6.1", "visibility_mi": "10.00", "wind_string": "East at 13.8 MPH (12 KT)", "pressure_mb": "1014.3", "wind_kt": "12", "temperature_string": "43.0 F (6.1 C)", "two_day_history_url": "http://www.weather.gov/data/obhistory/KSTP.html", "wind_dir": "East", "wind_degrees": "70", "copyright_url": "http://weather.gov/disclaimer.html", "icon_url_base": "http://forecast.weather.gov/images/wtf/small/", "xsi:noNamespaceSchemaLocation": "http://www.weather.gov/view/current_observation.xsd", "observation_time": "Last Updated on Apr 5 2015, 8:53 pm CDT", "longitude": "-93.05588", "credit_URL": "http://weather.gov/", "suggested_pickup": "15 minutes after the hour", "relative_humidity": "65", "observation_time_rfc822": "Sun, 05 Apr 2015 20:53:00 -0500", "windchill_string": "36 F (2 C)"}}')
+    getDate('{"coord":{"lon":-92.96,"lat":45},"sys":{"message":0.018,"country":"US","sunrise":1428320529,"sunset":1428367565},"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],"base":"stations","main":{"temp":281.984,"temp_min":281.984,"temp_max":281.984,"pressure":995.78,"sea_level":1029.98,"grnd_level":995.78,"humidity":63},"wind":{"speed":6.56,"deg":80.5052},"clouds":{"all":92},"rain":{"3h":0.18},'
+            '"dt":1428354173,"id":5039587,"name":"North Saint Paul","cod":200}');
+    getDate('{"current_observation": {"icon_url_name": "novc.png", "image": {"url": "http://weather.gov/images/xml_logo.gif", "link": "http://weather.gov", "title": "NOAA\'s National Weather Service"}, "privacy_policy_url": "http://weather.gov/notice.html", "weather": "Overcast", "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance", "windchill_c": "2", "ob_url": "http://www.weather.gov/data/METAR/KSTP.1.txt", "windchill_f": "36", "pressure_in": "29.94", "dewpoint_string": "32.0 F (0.0 C)", "suggested_pickup_period": "60", "disclaimer_url": "http://weather.gov/disclaimer.html", "credit": "NOAA\'s National Weather Service", "version": "1.0", "location": "Downtown Holman Field, MN", "dewpoint_c": "0.0", "latitude": "44.93237", "wind_mph": "13.8", "dewpoint_f": "32.0", "temp_f": "43.0", "station_id": "KSTP", "pressure_string": "1014.3 mb", "xmlns:xsd": "http://www.w3.org/2001/XMLSchema", "temp_c": "6.1", "visibility_mi": "10.00", "wind_string": "East at 13.8 MPH (12 KT)", "pressure_mb": "1014.3", "wind_kt": "12", "temperature_string": "43.0 F (6.1 C)", "two_day_history_url": "http://www.weather.gov/data/obhistory/KSTP.html", "wind_dir": "East", "wind_degrees": "70", "copyright_url": "http://weather.gov/disclaimer.html", "icon_url_base": "http://forecast.weather.gov/images/wtf/small/", "xsi:noNamespaceSchemaLocation": "http://www.weather.gov/view/current_observation.xsd", "observation_time": "Last Updated on Apr 5 2015, 8:53 pm CDT", "longitude": "-93.05588", "credit_URL": "http://weather.gov/", "suggested_pickup": "15 minutes after the hour", "relative_humidity": "65", '
+            '"observation_time_rfc822": "Mon, 06 Apr 2015 15:51:00 -0500", "windchill_string": "36 F (2 C)"}}')
+    getDate('{"current_observation": {"icon_url_name": "novc.png", "image": {"url": "http://weather.gov/images/xml_logo.gif", "link": "http://weather.gov", "title": "NOAA\'s National Weather Service"}, "privacy_policy_url": "http://weather.gov/notice.html", "weather": "Overcast", "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance", "windchill_c": "2", "ob_url": "http://www.weather.gov/data/METAR/KSTP.1.txt", "windchill_f": "36", "pressure_in": "29.94", "dewpoint_string": "32.0 F (0.0 C)", "suggested_pickup_period": "60", "disclaimer_url": "http://weather.gov/disclaimer.html", "credit": "NOAA\'s National Weather Service", "version": "1.0", "location": "Downtown Holman Field, MN", "dewpoint_c": "0.0", "latitude": "44.93237", "wind_mph": "13.8", "dewpoint_f": "32.0", "temp_f": "43.0", "station_id": "KSTP", "pressure_string": "1014.3 mb", "xmlns:xsd": "http://www.w3.org/2001/XMLSchema", "temp_c": "6.1", "visibility_mi": "10.00", "wind_string": "East at 13.8 MPH (12 KT)", "pressure_mb": "1014.3", "wind_kt": "12", "temperature_string": "43.0 F (6.1 C)", "two_day_history_url": "http://www.weather.gov/data/obhistory/KSTP.html", "wind_dir": "East", "wind_degrees": "70", "copyright_url": "http://weather.gov/disclaimer.html", "icon_url_base": "http://forecast.weather.gov/images/wtf/small/", "xsi:noNamespaceSchemaLocation": "http://www.weather.gov/view/current_observation.xsd", "observation_time": "Last Updated on Apr 5 2015, 8:53 pm CDT", "longitude": "-93.05588", "credit_URL": "http://weather.gov/", "suggested_pickup": "15 minutes after the hour", "relative_humidity": "65", '
+            '"observation_time_rfc822": "Mon, 06 Apr 2015 15:58:00 -0600", "windchill_string": "36 F (2 C)"}}')
 
 
 if __name__ == "__main__":
