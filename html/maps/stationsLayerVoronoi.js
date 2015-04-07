@@ -17,7 +17,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
          return ret;
       },
       getLabel: function(feature){
-         ret = ""; //(map.zoom < 10) ? "" : feature.data.label;
+         ret = (map.zoom > 10) ? "" : feature.data.temp_f;
          return ret; //(feature.data.isValid) ? "": "INVALID";;
       },
       getStrokeWidth: function(feature){
@@ -98,7 +98,9 @@ stationLayerVoronoi.prototype.AddFeatures = function (data){
       attr=
       {
          label:   lc[1],
-         isValid: (""+lc[2]).startsWith('f') ? false: true
+         isValid: (""+lc[2]).startsWith('f') ? false: true,
+         temp_f: lc[3],
+         weather: lc[4]
       }
       var feat = new OpenLayers.Feature.Vector(polygon,attr);
       lyr.addFeatures(feat);
@@ -126,8 +128,9 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
    q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
        "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
-   q = "select concat('''',ST_AsGeoJSON(voronoi_geom), ''''), station_id,is_valid " +
-   "from weather_stations WHERE is_interested=TRUE"
+   q = "select concat('''',ST_AsGeoJSON(voronoi_geom), ''''), a.station_id,is_valid, temp_f, weather_json " +
+   "from weather_stations a,  weather b WHERE is_interested=TRUE and a.station_id = b.station_id and " +
+           " DATE(time_gmt) = '2015-04-07'"
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
