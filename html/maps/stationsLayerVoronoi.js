@@ -130,7 +130,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
 
    q = "select concat('''',ST_AsGeoJSON(voronoi_geom), ''''), a.station_id,is_valid, temp_f, weather_json " +
    "from weather_stations a,  weather b WHERE is_interested=TRUE and a.station_id = b.station_id and " +
-           " DATE(time_gmt) = '2015-04-07'"
+           " DATE(time_gmt) = (select DATE(max(time_gmt)) from weather)"
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
