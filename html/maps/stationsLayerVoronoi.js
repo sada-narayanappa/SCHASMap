@@ -17,7 +17,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
          return ret;
       },
       getLabel: function(feature){
-         ret = (map.zoom < 10) ? "" : feature.data.label;
+         ret = ""; //(map.zoom < 10) ? "" : feature.data.label;
          return ret; //(feature.data.isValid) ? "": "INVALID";;
       },
       getStrokeWidth: function(feature){

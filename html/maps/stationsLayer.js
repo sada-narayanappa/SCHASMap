@@ -100,7 +100,7 @@ function stationLayerUpdate() {
    //   return map.zoom
    //}
    e = getMapBoundedBox(true);
-   q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
+   q1 = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
        "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
    q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
