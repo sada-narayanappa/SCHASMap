@@ -128,9 +128,9 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
    q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
        "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
-   q = "select concat('''',ST_AsGeoJSON(voronoi_geom), ''''), a.station_id,is_valid, temp_f, weather_json " +
+   q = "select concat('''',ST_AsGeoJSON(voronoi_geom), '''') as geom, a.station_id ,is_valid, temp_f,  weather_json, DATE(time_gmt) as dt " +
    "from weather_stations a,  weather b WHERE is_interested=TRUE and a.station_id = b.station_id and " +
-           " DATE(time_gmt) = (select DATE(max(time_gmt)) from weather)"
+           " DATE(time_gmt) = (select DATE(max(time_gmt)) from weather) "
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
