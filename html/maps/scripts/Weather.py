@@ -11,7 +11,7 @@ import dateutil
 from dateutil.parser import parse
 from dateutil.tz import tzoffset
 
-q1 = "select * from weather_stations where is_interested = 't' LIMIT 100"
+q1 = "select * from weather_stations where is_interested = 't' LIMIT 200"
 #q1 = "select * from weather_stations where state='MN' LIMIT 100"
 q2 = "update weather_stations set is_valid = 'f' where station_id='$station_id'"
 q3 = '''

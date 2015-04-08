@@ -24,7 +24,7 @@ function AddCityLayer(map) {
    return cityLayer;
 }
 
-function addPoint(lon, lat, layer, attr, label ) {
+function caddPoint(lon, lat, layer, attr, label ) {
    if (layer.map.zoom < 10) {
       label = "";
    }
@@ -50,7 +50,7 @@ function addPoint(lon, lat, layer, attr, label ) {
    return pointFeature;
 }
 
-function addFeatures(data, lyr){
+function caddFeatures(data, lyr){
    eval(data);
    var locs = $rs["rows"]
 
@@ -62,7 +62,7 @@ function addFeatures(data, lyr){
    for(var i=0; i<locs.length; ++i) {
       var lc = locs[i];
       var label = (locs.length > 200) ? "" : lc[2]
-      var feat = addPoint(lc[0], lc[1], lyr, ""+lc , label);
+      var feat = caddPoint(lc[0], lc[1], lyr, ""+lc , label);
 
    }
 }
@@ -92,7 +92,7 @@ function cityLayerUpdate() {
       success: function (data) {
          //console.log(data)
          somedata=data
-         addFeatures(data, cityLayer)
+         caddFeatures(data, cityLayer)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
