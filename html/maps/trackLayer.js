@@ -42,6 +42,7 @@ function AddTrackingLayer(map) {
    map.addLayer(layer);
    trackLayer.layer = layer;
 
+   layer.setVisibility(false);
    trackLayerUpdate();
 
    layer.events.register("visibilitychanged", layer, function(evt) {
@@ -293,10 +294,10 @@ function trackAddFeatures(data, lyr, updateBounds) {
    }
    addLine(points, obj, lyr);
 
-   if (updateBounds) {
+   if (lyr.getVisibility()) {
       var b1 = map.calculateBounds();
       if (!b1.contains(bounds)) {
-         //map.zoomToExtent(bounds);
+         map.zoomToExtent(bounds);
       }
    }
 }

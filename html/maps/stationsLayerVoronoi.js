@@ -18,7 +18,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
          return ret;
       },
       getLabel: function(feature){
-         ret = (map.zoom > 10) ? "" : feature.data.temp_f;
+         ret = (map.zoom < 9) ? "" : feature.data.temp_f;
          return ret; //(feature.data.isValid) ? "": "INVALID";;
       },
       getStrokeWidth: function(feature){
@@ -60,7 +60,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
 
    layer.events.register("visibilitychanged", stationLayer, function(evt) {
       if ( layer.getVisibility() ) {
-         //$self.LayerUpdate()
+         $self.LayerUpdate()
       }
    })
    map.events.register('moveend', map, function() {
@@ -71,7 +71,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
    return layer;
 }
 
-stationLayerVoronoi.prototype.AddFeatures = function (data){
+stationLayerVoronoi.prototype.AddFeatures = function (data, zoomToBounds){
    lyr = this.layer;
    eval(data);
    var locs = $rs["rows"]
@@ -112,12 +112,13 @@ stationLayerVoronoi.prototype.AddFeatures = function (data){
       }
    }
 
-   if (true) {
+   if (lyr.getVisibility() && locs.length >0) {
       var b1 = map.calculateBounds();
-      //if (!b1.contains(bounds)) {
+      if (!b1.contains(bounds)) {
          map.zoomToExtent(bounds);
-      //}
+      }
    }
+   return bounds;
 }
 
 stationLayerVoronoi.prototype.LayerUpdate = function() {
@@ -129,13 +130,14 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
    q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
        "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
-   q = "select concat('''',ST_AsGeoJSON(voronoi_geom), '''') as geom, a.station_id ,is_valid, temp_f,  weather_json, DATE(time_gmt) as dt " +
-   "from weather_stations a,  weather b WHERE is_interested=TRUE and a.station_id = b.station_id and " +
-           " DATE(time_gmt) = (select DATE(max(time_gmt)) from weather) and a.state='MN'"
+   q = "SELECT concat('''',ST_AsGeoJSON(voronoi_geom), '''') as geom, a.station_id ,is_valid, temp_f,  weather_json, DATE(time_gmt) as dt " +
+       "FROM weather_stations a LEFT OUTER JOIN  weather b ON a.station_id = b.station_id "+
+       "WHERE is_interested=TRUE and " +
+           " DATE(time_gmt) = (select DATE(max(time_gmt)) from weather) and a.state='CO'"
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
-   console.log( PROXY + DB_URL + "q=" + (q) + " e= where geom && ST_MakeEnvelope(" + e + ")")
+   console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    myThis = this;
    $.ajax({
@@ -149,7 +151,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
       cache: false,
       success: function (data) {
          console.log(data)
-         myThis.AddFeatures(data)
+         myThis.AddFeatures(data, true)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
