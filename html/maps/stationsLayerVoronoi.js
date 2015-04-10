@@ -58,9 +58,9 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
 
    this.LayerUpdate()
 
-   layer.events.register("visibilitychanged", stationLayer, function(evt) {
+   layer.events.register("visibilitychanged", layer, function(evt) {
       if ( layer.getVisibility() ) {
-         $self.LayerUpdate()
+         //$self.LayerUpdate()
       }
    })
    map.events.register('moveend', map, function() {
@@ -126,20 +126,20 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
 
-   e = getMapBoundedBox(true);
-   q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
+   var e = getMapBoundedBox(true);
+   var q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
        "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
    q = "SELECT concat('''',ST_AsGeoJSON(voronoi_geom), '''') as geom, a.station_id ,is_valid, temp_f,  weather_json, DATE(time_gmt) as dt " +
        "FROM weather_stations a LEFT OUTER JOIN  weather b ON a.station_id = b.station_id "+
        "WHERE is_interested=TRUE and " +
-           " DATE(time_gmt) = (select DATE(max(time_gmt)) from weather) and a.state='CO'"
+           " DATE(time_gmt) = (select DATE(max(time_gmt)) from weather) and a.state='MN'"
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
    console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
-   myThis = this;
+   var myThis = this;
    $.ajax({
       type: "GET",
       url:  url,
@@ -150,7 +150,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
       processdata: true,
       cache: false,
       success: function (data) {
-         console.log(data)
+         //console.log(data)
          myThis.AddFeatures(data, true)
       },
       error: function(xhr, stat, err) {

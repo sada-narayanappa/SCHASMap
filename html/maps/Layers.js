@@ -107,8 +107,9 @@ function init() {
 
    AddCityLayer(map);
    AddTrackingLayer(map);
-   var stv = new stationLayerVoronoi().AddLayer(map);
    AddStationLayer(map);
+   var stv = new stationLayerVoronoi().AddLayer(map);
+   var roads = new roadsLayer(map).AddLayer(map);
 
 
 }//end Init() function

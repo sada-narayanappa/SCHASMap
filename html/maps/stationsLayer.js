@@ -99,12 +99,12 @@ function stationLayerUpdate() {
    //   stationLayer.destroyFeatures();
    //   return map.zoom
    //}
-   e = getMapBoundedBox(true);
-   q1 = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
+   var e = getMapBoundedBox(true);
+   var q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
        "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
    q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
-   "from weather_stations WHERE is_interested=TRUE"
+   "from weather_stations WHERE is_interested=TRUE and state='MN'"
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
