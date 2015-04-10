@@ -7,6 +7,7 @@ stationLayerVoronoi.prototype.map      = null;
 stationLayerVoronoi.prototype.bounds   = null;
 
 stationLayerVoronoi.prototype.AddLayer = function(map) {
+   $self = this;
    this.map = map;
    var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
@@ -59,11 +60,11 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
 
    layer.events.register("visibilitychanged", stationLayer, function(evt) {
       if ( layer.getVisibility() ) {
-         //this.LayerUpdate()
+         //$self.LayerUpdate()
       }
    })
    map.events.register('moveend', map, function() {
-      //this.LayerUpdate()
+      //$self.LayerUpdate()
    });
    layer.setVisibility(true);
 
@@ -130,11 +131,11 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
 
    q = "select concat('''',ST_AsGeoJSON(voronoi_geom), '''') as geom, a.station_id ,is_valid, temp_f,  weather_json, DATE(time_gmt) as dt " +
    "from weather_stations a,  weather b WHERE is_interested=TRUE and a.station_id = b.station_id and " +
-           " DATE(time_gmt) = (select DATE(max(time_gmt)) from weather) "
+           " DATE(time_gmt) = (select DATE(max(time_gmt)) from weather) and a.state='MN'"
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
-   console.log( PROXY + DB_URL + "q=" + (q))
+   console.log( PROXY + DB_URL + "q=" + (q) + " e= where geom && ST_MakeEnvelope(" + e + ")")
 
    myThis = this;
    $.ajax({
