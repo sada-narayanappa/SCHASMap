@@ -48,6 +48,7 @@ function AddTrackingLayer(map) {
    layer.events.register("visibilitychanged", layer, function(evt) {
       if ( layer.getVisibility() ) {
          trackLayerUpdate()
+         map.zoomToExtent(layer.getDataExtent())
       }
    })
    map.events.register('moveend', map, function() {

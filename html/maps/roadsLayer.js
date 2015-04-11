@@ -60,7 +60,9 @@ roadsLayer.prototype.AddLayer = function(map) {
 
    layer.events.register("visibilitychanged", layer, function(evt) {
       if ( layer.getVisibility() ) {
-        $self.LayerUpdate()
+        //$self.LayerUpdate()
+         globalLayer = layer;
+         map.zoomToExtent(layer.getDataExtent())
       }
    })
    map.events.register('moveend', map, function() {
@@ -137,13 +139,15 @@ roadsLayer.prototype.LayerUpdate = function() {
    var q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
        "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
+   var TYPES = "and type in ('residential', 'road', 'tertiary')";
+   var NTYPES = ('footway', 'road')
    q = "SELECT concat('''',ST_AsGeoJSON(geom), '''') as geom, name, type, oneway, bridge, tunnel, maxspeed " +
        "FROM roads  "+
        "WHERE geom && ST_MakeEnvelope("+ e+")  and is_interested=TRUE " + LIMIT;
 
    q = "SELECT concat('''',ST_AsGeoJSON(geom), '''') as geom, name, type, oneway, bridge, tunnel, maxspeed " +
    "FROM roads  "+
-   "WHERE is_interested=TRUE " + LIMIT;
+   "WHERE is_interested=TRUE " + " " + LIMIT;
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 

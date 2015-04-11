@@ -1,4 +1,5 @@
 var map;
+var globalLayer;
 
 function init() {
    //For entering address data
@@ -110,8 +111,6 @@ function init() {
    AddStationLayer(map);
    var stv = new stationLayerVoronoi().AddLayer(map);
    var roads = new roadsLayer(map).AddLayer(map);
-
-
 }//end Init() function
 
 function submitform() {

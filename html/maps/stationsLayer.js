@@ -46,6 +46,7 @@ function AddStationLayer(map) {
    stationLayer.events.register("visibilitychanged", stationLayer, function(evt) {
       if ( stationLayer.getVisibility() ) {
          //stationLayerUpdate()
+         map.zoomToExtent(stationLayer.getDataExtent())
       }
    })
    map.events.register('moveend', map, function() {

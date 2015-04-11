@@ -61,6 +61,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
    layer.events.register("visibilitychanged", layer, function(evt) {
       if ( layer.getVisibility() ) {
          //$self.LayerUpdate()
+         map.zoomToExtent(layer.getDataExtent())
       }
    })
    map.events.register('moveend', map, function() {
