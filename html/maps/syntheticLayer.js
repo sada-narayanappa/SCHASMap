@@ -5,7 +5,7 @@ function AddSyntheticLayer(map) {
    syntheticLayer = layer;
    map.addLayer(syntheticLayer);
 
-   stationLayer.setVisibility(false);  
+   syntheticLayer.setVisibility(false);  
    
 
    return syntheticLayer;
@@ -22,7 +22,7 @@ function addSyntheticData(measuredAt,recordType,sessionNum,mobileID,user_ID,lat,
 	var q = "qn=2&measured_at="+measuredAt+"&record_type="+recordType+"&session_num="+sessionNum+"&mobile_id="+mobileID+"&user_id="+user_ID+"&lat="+lat+"&lon="+lon;
 	var url = PROXY + DB_URL + encodeURIComponent(q);
 	
-	//alert( PROXY + DB_URL  + (q))
+	console.log( PROXY + DB_URL  + (q))
 	
 	$.ajax({
       type: "GET",
