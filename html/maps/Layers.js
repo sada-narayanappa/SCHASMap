@@ -1,9 +1,54 @@
+//Event listener for clicks
+OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+	defaultHandlerOptions: {
+		'single': true,
+		'double': false,
+		'pixelTolerance': 0,
+		'stopSingle': false,
+		'stopDouble': false
+	},
+
+	initialize: function(options) {
+		this.handlerOptions = OpenLayers.Util.extend(
+			{}, this.defaultHandlerOptions
+		);
+		OpenLayers.Control.prototype.initialize.apply(
+			this, arguments
+		); 
+		this.handler = new OpenLayers.Handler.Click(
+			this, {
+				'click': this.trigger
+			}, this.handlerOptions
+		);
+	}, 
+
+	trigger: function(e) {
+		if(syntheticLayerVisible()){
+			var lonlat = map.getLonLatFromPixel(e.xy).transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
+			if(confirm("Would you like to add a synthetic data point at " + lonlat.lat + ", " + lonlat.lon +"?")==true)
+			{
+				var measuredAt = prompt("Please enter the measured at date:", new Date().getTime());
+				var recordType = "SyntheticData";
+				var sessionNum = prompt("Please enter the Session:", "Synthetic Session");
+				var mobileID = "Synthetic";
+				var user_ID = "SyntheticUser";
+				var lat = lonlat.lat;
+				var lon = lonlat.lon;
+				addSyntheticData(measuredAt,recordType,sessionNum,mobileID,user_ID,lat,lon)
+			}
+			else {
+				
+			}
+		}
+	}
+});
+
+//Constructing the maps
 var map;
 var globalLayer;
-
 function init() {
    //For entering address data
-   OpenLayers.ProxyHost = "cgi-bin/proxy.py?url=";
+   OpenLayers.ProxyHost = "../cgi-bin/proxy.py?url=";
 
    map = new OpenLayers.Map( {div: "mapdiv", units: 'm'});   
    var mapnik = new OpenLayers.Layer.OSM();
@@ -28,6 +73,11 @@ function init() {
       position.lat = Number(position.lat);
       position.lon = Number(position.lon);
    });
+	
+	
+	var click = new OpenLayers.Control.Click();
+	map.addControl(click);
+	click.activate();
 
 	//BELOW: Map Mouse Position
 	map.addControl(
@@ -109,6 +159,7 @@ function init() {
    AddCityLayer(map);
    AddTrackingLayer(map);
    AddStationLayer(map);
+   AddSyntheticLayer(map);
    var stv = new stationLayerVoronoi().AddLayer(map);
    var roads = new roadsLayer(map).AddLayer(map);
 }//end Init() function
