@@ -29,7 +29,7 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 			{
 				var measuredAt = prompt("Please enter the measured at date:", new Date().getTime());
 				var recordType = "SyntheticData";
-				var sessionNum = prompt("Please enter the Session:", "Synthetic Session");
+				var sessionNum = prompt("Please enter the Session:", "SynthSes");
 				var mobileID = "Synthetic";
 				var user_ID = "SyntheticUser";
 				var lat = lonlat.lat;
