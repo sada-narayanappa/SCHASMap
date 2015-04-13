@@ -10,6 +10,8 @@ import email.utils;
 import dateutil
 from dateutil.parser import parse
 from dateutil.tz import tzoffset
+import calendar;
+
 
 q1 = "select * from weather_stations where is_interested = 't' LIMIT 200"
 #q1 = "select * from weather_stations where state='MN' LIMIT 100"
@@ -19,8 +21,8 @@ INSERT INTO weather (station_id, weather_json, time_gmt, time_local, raw, temp_f
 VALUES('$station_id', '$JSON', '$TIME_GMT', '$TIME_LOCAL', '$RAW', '$TEMP_F')
 ''';
 q3 = '''
-INSERT INTO weather (station_id, weather_json, time_gmt, time_local, temp_f)
-VALUES('$station_id', '$JSON', '$TIME_GMT', '$TIME_LOCAL','$TEMP_F')
+INSERT INTO weather (station_id, weather_json, time_gmt_unix, time_gmt, time_local, temp_f)
+VALUES('$station_id', '$JSON', '$TIME_LGMT_UNIX', '$TIME_GMT', '$TIME_LOCAL','$TEMP_F')
 ''';
 
 def runSQL(q, h=None):
@@ -48,14 +50,19 @@ def getStations():
     return jsonData
 
 def getWeatherLatLon(lt,ln):
-    url="http://forecast.weather.gov/MapClick.php?lat="+ str(lt) + "&lon=" + str(ln) + "&unit=0&FcstType=json"
-    print "Getting:", url;
-    res = requests.get(url).content.strip();
-    jsn = json.loads(res);
-    cur = jsn["currentobservation"]
-    dat = jsn["creationDate"]
-    jas = json.dumps(cur);
-    return  dat, jas, cur, jsn;
+    res = "";
+    try:
+        url="http://forecast.weather.gov/MapClick.php?lat="+ str(lt) + "&lon=" + str(ln) + "&unit=0&FcstType=json"
+        print "Getting:", url;
+        res = requests.get(url).content.strip();
+        jsn = json.loads(res);
+        cur = jsn["currentobservation"]
+        dat = jsn["creationDate"]
+        jas = json.dumps(cur);
+        return  dat, jas, cur, jsn;
+    except Exception, err:
+        print "EXCEPTION: ", err, res;
+        return "","","","";
 
 def fmtDate(dt="2015-04-06T22:39:12-04:00"):
     dt1 = dateutil.parser.parse(dt);            # Local time
@@ -67,16 +74,20 @@ def fmtDate(dt="2015-04-06T22:39:12-04:00"):
     print loc, gmt
     return str(loc), str(gmt);
 
-def insert(st,dat,jstr,jsn, raw):
+def insert(st,dat,jstr,jsn, raw,unixtime):
     loc, gmt = fmtDate(dat);
     if (not dat):
         print "No data for " + jstr;
         return;
     val = {"station_id": st, "JSON": jstr , "TIME_GMT":gmt, "TIME_LOCAL":loc, "RAW": raw,
-           "TEMP_F": jsn["Temp"]}
+           "TEMP_F": jsn["Temp"], "TIME_LGMT_UNIX": ""+str(unixtime) }
+    res = "";
     res = runSQL(q3, val)
     print "INSERTED ROW: ", val
     print res
+    if ( res.find("SQLException") >= 0 ):
+        print "ERROR:"
+        exit()
 
 
 def run():
@@ -90,6 +101,8 @@ def run():
     lon = cols.index('lon')
     val = cols.index('is_valid')
 
+    d = datetime.datetime.utcnow()
+    unixtime = calendar.timegm(d.utctimetuple())
     for i, r in enumerate(rows):
         st = r[idi];
         xm = r[xmi];
@@ -98,9 +111,9 @@ def run():
         vl = True if r[val].startswith('t') else False;
         print st, lt, ln,vl, xm;
         dat,jas, jsn, raw = getWeatherLatLon( lt, ln)
-        insert(st, dat, jas,jsn, raw);
+        insert(st, dat, jas,jsn, raw, unixtime);
         #print w;
-        if (i == 100):
+        if (i == 200):
             break;
 
 def test():

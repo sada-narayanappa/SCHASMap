@@ -17,13 +17,15 @@ function syntheticLayerVisible(){
 
 
 function addSyntheticData(measuredAt,recordType,sessionNum,mobileID,user_ID,lat,lon){
-	var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+	var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=2&accuracy=0&";
    	var PROXY = "../cgi-bin/proxy.py?url=";
-	var q = "qn=2&measured_at="+measuredAt+"&record_type="+recordType+"&session_num="+sessionNum+"&mobile_id="+mobileID+"&user_id="+user_ID+"&lat="+lat+"&lon="+lon;
+	var q = "measured_at="+measuredAt+"&record_type="+recordType+"&session_num="+sessionNum+"&mobile_id="+mobileID+"&user_id="+user_ID+"&lat="+lat+"&lon="+lon;
 	var url = PROXY + DB_URL + encodeURIComponent(q);
-	
-	console.log( PROXY + DB_URL  + (q))
-	
+	url = PROXY + DB_URL + q;
+
+	//console.log( PROXY + DB_URL  + (q))
+	console.log( url)
+
 	$.ajax({
       type: "GET",
       url:  url,
@@ -32,7 +34,11 @@ function addSyntheticData(measuredAt,recordType,sessionNum,mobileID,user_ID,lat,
       contentType: "",
       dataType: "text",
       processdata: true,
-      cache: false,      
+      cache: false,
+      success: function (data) {
+         data = data.trim();
+         console.log(data)
+      },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
