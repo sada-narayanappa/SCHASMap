@@ -27,7 +27,9 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 			var lonlat = map.getLonLatFromPixel(e.xy).transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
 			if(confirm("Would you like to add a synthetic data point at " + lonlat.lat + ", " + lonlat.lon +"?")==true)
 			{
-				var measuredAt = prompt("Please enter the measured at date:", new Date().getTime());
+				var now = new Date().getTime();
+				now = Math.floor(now/1000);
+				var measuredAt = prompt("Please enter the measured at date:", now );
 				var recordType = "SyntheticData";
 				var sessionNum = prompt("Please enter the Session:", "1");
 				var mobileID = "Synthetic";
