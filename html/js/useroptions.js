@@ -1,3 +1,5 @@
+//FILE NAME: userOptions.js
+
 var userOptions = {
    myMobileID:       "",
    myMapView:        [0,0,0,0],
