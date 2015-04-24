@@ -2,7 +2,6 @@ trackLayer = {
    layer:   null,
    map:     null,
    DB_URL:  "http://localhost:8080/aura1/future/db.jsp?api_key=test&",
-
    last:    ""
 };
 
@@ -38,11 +37,9 @@ function AddTrackingLayer(map) {
                         rendererOptions: { zIndexing: true },
                         renderers:  renderer
                      });
-
    map.addLayer(layer);
    trackLayer.layer = layer;
 
-   layer.setVisibility(false);
    trackLayerUpdate();
 
    layer.events.register("visibilitychanged", layer, function(evt) {
@@ -107,8 +104,7 @@ function AddTrackingLayer(map) {
    trackLayer.ctrlDragFeature.onComplete = "console.log('Completed')"
    trackLayer.ctrlDragFeature.deactivate();
 
-
-   layer.setVisibility(false);
+   layer.setVisibility(true);
    return layer;
 }
 

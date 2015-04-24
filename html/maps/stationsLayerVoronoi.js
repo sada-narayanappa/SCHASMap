@@ -138,7 +138,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
-   console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
+   //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
    $.ajax({

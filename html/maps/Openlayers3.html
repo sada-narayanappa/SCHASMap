@@ -24,7 +24,6 @@
     <script src="trackLayer.js"></script>
     <script src="syntheticLayer.js"></script>
 
-
     <link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
 
     <script>
@@ -32,21 +31,22 @@
             $( "#tabs" ).tabs();
         });
         $(document).ready(function() {
+            getUserOptions();
             init();
             initUserSettings();
         });
 
-        function initUserSettings() { //initialize the control panel settings
-            hp = localStorage.getItem("hideControlPanel");
-            if(hp) {
-             if(hp=="block")
-                 document.getElementById('formcontent').style.display = "block"
+        $(window).unload(function() {
+            saveUserOptions();
+        });
 
-                else
-                 document.getElementById('formcontent').style.display = "none";
-            }
-            else  // cannot initialize from the local storage so set default
-                ControlPanelOnOff("block");
+        function initUserSettings() { //initialize the control panel settings
+            if ( !userOptions )
+                userOptions = defaultUserOptions;
+
+            runQuery1(); // load the information
+            ControlPanelToggle(userOptions.controlPanel)
+            trackLayerUpdate(userOptions.myUserID);
         }
     </script>
 
@@ -55,19 +55,17 @@
 <div id="mapdiv"></div>
 
 <script>
-    function ControlPanelOnOff(onOff) {  //onOff = none, block -> if none ->opens
-       var hideControlPanel = true;
+    function ControlPanelToggle(onOff) {  //onOff = none, block -> if none ->opens
         d = onOff || document.getElementById('formcontent').style.display;
 
         if ( d == "none") {
-            hideControlPanel = false;
-            document.getElementById('formcontent').style.display = "block";
-            localStorage.setItem("hideControlPanel", "block");
+            d = "block"
+            userOptions.controlPanel = "none"
         } else {
-            document.getElementById('formcontent').style.display= "none";
-            localStorage.setItem("hideControlPanel", "none");
+            d = "none"
+            userOptions.controlPanel = "block";
         }
-
+        document.getElementById('formcontent').style.display = d;
     }
 </script>
 <div id='form'>
@@ -75,8 +73,7 @@
         <div style="font-variant: small-caps; text-align: right; width: 100%; background-color: grey">
             Control Panel
             <img src="http://www.clker.com/cliparts/O/S/I/l/m/L/minus-sign-subtract-md.png"
-                 width="16px"
-                 onclick="ControlPanelOnOff()" />
+                 width="16px" onclick="ControlPanelToggle()" />
             <hr/>
         </div>
         <div id="formcontent">
@@ -129,12 +126,12 @@
         top.window.location.href = s;
     }
     function changeTrackLayer(p) {
-        localStorage.setItem("UserData", JSON.stringify(p));
+        userOptions.myUserID = p;
         trackLayerUpdate(p);
     }
     function setUserSessions(text) {
         eval(text);
-        console.log(text);
+        //console.log(text);
         var cols = $rs.colnames;
         var type = $rs.coltypes;
         var data = $rs.rows || $rs[Object.keys($rs)[0]];
@@ -163,15 +160,7 @@
     function runQuery1(divName) {
         url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9"
         submitForm({URL: url, fdata: {}, CB: setUserSessions })
-
     }
-    $(document).ready(function() {
-        runQuery1(); // load the information
-        p = localStorage.getItem("UserData");
-        if(p) {
-            trackLayerUpdate(JSON.parse(p));
-        }
-    });
 </script>
 </body>
 </html>
