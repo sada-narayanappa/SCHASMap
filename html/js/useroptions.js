@@ -33,7 +33,7 @@ function saveUserOptions(map) {
    updateMapLayers(map)
    var uo = "var $uo = " + JSON.stringify(userOptions);
    localStorage.setItem("userOptions", uo);
-   //console.log("User options: " + uo);
+   console.log("User options: " + uo);
 }
 
 // Get All Map Layers and save it in the userOptions

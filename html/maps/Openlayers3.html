@@ -37,7 +37,7 @@
         });
 
         $(window).unload(function() {
-            saveUserOptions();
+            //saveUserOptions();
         });
 
         function initUserSettings() { //initialize the control panel settings
@@ -81,6 +81,8 @@
             <input type="text" id="query" size=50 name="query" value="Menomonie, WI"/>
 
             <input type="submit" value="Submit"/>
+            <br><br/>
+            <input type="button" value="Save my Options" onclick="saveUserOptions(map)"/>
             <br>
 
             <hr size="1"/>
