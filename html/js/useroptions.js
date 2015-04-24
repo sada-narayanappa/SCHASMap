@@ -45,8 +45,9 @@ function saveUserOptions(map) {
    var uo = "var $uo = " + JSON.stringify(userOptions);
    localStorage.setItem("userOptions", uo);
 
-   userOptions.centerLon = map.center.lon;
-   userOptions.centerLat = map.center.lat;
+   p = cPoint(map.center)
+   userOptions.centerLon = p.lon;
+   userOptions.centerLat = p.lat;
    userOptions.zoom = map.zoom;
 
    console.log("User options: " + uo);
