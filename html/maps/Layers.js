@@ -164,6 +164,7 @@ function init() {
    AddSyntheticLayer(map);
    var stv = new stationLayerVoronoi().AddLayer(map);
    var roads = new roadsLayer(map).AddLayer(map);
+
 }//end Init() function
 
 function submitform() {

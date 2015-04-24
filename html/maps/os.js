@@ -30,6 +30,11 @@ function xPoint(lon, lat) {
    return point;
 }
 
+function cPoint(pos) {
+   position = pos.transform(map.getProjectionObject(), EPSG_4326);
+   return position;
+}
+
 function showPosition(pos) {
    console.log(" +++ " + pos.coords.longitude + " "  + pos.coords.latitude)
    point = xPoint(pos.coords.longitude, pos.coords.latitude)
