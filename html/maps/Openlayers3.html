@@ -13,6 +13,8 @@
     <script src="../js/ajaxutils.js"></script>
     <script src="../js/generalutils.js"></script>
     <script src="../js/spatial1.js"></script>
+
+    <script src="../js/useroptions.js"></script>
     <script src="Layers.js"></script>
     <script src="os.js"></script>
     <script src="citiesLayer.js"></script>
@@ -21,7 +23,7 @@
     <script src="roadsLayer.js"></script>
     <script src="trackLayer.js"></script>
     <script src="syntheticLayer.js"></script>
-    <script src="../options.js"></script>
+
 
     <link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
 
@@ -30,12 +32,21 @@
             $( "#tabs" ).tabs();
         });
         $(document).ready(function() {
-             init();
+            init();
             initUserSettings();
         });
 
-        function initUserSettings() {
-            ControlPanelOnOff("block");
+        function initUserSettings() { //initialize the control panel settings
+            hp = localStorage.getItem("hideControlPanel");
+            if(hp) {
+             if(hp=="block")
+                 document.getElementById('formcontent').style.display = "block"
+
+                else
+                 document.getElementById('formcontent').style.display = "none";
+            }
+            else  // cannot initialize from the local storage so set default
+                ControlPanelOnOff("block");
         }
     </script>
 
@@ -45,13 +56,18 @@
 
 <script>
     function ControlPanelOnOff(onOff) {  //onOff = none, block -> if none ->opens
-
+       var hideControlPanel = true;
         d = onOff || document.getElementById('formcontent').style.display;
+
         if ( d == "none") {
-            document.getElementById('formcontent').style.display = "block"
+            hideControlPanel = false;
+            document.getElementById('formcontent').style.display = "block";
+            localStorage.setItem("hideControlPanel", "block");
         } else {
-            document.getElementById('formcontent').style.display= "none"
+            document.getElementById('formcontent').style.display= "none";
+            localStorage.setItem("hideControlPanel", "none");
         }
+
     }
 </script>
 <div id='form'>
@@ -60,93 +76,102 @@
             Control Panel
             <img src="http://www.clker.com/cliparts/O/S/I/l/m/L/minus-sign-subtract-md.png"
                  width="16px"
-                onclick="ControlPanelOnOff()" />
+                 onclick="ControlPanelOnOff()" />
             <hr/>
         </div>
         <div id="formcontent">
-        <label for="query">Address/zip :</label>
-        <input type="text" id="query" size=50 name="query" value="Menomonie, WI"/>
-        <input type="submit" value="Submit"/>
-        <hr size="1"/>
+            <label for="query">Address/zip :</label>
+            <input type="text" id="query" size=50 name="query" value="Menomonie, WI"/>
 
-        <div id="tabs">
-            <ul>
-                <li><a href="#tabs-3">Pick/ User</a></li>
-                <li><a href="#tabs-1">Utilities</a></li>
-                <li><a href="#tabs-2">Trajectories</a></li>
-            </ul>
-            <div id="tabs-1">
-                <input type="button" onclick="findLocation()" value="Find my Location">
-            </div>
-            <div id="tabs-2">
-                <p>Find interesting trajectories - query</p>
-            </div>
-            <div id="tabs-3" style="height:440px;overflow-y:auto;">
-                <p>Find Users</p>
-            </div>
-        </div>
+            <input type="submit" value="Submit"/>
+            <br>
 
-        <hr size="1"/>
-         <a style="color: white;" href="http://www.geospaces.org">Geospaces SCHAS Maps</a> |
+            <hr size="1"/>
+
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-3">Pick/ User</a></li>
+                    <li><a href="#tabs-1">Utilities</a></li>
+                    <li><a href="#tabs-2">Trajectories</a></li>
+
+                </ul>
+                <div id="tabs-1">
+                    <input type="button" onclick="findLocation()" value="Find my Location">
+                </div>
+                <div id="tabs-2">
+                    <p>Find interesting trajectories - query</p>
+                </div>
+                <div id="tabs-3" style="height:440px;overflow-y:auto;">
+                    <p>Find Users</p>
+                </div>
+
+            </div>
+
+            <hr size="1"/>
+            <a style="color: white;" href="http://www.geospaces.org">Geospaces SCHAS Maps</a> |
             <div id="coords" style="height: 1.5em; display:inline; text-align: right"></div>
         </div>
     </form>
 </div>
 
 <script>
-function clearAllMapPopups() {
-    while( map.popups.length ) {
-        map.removePopup(map.popups[0]);
-    }
-}
-function setURL(parms) {
-    s = top.window.location.href
-    if (s.lastIndexOf("?") > 0) {
-        s = s.substring(a, s.lastIndexOf("?"));
-    }
-    s= s + "?" + parms;
-    top.window.location.href = s;
-}
-function changeTrackLayer(p) {
-    trackLayerUpdate(p);
-}
-function setUserSessions(text) {
-    eval(text);
-    var cols = $rs.colnames;
-    var type = $rs.coltypes;
-    var data = $rs.rows || $rs[Object.keys($rs)[0]];
-
-    str = ""
-    mobile_id = "";
-    for ( i in data) {
-        d = data [i];
-        if (mobile_id != d[0]) {
-            mobile_id = d[0]
-            str = str + "<hr>"
-        }
-        s = "setURL('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
-        p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'";
-        s = "changeTrackLayer(" + p + ")";
-        a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
-        str = str  + a;
-
-        if ( i == 0) {
-            CURRENT_PARMS = p;
+    function clearAllMapPopups() {
+        while( map.popups.length ) {
+            map.removePopup(map.popups[0]);
         }
     }
-    $("#tabs-3").html(str);
-}
+    function setURL(parms) {
+        s = top.window.location.href
+        if (s.lastIndexOf("?") > 0) {
+            s = s.substring(a, s.lastIndexOf("?"));
+        }
+        s= s + "?" + parms;
+        top.window.location.href = s;
+    }
+    function changeTrackLayer(p) {
+        localStorage.setItem("UserData", JSON.stringify(p));
+        trackLayerUpdate(p);
+    }
+    function setUserSessions(text) {
+        eval(text);
+        console.log(text);
+        var cols = $rs.colnames;
+        var type = $rs.coltypes;
+        var data = $rs.rows || $rs[Object.keys($rs)[0]];
 
-function runQuery1(divName) {
-    url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9"
-    submitForm({URL: url, fdata: {}, CB: setUserSessions })
-}
-$(document).ready(function() {
-    runQuery1();
-});
+        str = ""
+        mobile_id = "";
+        for ( i in data) {
+            d = data [i];
+            if (mobile_id != d[0]) {
+                mobile_id = d[0]
+                str = str + "<hr>"
+            }
+            s = "setURL('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
+            p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'"; // containst mobile_id and session num
+            s = "changeTrackLayer(" + p + ")";
+            a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
+            str = str  + a;
+
+            if ( i == 0) {
+                CURRENT_PARMS = p;
+            }
+        }
+        $("#tabs-3").html(str);
+    }
+
+    function runQuery1(divName) {
+        url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9"
+        submitForm({URL: url, fdata: {}, CB: setUserSessions })
+
+    }
+    $(document).ready(function() {
+        runQuery1(); // load the information
+        p = localStorage.getItem("UserData");
+        if(p) {
+            trackLayerUpdate(JSON.parse(p));
+        }
+    });
 </script>
 </body>
 </html>
-
-
-
