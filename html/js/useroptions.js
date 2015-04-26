@@ -39,8 +39,13 @@ function setUserOptions(map) {
    var cp = cPoint1(userOptions.centerLon, userOptions.centerLat)
    var lonlat = new OpenLayers.LonLat(cp.x, cp.y);
    map.setCenter(lonlat, userOptions.zoom);
+   setMapLayers(map)
    console.log("Center: " + lonlat + " zoom:" + map.zoom + "\n" + map.center );
+
 }
+function setMapLayers(map) {
+}
+
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
 function saveUserOptions(map) {
    updateMapLayers(map)
@@ -56,18 +61,12 @@ function saveUserOptions(map) {
 }
 
 // Get All Map Layers and save it in the userOptions
-function updateMapLayers(map) { //edited by jihadaj on 26 apr
-
+function updateMapLayers(map) {
    var Msg = "";
-   for(var i= 0,j=0;i<map.layers.length;i++)
-   {  //  Msg += map.layers[i].name + " :: " + map.layers[i].visibility + "\r\n"; Adding to msg String  to display
-      if(map.layers[i].visibility){ // if the layer is visible
+   for(var i= 0,j=0;i<map.layers.length;i++) {
+      if(map.layers[i].visibility){
          userOptions.myLayers[j]=map.layers[i].name;
          j++;
-
       }
    }
-   //console.log(Msg); To display all the layers which are visible and not visible
-  //console.log( "my visible layers are "+userOptions.myLayers); To display all the layers which are visible
-
 }
