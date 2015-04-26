@@ -60,7 +60,7 @@ function updateMapLayers(map) { //edited by jihadaj on 26 apr
 
    var Msg = "";
    for(var i= 0,j=0;i<map.layers.length;i++)
-   {  //  Msg += map.layers[i].name + " :: " + map.layers[i].visibility + "\r\n"; Adding to an array to display
+   {  //  Msg += map.layers[i].name + " :: " + map.layers[i].visibility + "\r\n"; Adding to msg String  to display
       if(map.layers[i].visibility){ // if the layer is visible
          userOptions.myLayers[j]=map.layers[i].name;
          j++;
@@ -68,6 +68,6 @@ function updateMapLayers(map) { //edited by jihadaj on 26 apr
       }
    }
    //console.log(Msg); To display all the layers which are visible and not visible
-  //console.log( "my layers are "+userOptions.myLayers); To display all the layers which are visible
+  //console.log( "my visible layers are "+userOptions.myLayers); To display all the layers which are visible
 
 }
