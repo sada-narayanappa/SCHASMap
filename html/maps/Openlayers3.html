@@ -31,23 +31,19 @@
             $( "#tabs" ).tabs();
         });
         $(document).ready(function() {
-            getUserOptions();
             init();
             initUserSettings();
         });
 
-        $(window).unload(function() {
-            //saveUserOptions();
-        });
-
         function initUserSettings() { //initialize the control panel settings
+            getUserOptions();
             if ( !userOptions )
                 userOptions = defaultUserOptions;
 
             runQuery1(); // load the information
             ControlPanelToggle(userOptions.controlPanel)
             trackLayerUpdate(userOptions.myUserID, false);
-            //setUserOptions(map);
+            setUserOptions(map);
         }
     </script>
 

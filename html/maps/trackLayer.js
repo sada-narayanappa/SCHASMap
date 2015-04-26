@@ -62,7 +62,6 @@ function AddTrackingLayer(map) {
 
    layer.events.on({
       'featureselected': function (evt) {
-
          var position = this.events.getMousePosition(e);
          var p = map.getLonLatFromPixel(position);
 
@@ -141,11 +140,10 @@ function RemoveThisFeature(id) {
 }
 
 function LT(t, lon) {
-    t = t+ "+00:00"; // new Date is initiated differently in chrome and firefox,safari changed by jihadaj on 17 Mar 2014
+    t = t+ "+00:00";
     d = new Date(t.toString().split(' ').join('T'))
     if ( isNaN(lon) ) {
       return "NAn:" + lon + " " + t;
-
    }
    dir = ( lon < 0 ) ? -1 : 1;
    m = dir * Math.round(Math.abs(lon)/15);
@@ -154,6 +152,7 @@ function LT(t, lon) {
    dt = new Date(nt);
    return dt.toISOString().replace("T"," ").substr(0,20);
 }
+
 function getPop(o) {
    obj = o;
    var bck = (o.id > 0) ? "#9FDAEE" : "lightgreen"
@@ -324,12 +323,16 @@ function addLine(points, obj , lyr) {
 var CURRENT_PARMS = "";
 
 function trackLayerUpdate(parms,bounds) {
-   map = trackLayer.map;
-   if (map.zoom < 1 || !trackLayer.layer.getVisibility() ) {
+   if ( !trackLayer || !trackLayer.map || !trackLayer.layer.getVisibility() ) {
+      return;
+   }
+
+   if (  trackLayer.map.zoom < 1  ) {
       trackLayer.layer.removeAllFeatures()
       trackLayer.layer.destroyFeatures();
-      return map.zoom
+      return trackLayer.map.zoom
    }
+   map = trackLayer.map;
    e = getMapBoundedBox(true);
    //q = "select ST_X(the_geom) as lon, ST_Y(the_geom), city as lat from
    // worldcities where the_geom && ST_MakeEnvelope("+ e+") LIMIT 1000"

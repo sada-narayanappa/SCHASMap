@@ -155,12 +155,12 @@ function init() {
            new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator //converting from map x,y coordinates to lonlat coordinates.
    );
    //
-   map.setCenter(lonlat, 14);
+   map.setCenter(lonlat, 10);
 
    AddCityLayer(map);
    AddTrackingLayer(map);
-   AddStationLayer(map);
    AddSyntheticLayer(map);
+   AddStationLayer(map);
    var stv = new stationLayerVoronoi().AddLayer(map);
    var roads = new roadsLayer(map).AddLayer(map);
 
