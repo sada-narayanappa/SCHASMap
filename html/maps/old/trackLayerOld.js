@@ -23,7 +23,6 @@ function AddTrackingLayer(map) {
       }
    });
 
-
    trackLayerUpdate(trackLayer, true, styleMap);
 
    trackLayer.events.register("visibilitychanged", trackLayer, function(evt) {
@@ -59,9 +58,7 @@ function AddTrackingLayer(map) {
          feature.popup = null;
       }
    });
-
 //trackLayer.setVisibility(false);
-
    return trackLayer;
 }
 
@@ -93,7 +90,7 @@ function trackAddPoint(lon, lat, layer, attr, label ) {
    pointFeature.attributes = {
       label: "SADA",
       Longitude: -1 * lon,
-      Latitude: lat,
+      Latitude: lat
       //Humidity: dataArray[2],
       //temp: dataArray[1],
       //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
@@ -101,10 +98,8 @@ function trackAddPoint(lon, lat, layer, attr, label ) {
    };
    layer.addFeatures([pointFeature]);
 
-
    return pointFeature;
 }
-
 
 function trackAddPointOld(lon, lat, layer, attr, label ) {
    if (layer.map.zoom < 10) {

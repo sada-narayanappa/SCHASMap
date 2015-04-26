@@ -35,10 +35,10 @@ function getUserOptions() {
 }
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
 function setUserOptions(map) {
-   map.zoom = userOptions.zoom;
+   //map.zoom = userOptions.zoom;
    var cp = cPoint1(userOptions.centerLon, userOptions.centerLat)
    var lonlat = new OpenLayers.LonLat(cp.x, cp.y);
-   map.setCenter(lonlat, map.zoom);
+   map.setCenter(lonlat, userOptions.zoom);
    console.log("Center: " + lonlat + " zoom:" + map.zoom + "\n" + map.center );
 }
 // SAVE  userOptions JSON from cookie named USER_OPTIONS

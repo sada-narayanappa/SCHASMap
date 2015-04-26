@@ -101,12 +101,6 @@ function init() {
                OpenLayers.Util.getElement("coords").innerHTML = position;
             });
 
-   //Code below is used for the marker object (The red marker you can see on HWY 12).
-   var lonlat = new OpenLayers.LonLat(-91.9181, 44.8792).transform(
-           new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984 //converting from map x,y coordinates to lonlat coordinates.
-           new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator //converting from map x,y coordinates to lonlat coordinates.
-   );
-
    //Code below is used for the vectorLayer (This determines labels/colors/sizes and such for the point.
    var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
@@ -155,8 +149,13 @@ function init() {
    layer_temperature.setVisibility(false);
 
    map.addLayers([mapnik, layer_precipitation, layer_cloud, layer_temperature]);
-   zoom =14;
-   map.setCenter(lonlat, zoom);
+   //Code below is used for the marker object (The red marker you can see on HWY 12).
+   var lonlat = new OpenLayers.LonLat(-91.9181, 44.8792).transform(
+           new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984 //converting from map x,y coordinates to lonlat coordinates.
+           new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator //converting from map x,y coordinates to lonlat coordinates.
+   );
+   //
+   map.setCenter(lonlat, 14);
 
    AddCityLayer(map);
    AddTrackingLayer(map);
