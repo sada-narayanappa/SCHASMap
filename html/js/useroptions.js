@@ -51,10 +51,23 @@ function saveUserOptions(map) {
 
    var uo = "var $uo = " + JSON.stringify(userOptions);
    localStorage.setItem("userOptions", uo);
-   console.log("User options: " + uo + "\n" + map.center);
+//   console.log("User options: " + uo + "\n" + map.center);
+
 }
 
 // Get All Map Layers and save it in the userOptions
-function updateMapLayers(map) {
-   // userOptions.myLayers = ADD CODE TO save it. test it
+function updateMapLayers(map) { //edited by jihadaj on 26 apr
+
+   var Msg = "";
+   for(var i= 0,j=0;i<map.layers.length;i++)
+   {  //  Msg += map.layers[i].name + " :: " + map.layers[i].visibility + "\r\n"; Adding to an array to display
+      if(map.layers[i].visibility){ // if the layer is visible
+         userOptions.myLayers[j]=map.layers[i].name;
+         j++;
+
+      }
+   }
+   //console.log(Msg); To display all the layers which are visible and not visible
+  //console.log( "my layers are "+userOptions.myLayers); To display all the layers which are visible
+
 }
