@@ -130,7 +130,7 @@ function RemoveThisFeature(id) {
          data = data.replace(/(\r\n|\n|\r)/gm, "");
          console.log(data);
          //alert("Deleted: " + data)
-         trackLayerUpdate(CURRENT_PARMS)
+         trackLayerUpdate(CURRENT_PARMS, false)
          //location.reload();
          clearAllMapPopups();
       },
@@ -138,13 +138,9 @@ function RemoveThisFeature(id) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
-
 }
 
-
-
 function LT(t, lon) {
-
     t = t+ "+00:00"; // new Date is initiated differently in chrome and firefox,safari changed by jihadaj on 17 Mar 2014
     d = new Date(t.toString().split(' ').join('T'))
     if ( isNaN(lon) ) {
@@ -291,7 +287,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    }
    addLine(points, obj, lyr);
 
-   if (lyr.getVisibility()) {
+   if (lyr.getVisibility() && updateBounds) {
       var b1 = map.calculateBounds();
       if (!b1.contains(bounds)) {
          map.zoomToExtent(bounds);
@@ -327,7 +323,7 @@ function addLine(points, obj , lyr) {
 }
 var CURRENT_PARMS = "";
 
-function trackLayerUpdate(parms) {
+function trackLayerUpdate(parms,bounds) {
    map = trackLayer.map;
    if (map.zoom < 1 || !trackLayer.layer.getVisibility() ) {
       trackLayer.layer.removeAllFeatures()
@@ -364,7 +360,7 @@ function trackLayerUpdate(parms) {
       cache: false,
       success: function (data) {
          somedata=data
-         trackAddFeatures(data, trackLayer.layer, true)
+         trackAddFeatures(data, trackLayer.layer, bounds)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)

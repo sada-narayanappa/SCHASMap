@@ -1,5 +1,4 @@
 //FILE NAME: userOptions.js
-
 var userOptions = {
    myMobileID:       "",
    myMapView:        [0,0,0,0],
@@ -12,7 +11,6 @@ var userOptions = {
    zoom:      10
 
 }
-
 var defaultUserOptions = {
    myMobileID:       "",
    myMapView:        [0,0,0,0],
@@ -20,37 +18,40 @@ var defaultUserOptions = {
    myUserID:         "",
    hideControlPanel: true
 }
-
 // Read the userOptions JSON from cookie named USER_OPTIONS
 function getUserOptions() {
    var uo = localStorage.getItem("userOptions");
    console.log("User options: " + uo);
-   if ( uo ) {
+   if ( uo !== "undefined") {
       eval(uo);
-      userOptions = $uo
-      console.log( userOptions);
+      if (typeof($uo) !== "undefined" ) {
+         userOptions = $uo
+         console.log( "Got USER OPTIONS");
+         console.log( userOptions);
+      } else {
+         console.log("Could not get userOptions")
+      }
    }
 }
-
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
 function setUserOptions(map) {
    map.zoom = userOptions.zoom;
-   var lonlat = xPoint(userOptions.centerLon, userOptions.centerLat);
-   map.setCenter(lonlat, zoom);
+   var cp = cPoint1(userOptions.centerLon, userOptions.centerLat)
+   var lonlat = new OpenLayers.LonLat(cp.x, cp.y);
+   map.setCenter(lonlat, map.zoom);
+   console.log("Center: " + lonlat + " zoom:" + map.zoom + "\n" + map.center );
 }
-
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
 function saveUserOptions(map) {
    updateMapLayers(map)
-   var uo = "var $uo = " + JSON.stringify(userOptions);
-   localStorage.setItem("userOptions", uo);
-
    p = cPoint(map.center)
-   userOptions.centerLon = p.lon;
-   userOptions.centerLat = p.lat;
+   userOptions.centerLon = p.x;
+   userOptions.centerLat = p.y;
    userOptions.zoom = map.zoom;
 
-   console.log("User options: " + uo);
+   var uo = "var $uo = " + JSON.stringify(userOptions);
+   localStorage.setItem("userOptions", uo);
+   console.log("User options: " + uo + "\n" + map.center);
 }
 
 // Get All Map Layers and save it in the userOptions

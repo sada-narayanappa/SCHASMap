@@ -46,7 +46,7 @@
 
             runQuery1(); // load the information
             ControlPanelToggle(userOptions.controlPanel)
-            trackLayerUpdate(userOptions.myUserID);
+            trackLayerUpdate(userOptions.myUserID, false);
             setUserOptions(map);
         }
     </script>
@@ -73,9 +73,10 @@
     <form name="input" action="javascript: submitform();" method="post">
         <div style="font-variant: small-caps; text-align: right; width: 100%; background-color: grey">
             Control Panel
-            <input type="button" value="Save my Options" onclick="saveUserOptions(map)"/>
             <img src="http://www.clker.com/cliparts/O/S/I/l/m/L/minus-sign-subtract-md.png"
-                 width="16px" onclick="ControlPanelToggle()" />
+                 width="16px" onclick="ControlPanelToggle()" /><hr/>
+            <input type="button" value="Save my Options" onclick="saveUserOptions(map)"/>
+            <input type="button" value="Set my Options" onclick="setUserOptions(map)"/>
             <hr/>
         </div>
         <div id="formcontent">
@@ -127,9 +128,9 @@
         s= s + "?" + parms;
         top.window.location.href = s;
     }
-    function changeTrackLayer(p) {
+    function changeTrackLayer(p, updateBounds ) {
         userOptions.myUserID = p;
-        trackLayerUpdate(p);
+        trackLayerUpdate(p, true);
     }
     function setUserSessions(text) {
         eval(text);

@@ -31,7 +31,20 @@ function xPoint(lon, lat) {
 }
 
 function cPoint(pos) {
-   position = pos.transform(map.getProjectionObject(), EPSG_4326);
+   var point = new OpenLayers.Geometry.Point(pos.lon, pos.lat);
+   position = point.transform(map.getProjectionObject(), EPSG_4326);
+   return position;
+}
+
+function cPoint1(lon, lat) {
+   var point = new OpenLayers.Geometry.Point(lon, lat);
+   position = point.transform(EPSG_4326, map.getProjectionObject() );
+   return position;
+}
+
+function LatLon(lon, lat) {
+   var point = new OpenLayers.Geometry.Point(lon, lat);
+   position = point.transform(map.getProjectionObject(), EPSG_4326);
    return position;
 }
 
