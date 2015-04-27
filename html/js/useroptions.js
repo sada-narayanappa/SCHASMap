@@ -35,6 +35,7 @@ function getUserOptions() {
 }
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
 function setUserOptions(map) {
+   console.log("called setUserOptions");
    //map.zoom = userOptions.zoom;
    var cp = cPoint1(userOptions.centerLon, userOptions.centerLat)
    var lonlat = new OpenLayers.LonLat(cp.x, cp.y);
@@ -44,6 +45,16 @@ function setUserOptions(map) {
 
 }
 function setMapLayers(map) {
+
+   for( i= 0;i<userOptions.myLayers.length;i++) {
+     // console.log("layers available in  useroptions are "+userOptions.myLayers[i]);
+      for ( j = 0; j < map.layers.length; j++) {
+         if (map.layers[j].name == userOptions.myLayers[i]) {
+            map.layers[j].visibility = true;
+            //console.log("visible map layer"+map.layers[j].name);
+         }
+      }
+   }
 }
 
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
@@ -53,7 +64,6 @@ function saveUserOptions(map) {
    userOptions.centerLon = p.x;
    userOptions.centerLat = p.y;
    userOptions.zoom = map.zoom;
-
    var uo = "var $uo = " + JSON.stringify(userOptions);
    localStorage.setItem("userOptions", uo);
 //   console.log("User options: " + uo + "\n" + map.center);
@@ -62,11 +72,13 @@ function saveUserOptions(map) {
 
 // Get All Map Layers and save it in the userOptions
 function updateMapLayers(map) {
-   var Msg = "";
-   for(var i= 0,j=0;i<map.layers.length;i++) {
+   userOptions.myLayers=[];
+   for( i= 0, j=0;i<map.layers.length;i++) {
       if(map.layers[i].visibility){
          userOptions.myLayers[j]=map.layers[i].name;
+         console.log("layers saved to useroptions are "+userOptions.myLayers[j]);
          j++;
       }
    }
+
 }
