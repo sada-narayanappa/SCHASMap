@@ -262,7 +262,7 @@ routeLayer.prototype.getSourceNodeID = function() {
       success: function (data) {
          console.log(data)
          eval(data);
-		 var sid = $rs["rows"]
+		 var sid = $rs["rows"][0];
 		 console.log(sid);
 		 return sid
       },
