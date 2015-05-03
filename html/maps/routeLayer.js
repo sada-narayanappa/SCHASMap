@@ -8,8 +8,10 @@ var routeLayer = function(){
 var layer = null;
 var startLon = -93.2130;
 var startLat = 45.0259;
+var sourceid = null;
 var endLon = -93.20599423828163;
 var endLat = 45.0206;
+var targetid = null;
 
 routeLayer.prototype.layer    = null;
 routeLayer.prototype.features = null;
@@ -238,7 +240,6 @@ routeLayer.prototype.getSourceNodeID = function() {
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
 
-	var sid = null;
 
    var e = getMapBoundedBox(true);
    var q;
@@ -264,15 +265,13 @@ routeLayer.prototype.getSourceNodeID = function() {
       success: function (data) {
          //console.log(data)
          eval(data);
-		 sid = $rs["rows"][0];
-		 console.log(sid);
+		 sourceid = $rs["rows"][0];
+		 console.log(sourceid);
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
-   
-   return sid[0];
 }
 
 routeLayer.prototype.getTargetNodeID = function() {
@@ -280,7 +279,6 @@ routeLayer.prototype.getTargetNodeID = function() {
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
    
-   var tid = null;
 
    var e = getMapBoundedBox(true);
    var q;
@@ -306,14 +304,13 @@ routeLayer.prototype.getTargetNodeID = function() {
       success: function (data) {
          //console.log(data)
          eval(data);
-		 tid = $rs["rows"][0];
-		 console.log(tid);		 
+		 targetid = $rs["rows"][0];
+		 console.log(targetid);		 
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
-   return tid[0];
 }
 
 routeLayer.prototype.LayerUpdate = function() {
@@ -327,12 +324,11 @@ routeLayer.prototype.LayerUpdate = function() {
    q = "" ;
 
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
-   var sid = routeLayer.prototype.getSourceNodeID();
-   console.log(sid);
-   var tid = routeLayer.prototype.getTargetNodeID();
-   console.log(tid);
+   routeLayer.prototype.getSourceNodeID();   
+   routeLayer.prototype.getTargetNodeID();
    
-   var url = PROXY + DB_URL + "qn=13&s="+sid+"&t="+tid;
+   
+   var url = PROXY + DB_URL + "qn=13&s="+sourceid+"&t="+targetid;
 
    console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
