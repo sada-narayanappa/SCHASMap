@@ -231,7 +231,7 @@ routeLayer.prototype.AddFeatures = function (data, zoomToBounds){
       }
    }
    lyr.addFeatures([routeLayer.start, routeLayer.end]);
-
+	layer.redraw();
    return bounds;
 }
 
