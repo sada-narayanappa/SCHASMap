@@ -111,17 +111,17 @@ routeLayer.getCanAddEndPoint = function() {
 routeLayer.setCanAddStartPoint = function(canAddStart){
 	//alert("Can now add start point")
 	routeLayer.canAddStartPoint	= canAddStart;
-	routeLayer.canAddEndPoint = !canAddStart;
+	routeLayer.canAddEndPoint = false;
 }
 
 routeLayer.setCanAddEndPoint = function(canAddEnd){
 	//alert("Can now add end point")
 	routeLayer.canAddEndPoint	= canAddEnd;
-	routeLayer.canAddStartPoint = !canAddEnd;
+	routeLayer.canAddStartPoint = false;
 }
 
 function routeLayerVisible(){
-	console.log("Layer Visible: ", layer.getVisibility())
+	//console.log("Layer Visible: ", layer.getVisibility())
 	return layer.getVisibility();
 }
 
@@ -129,14 +129,14 @@ routeLayer.AddStartPoint = function(lon,lat) {
 	layer.removeFeatures(routeLayer.start);
 	routeLayer.start = routeLayer.MakePointFeature(lon,lat,"START", "green" );
    layer.addFeatures([routeLayer.start]);
-   //this.LayerUpdate()
+   LayerUpdate()
 }
 
 routeLayer.AddEndPoint = function(lon,lat) {
 	layer.removeFeatures(routeLayer.end);	
    routeLayer.end   = routeLayer.MakePointFeature(lon,lat,"END", "red" );
    layer.addFeatures([routeLayer.end]);
-   //this.LayerUpdate()
+   LayerUpdate()
 }
 
 routeLayer.MakePointFeature = function (lon_4326, lat_4326, label, color) {
