@@ -21,7 +21,7 @@ routeLayer.clear = function(map) {
    routeLayer.end    = null;
    routeLayer.route  = null;
    routeLayer.canAddStartPoint = false;
-   routeLayer.canAddEndPoint = false
+   routeLayer.canAddEndPoint = false;
 
    var lyr = routeLayer.instance.layer;
    lyr.removeAllFeatures()
@@ -260,11 +260,11 @@ routeLayer.prototype.getSourceNodeID = function() {
       processdata: true,
       cache: false,
       success: function (data) {
-         console.log(data)
+         //console.log(data)
          eval(data);
 		 var sid = $rs["rows"][0];
 		 console.log(sid);
-		 return sid
+		 return sid[0]
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
@@ -299,11 +299,11 @@ routeLayer.prototype.getTargetNodeID = function() {
       processdata: true,
       cache: false,
       success: function (data) {
-         console.log(data)
+         //console.log(data)
          eval(data);
 		 var tid = $rs["rows"][0];
 		 console.log(tid);
-		 return tid
+		 return tid[0];
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
