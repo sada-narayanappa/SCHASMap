@@ -5,6 +5,7 @@ var routeLayer = function(){
    var route   = null;
 }
 
+var layer = null;
 routeLayer.prototype.layer    = null;
 routeLayer.prototype.features = null;
 routeLayer.prototype.map      = null;
@@ -69,7 +70,7 @@ routeLayer.prototype.AddLayer = function(map) {
       labelYOffset: "-4"
    };
    var style = new OpenLayers.Style(template, {context: context});
-   var layer = new OpenLayers.Layer.Vector('Routing Layer', {
+   layer = new OpenLayers.Layer.Vector('Routing Layer', {
       styleMap: new OpenLayers.StyleMap(style),
       renderers: renderer
    });
