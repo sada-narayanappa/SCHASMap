@@ -136,7 +136,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
        "WHERE is_interested=TRUE and " +
            " (time_gmt_unix) = (select max(time_gmt_unix) from weather) and a.state='MN'"
 
-   var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
+   var url = PROXY + DB_URL + "c=1&q=" + encodeURIComponent(q);
 
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 

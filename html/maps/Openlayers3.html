@@ -17,10 +17,12 @@
     <script src="../js/useroptions.js"></script>
     <script src="Layers.js"></script>
     <script src="os.js"></script>
+    <script src="utils.js"></script>
     <script src="citiesLayer.js"></script>
     <script src="stationsLayerVoronoi.js"></script>
     <script src="stationsLayer.js"></script>
     <script src="roadsLayer.js"></script>
+    <script src="routeLayer.js"></script>
     <script src="trackLayer.js"></script>
     <script src="syntheticLayer.js"></script>
 
@@ -96,9 +98,11 @@
                 </div>
                 <div id="tabs-2">
                     <p>Find interesting trajectories - query</p>
+                    <input type="button" value="Center start/end Nodes"  onclick="alert('Center start and end nodes')" />
+                    <input type="button" value="Compute Route" onclick="routeLayer.compute(map)"/>
                 </div>
                 <div id="tabs-3" style="height:440px;overflow-y:auto;">
-                    <p>Find Users</p>
+                    <p>Pick Users</p>
                 </div>
 
             </div>

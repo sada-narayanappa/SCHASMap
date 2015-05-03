@@ -1,4 +1,5 @@
 var roadsLayer = function(){
+ var instance = null;
 }
 
 roadsLayer.prototype.layer    = null;
@@ -7,7 +8,14 @@ roadsLayer.prototype.map      = null;
 roadsLayer.prototype.bounds   = null;
 
 roadsLayer.prototype.AddLayer = function(map) {
+   if ( roadsLayer.instance != null ) {
+      alert ("Roads Layer Already instantiated")
+      return;
+   }
+
    $self = this;
+   roadsLayer.instance = this;
+
    this.map = map;
    var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
@@ -68,7 +76,7 @@ roadsLayer.prototype.AddLayer = function(map) {
    map.events.register('moveend', map, function() {
       //$self.LayerUpdate()
    });
-   layer.setVisibility(true);
+   layer.setVisibility(false);
 
    return layer;
 }
@@ -86,10 +94,16 @@ roadsLayer.prototype.AddFeatures = function (data, zoomToBounds){
    for(var i=0; i<locs.length; ++i) {
       var lc = locs[i];
       eval("var $rss= " + eval(lc[0]));
+
       if ( !$rss.coordinates||$rss.coordinates[0].length <=0|| $rss.coordinates[0][0].length<=0) {
          return
       }
-      var f1 = $rss.coordinates[0]
+      var f1;
+      if ( $rss.type.startsWith("Multi") ) {
+         f1 = $rss.coordinates[0]
+      }  else {
+         f1 = $rss.coordinates
+      }
       var points = [];
       for (j=0; j < f1.length; j++) {
          var p = xPoint(f1[j][0], f1[j][1]);

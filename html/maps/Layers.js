@@ -38,12 +38,10 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 				var lon = lonlat.lon;
 				addSyntheticData(measuredAt,recordType,sessionNum,mobileID,user_ID,lat,lon)
 			}
-			else {
-				
-			}
 		}
 	}
 });
+
 
 //Constructing the maps
 var map;
@@ -70,7 +68,6 @@ function init() {
    map.events.register("click", map , function(e){
       var position = this.events.getMousePosition(e);
       var p = map.getLonLatFromPixel(position);
-      var op = map.getLonLatFromPixel(position);
       position = p.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
       position.lat = Number(position.lat);
       position.lon = Number(position.lon);
@@ -163,6 +160,7 @@ function init() {
    AddStationLayer(map);
    var stv = new stationLayerVoronoi().AddLayer(map);
    var roads = new roadsLayer(map).AddLayer(map);
+   var route = new routeLayer(map).AddLayer(map);
 
 }//end Init() function
 
