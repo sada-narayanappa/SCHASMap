@@ -118,7 +118,7 @@ routeLayer.setCanAddEndPoint = function(canAddEnd){
 }
 
 function routeLayerVisible(){
-	return routeLayer.getVisibility();
+	return layer.getVisibility();
 }
 
 routeLayer.AddStartPoint = function(lon,lat) {
