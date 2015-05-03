@@ -108,16 +108,19 @@ routeLayer.getCanAddEndPoint = function() {
 }
 
 routeLayer.setCanAddStartPoint = function(canAddStart){
+	alert("Can now add start point")
 	routeLayer.canAddStartPoint	= canAddStart;
 	routeLayer.canAddEndPoint = !canAddStart;
 }
 
 routeLayer.setCanAddEndPoint = function(canAddEnd){
+		alert("Can now add end point")
 	routeLayer.canAddEndPoint	= canAddEnd;
 	routeLayer.canAddStartPoint = !canAddEnd;
 }
 
 function routeLayerVisible(){
+	console.log("Layer Visible: ", layer.getVisibility())
 	return layer.getVisibility();
 }
 
