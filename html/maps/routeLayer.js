@@ -137,8 +137,8 @@ routeLayer.AddStartPoint = function(lon,lat) {
 	startLon = lon;
 	startLat = lat;
 	routeLayer.start = routeLayer.MakePointFeature(lon,lat,"START", "green" );
-   layer.addFeatures([routeLayer.start]);
    routeLayer.prototype.LayerUpdate();
+   layer.addFeatures([routeLayer.start]);   
 }
 
 routeLayer.AddEndPoint = function(lon,lat) {
@@ -146,8 +146,8 @@ routeLayer.AddEndPoint = function(lon,lat) {
 	endLon = lon;
 	endLat = lat;
    routeLayer.end   = routeLayer.MakePointFeature(lon,lat,"END", "red" );
-   layer.addFeatures([routeLayer.end]);
    routeLayer.prototype.LayerUpdate();
+   layer.addFeatures([routeLayer.end]);
 }
 
 routeLayer.MakePointFeature = function (lon_4326, lat_4326, label, color) {
@@ -230,8 +230,7 @@ routeLayer.prototype.AddFeatures = function (data, zoomToBounds){
          map.zoomToExtent(bounds);
       }
    }
-   lyr.addFeatures([routeLayer.start, routeLayer.end]);
-	layer.redraw();
+   lyr.addFeatures([routeLayer.start, routeLayer.end]);	
    return bounds;
 }
 
