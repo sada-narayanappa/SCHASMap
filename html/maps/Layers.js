@@ -42,12 +42,14 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 		}
 		if(routeLayerVisible() && (routeLayer.getCanAddStartPoint() || routeLayer.getCanAddEndPoint())){
 			if(routeLayer.getCanAddStartPoint()){
+				routeLayer.setCanAddStartPoint(false);
 				routeLayer.AddStartPoint(lon,lat);
-				alert("Added start point at ", lon, " ", lat);			
+						
 			}
 			else if(routeLayer.getCanAddEndPoint()){
+				routeLayer.setCanAddEndPoint(false);
 				routeLayer.AddEndPoint(lon,lat);
-				alert("Added end point at ", lon, " ", lat);
+				
 			}
 		}
 	}
