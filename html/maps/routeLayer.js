@@ -88,7 +88,7 @@ routeLayer.prototype.AddLayer = function(map) {
    routeLayer.start = routeLayer.MakePointFeature(-93.2130,45.0259,"START", "green" );
    routeLayer.end   = routeLayer.MakePointFeature(-93.20599423828163,45.0206,"END", "red" );
    layer.addFeatures([routeLayer.start, routeLayer.end]);
-   this.LayerUpdate()
+   routeLayer.prototype.LayerUpdate();
 
    layer.events.register("visibilitychanged", layer, function(evt) {
       if ( layer.getVisibility() ) {
