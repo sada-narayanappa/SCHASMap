@@ -238,6 +238,8 @@ routeLayer.prototype.getSourceNodeID = function() {
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
 
+	var sid = null;
+
    var e = getMapBoundedBox(true);
    var q;
 
@@ -262,7 +264,7 @@ routeLayer.prototype.getSourceNodeID = function() {
       success: function (data) {
          //console.log(data)
          eval(data);
-		 var sid = $rs["rows"][0];
+		 sid = $rs["rows"][0];
 		 console.log(sid);
 		 return sid[0]
       },
@@ -270,12 +272,16 @@ routeLayer.prototype.getSourceNodeID = function() {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
+   
+   return sid;
 }
 
 routeLayer.prototype.getTargetNodeID = function() {
 	var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
+   
+   var tid = null;
 
    var e = getMapBoundedBox(true);
    var q;
@@ -301,14 +307,15 @@ routeLayer.prototype.getTargetNodeID = function() {
       success: function (data) {
          //console.log(data)
          eval(data);
-		 var tid = $rs["rows"][0];
+		 tid = $rs["rows"][0];
 		 console.log(tid);
-		 return tid[0];
+		 return tid;
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
+   return tid;
 }
 
 routeLayer.prototype.LayerUpdate = function() {
@@ -323,7 +330,9 @@ routeLayer.prototype.LayerUpdate = function() {
 
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
    var sid = routeLayer.prototype.getSourceNodeID();
+   console.log(sid);
    var tid = routeLayer.prototype.getTargetNodeID();
+   console.log(tid);
    
    var url = PROXY + DB_URL + "qn=13&s="+sid+"&t="+tid;
 
