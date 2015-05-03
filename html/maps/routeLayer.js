@@ -266,14 +266,13 @@ routeLayer.prototype.getSourceNodeID = function() {
          eval(data);
 		 sid = $rs["rows"][0];
 		 console.log(sid);
-		 return sid[0]
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
    
-   return sid;
+   return sid[0];
 }
 
 routeLayer.prototype.getTargetNodeID = function() {
@@ -308,14 +307,13 @@ routeLayer.prototype.getTargetNodeID = function() {
          //console.log(data)
          eval(data);
 		 tid = $rs["rows"][0];
-		 console.log(tid);
-		 return tid;
+		 console.log(tid);		 
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
-   return tid;
+   return tid[0];
 }
 
 routeLayer.prototype.LayerUpdate = function() {
