@@ -129,14 +129,14 @@ routeLayer.AddStartPoint = function(lon,lat) {
 	layer.removeFeatures(routeLayer.start);
 	routeLayer.start = routeLayer.MakePointFeature(lon,lat,"START", "green" );
    layer.addFeatures([routeLayer.start]);
-   LayerUpdate()
+   routeLayer.prototype.LayerUpdate();
 }
 
 routeLayer.AddEndPoint = function(lon,lat) {
 	layer.removeFeatures(routeLayer.end);	
    routeLayer.end   = routeLayer.MakePointFeature(lon,lat,"END", "red" );
    layer.addFeatures([routeLayer.end]);
-   LayerUpdate()
+   routeLayer.prototype.LayerUpdate();
 }
 
 routeLayer.MakePointFeature = function (lon_4326, lat_4326, label, color) {
