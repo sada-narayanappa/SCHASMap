@@ -164,7 +164,7 @@ routeLayer.centerFeatures = function() {
 }
 
 routeLayer.prototype.AddFeatures = function (data, zoomToBounds){
-   lyr = this.layer;
+   lyr = layer;
    eval(data);
    var locs = $rs["rows"]
 
