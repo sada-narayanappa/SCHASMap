@@ -14,6 +14,8 @@ routeLayer.clear = function(map) {
    routeLayer.start  = null;
    routeLayer.end    = null;
    routeLayer.route  = null;
+   routeLayer.canAddStartPoint = false;
+   routeLayer.canAddEndPoint = false
 
    var lyr = routeLayer.instance.layer;
    lyr.removeAllFeatures()
@@ -95,6 +97,42 @@ routeLayer.prototype.AddLayer = function(map) {
 
    console.log("ROUTE " + routeLayer.start + " " + routeLayer.end );
    return layer;
+}
+
+routeLayer.getCanAddStartPoint = function() {
+	return routeLayer.canAddStartPoint;	
+}
+
+routeLayer.getCanAddEndPoint = function() {
+	return routeLayer.canAddEndPoint;
+}
+
+routeLayer.setCanAddStartPoint = function(canAddStart){
+	routeLayer.canAddStartPoint	= canAddStart;
+	routeLayer.canAddEndPoint = !canAddStart;
+}
+
+routeLayer.setCanAddEndPoint = function(canAddEnd){
+	routeLayer.canAddEndPoint	= canAddEnd;
+	routeLayer.canAddStartPoint = !canAddEnd;
+}
+
+function routeLayerVisible(){
+	return routeLayer.getVisibility();
+}
+
+routeLayer.AddStartPoint = function(lon,lat) {
+	layer.removeFeatures(routeLayer.start);
+	routeLayer.start = routeLayer.MakePointFeature(lon,lat,"START", "green" );
+   layer.addFeatures([routeLayer.start]);
+   this.LayerUpdate()
+}
+
+routeLayer.AddEndPoint = function(lon,lat) {
+	layer.removeFeatures(routeLayer.end);	
+   routeLayer.end   = routeLayer.MakePointFeature(lon,lat,"END", "red" );
+   layer.addFeatures([routeLayer.end]);
+   this.LayerUpdate()
 }
 
 routeLayer.MakePointFeature = function (lon_4326, lat_4326, label, color) {
@@ -193,7 +231,7 @@ routeLayer.prototype.LayerUpdate = function() {
    q = "" ;
 
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
-   var url = PROXY + DB_URL + "qn=13&s=13001&t=71857" ;
+   var url = PROXY + DB_URL + "qn=13&s=13001&t=71857";
 
    console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")

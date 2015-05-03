@@ -23,8 +23,11 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 	}, 
 
 	trigger: function(e) {
-		if(syntheticLayerVisible()){
-			var lonlat = map.getLonLatFromPixel(e.xy).transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
+		
+		var lonlat = map.getLonLatFromPixel(e.xy).transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
+		var lat = lonlat.lat;
+		var lon = lonlat.lon;
+		if(syntheticLayerVisible()){			
 			if(confirm("Would you like to add a synthetic data point at " + lonlat.lat + ", " + lonlat.lon +"?")==true)
 			{
 				var now = new Date().getTime();
@@ -33,10 +36,16 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 				var recordType = "SyntheticData";
 				var sessionNum = prompt("Please enter the Session:", "1");
 				var mobileID = "Synthetic";
-				var user_ID = "SyntheticUser";
-				var lat = lonlat.lat;
-				var lon = lonlat.lon;
+				var user_ID = "SyntheticUser";				
 				addSyntheticData(measuredAt,recordType,sessionNum,mobileID,user_ID,lat,lon)
+			}
+		}
+		if(routeLayerVisible() && (routeLayer.getCanAddStartPoint() || routeLayer.getCanAddEndPoint())){
+			if(routeLayer.getCanAddStartPoint()){
+				routeLayer.AddStartPoint(lon,lat);				
+			}
+			else if(routeLayer.getCanAddEndPoint()){
+				routeLayer.AddEndPoint(lon,lat);
 			}
 		}
 	}
