@@ -57,19 +57,22 @@ routeLayer.prototype.AddLayer = function(map) {
       },
       FillColor: function(feature) {
          r = "green";
+         if ( feature.attributes.fillcolor) {
+            r = feature.attributes.fillcolor;
+         }
          return r;
       }
    };
    var template = {
       pointRadius: "${getRadius}",
       strokeColor: "purple",
-      fillColor: "blue", //${fillcolor}",
+      fillColor: "${FillColor}",
       fillOpacity: 0.4,
-      strokeWidth: "8",
+      strokeWidth: "4",
       strokeDashstyle: "da}" + "shdot",
       pointerEvents: "visiblePainted",
       label: "${label}",
-      fontSize: "12px",
+      fontSize: "10px",
       fontFamily: "Calibri",
       fontWeight: "",
       labelYOffset: "-4"
@@ -83,10 +86,12 @@ routeLayer.prototype.AddLayer = function(map) {
    this.layer = layer;
    map.addLayer(layer);
 
-   routeLayer.start = routeLayer.MakePointFeature(-93.2130,45.0259,"START", "green" );
-   routeLayer.end   = routeLayer.MakePointFeature(-93.20599423828163,45.0206,"END", "red" );
+   routeLayer.start = routeLayer.MakePointFeature(-93.2130,45.0259,"S", "green" );
+   routeLayer.end   = routeLayer.MakePointFeature(-93.2074,45.0206,"T", "red" );
+   this.getSourceNodeID();
+   this.getTargetNodeID();
+
    layer.addFeatures([routeLayer.start, routeLayer.end]);
-   routeLayer.prototype.LayerUpdate();
 
    layer.events.register("visibilitychanged", layer, function(evt) {
       if ( layer.getVisibility() ) {
@@ -99,9 +104,8 @@ routeLayer.prototype.AddLayer = function(map) {
       //$self.LayerUpdate()
    });
    layer.setVisibility(true);
-
-
    console.log("ROUTE " + routeLayer.start + " " + routeLayer.end );
+   routeLayer.prototype.LayerUpdate();
    return layer;
 }
 
@@ -134,7 +138,7 @@ routeLayer.AddStartPoint = function(lon,lat) {
 	layer.removeFeatures(routeLayer.start);
 	startLon = lon;
 	startLat = lat;
-	routeLayer.start = routeLayer.MakePointFeature(lon,lat,"START", "green" );
+	routeLayer.start = routeLayer.MakePointFeature(lon,lat,"S", "green" );
    layer.addFeatures([routeLayer.start]);
    routeLayer.instance.getSourceNodeID();
    //routeLayer.prototype.LayerUpdate();
@@ -144,7 +148,7 @@ routeLayer.AddEndPoint = function(lon,lat) {
 	layer.removeFeatures(routeLayer.end);	
 	endLon = lon;
 	endLat = lat;
-   routeLayer.end   = routeLayer.MakePointFeature(lon,lat,"END", "red" );
+   routeLayer.end   = routeLayer.MakePointFeature(lon,lat,"T", "red" );
    layer.addFeatures([routeLayer.end]);
    routeLayer.instance.getTargetNodeID();
    //routeLayer.prototype.LayerUpdate();
@@ -315,7 +319,7 @@ routeLayer.prototype.LayerUpdate = function() {
    q = "" ;
 
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
-   if (sourceid == 0 ) {
+   if (sourceid == 1 ) {
       routeLayer.prototype.getSourceNodeID();
       routeLayer.prototype.getTargetNodeID();
    }
@@ -336,6 +340,7 @@ routeLayer.prototype.LayerUpdate = function() {
       processdata: true,
       cache: false,
       success: function (data) {
+         data = data.trim();
          console.log(data)
          myThis.AddFeatures(data, true)
       },

@@ -17,13 +17,17 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 		); 
 		this.handler = new OpenLayers.Handler.Click(
 			this, {
-				'click': this.trigger
+                 'click': this.trigger,
+                 'rightclick': this.rightClick,
+
 			}, this.handlerOptions
 		);
-	}, 
+	},
+   rightClick: function(e) {
+     console.log("Right Click");
+   },
 
 	trigger: function(e) {
-		
 		var lonlat = map.getLonLatFromPixel(e.xy).transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
 		var lat = lonlat.lat;
 		var lon = lonlat.lon;
@@ -44,17 +48,14 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 			if(routeLayer.getCanAddStartPoint()){
 				routeLayer.setCanAddStartPoint(false);
 				routeLayer.AddStartPoint(lon,lat);
-						
 			}
 			else if(routeLayer.getCanAddEndPoint()){
 				routeLayer.setCanAddEndPoint(false);
 				routeLayer.AddEndPoint(lon,lat);
-				
 			}
 		}
 	}
 });
-
 
 //Constructing the maps
 var map;
