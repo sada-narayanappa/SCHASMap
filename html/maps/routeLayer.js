@@ -8,10 +8,10 @@ var routeLayer = function(){
 var layer = null;
 var startLon = -93.2130;
 var startLat = 45.0259;
-var sourceid = null;
+var sourceid = 1;
 var endLon = -93.20599423828163;
 var endLat = 45.0206;
-var targetid = null;
+var targetid = 1;
 
 routeLayer.prototype.layer    = null;
 routeLayer.prototype.features = null;
@@ -29,8 +29,6 @@ routeLayer.clear = function(map) {
    lyr.removeAllFeatures()
    lyr.destroyFeatures();
 }
-
-
 
 routeLayer.prototype.AddLayer = function(map) {
    if ( routeLayer.instance != null ) {
@@ -137,8 +135,9 @@ routeLayer.AddStartPoint = function(lon,lat) {
 	startLon = lon;
 	startLat = lat;
 	routeLayer.start = routeLayer.MakePointFeature(lon,lat,"START", "green" );
-   routeLayer.prototype.LayerUpdate();
-   layer.addFeatures([routeLayer.start]);   
+   layer.addFeatures([routeLayer.start]);
+   routeLayer.instance.getSourceNodeID();
+   //routeLayer.prototype.LayerUpdate();
 }
 
 routeLayer.AddEndPoint = function(lon,lat) {
@@ -146,8 +145,9 @@ routeLayer.AddEndPoint = function(lon,lat) {
 	endLon = lon;
 	endLat = lat;
    routeLayer.end   = routeLayer.MakePointFeature(lon,lat,"END", "red" );
-   routeLayer.prototype.LayerUpdate();
    layer.addFeatures([routeLayer.end]);
+   routeLayer.instance.getTargetNodeID();
+   //routeLayer.prototype.LayerUpdate();
 }
 
 routeLayer.MakePointFeature = function (lon_4326, lat_4326, label, color) {
@@ -174,84 +174,14 @@ routeLayer.centerFeatures = function() {
    //requestSnapPointFeature(pointFeature);
 }
 
-routeLayer.prototype.AddFeatures = function (data, zoomToBounds){
-   lyr = layer;
-   eval(data);
-   var locs = $rs["rows"]
-
-   lyr.removeAllFeatures()
-   lyr.destroyFeatures();
-
-   var bounds = null;
-   //console.log("GOT: " + locs.length)
-   for(var i=0; i<locs.length; ++i) {
-      var lc = locs[i];
-      $rss = JSON.parse(lc[4]);
-
-      if ( !$rss.coordinates||$rss.coordinates[0].length <=0|| $rss.coordinates[0][0].length<=0) {
-         return
-      }
-      var f1;
-      if ( $rss.type.startsWith("Multi") ) {
-         f1 = $rss.coordinates[0]
-      }  else {
-         f1 = $rss.coordinates
-      }
-      var points = [];
-      for (j=0; j < f1.length; j++) {
-         var p = xPoint(f1[j][0], f1[j][1]);
-         points.push(p);
-      }
-      //var ring = new OpenLayers.Geometry.LinearRing(points);
-      var line = new OpenLayers.Geometry.LineString(points);
-      //var polygon = new OpenLayers.Geometry.Polygon([ring]);
-
-      var attr=
-      {
-         seq:   lc[0],
-         n1:    lc[1],
-         n2:    lc[2],
-         cost:  lc[3],
-         geom:  lc[4]
-      }
-      //var feat = new OpenLayers.Feature.Vector(polygon,attr);
-      var feat = new OpenLayers.Feature.Vector(line,attr);
-      lyr.addFeatures(feat);
-      if (!bounds) {
-         bounds = feat.geometry.getBounds();
-      } else {
-         bounds.extend(feat.geometry.getBounds());
-      }
-   }
-
-   if (lyr.getVisibility() && locs.length >0) {
-      var b1 = map.calculateBounds();
-      if (!b1.contains(bounds)) {
-         map.zoomToExtent(bounds);
-      }
-   }
-   lyr.addFeatures([routeLayer.start, routeLayer.end]);	
-   return bounds;
-}
-
 routeLayer.prototype.getSourceNodeID = function() {
 	var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
 
-
-   var e = getMapBoundedBox(true);
-   var q;
-
-   q = "" ;
-
-   //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
    var url = PROXY + DB_URL + "qn=12&lon="+startLon+"&lat="+ startLat;
-
    console.log(url);
-   //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
-   var myThis = this;
    $.ajax({
       type: "GET",
       url:  url,
@@ -312,6 +242,68 @@ routeLayer.prototype.getTargetNodeID = function() {
    });
 }
 
+routeLayer.prototype.AddFeatures = function (data, zoomToBounds){
+   lyr = layer;
+   eval(data);
+   var locs = $rs["rows"]
+
+   lyr.removeAllFeatures()
+   lyr.destroyFeatures();
+
+   var bounds = null;
+   //console.log("GOT: " + locs.length)
+   for(var i=0; i<locs.length; ++i) {
+      var lc = locs[i];
+      $rss = JSON.parse(lc[4]);
+
+      if ( !$rss.coordinates||$rss.coordinates[0].length <=0|| $rss.coordinates[0][0].length<=0) {
+         return
+      }
+      var f1;
+      if ( $rss.type.startsWith("Multi") ) {
+         f1 = $rss.coordinates[0]
+      }  else {
+         f1 = $rss.coordinates
+      }
+      var points = [];
+      for (j=0; j < f1.length; j++) {
+         var p = xPoint(f1[j][0], f1[j][1]);
+         points.push(p);
+      }
+      //var ring = new OpenLayers.Geometry.LinearRing(points);
+      var line = new OpenLayers.Geometry.LineString(points);
+      //var polygon = new OpenLayers.Geometry.Polygon([ring]);
+
+      labl = (lc[3]*1000).toPrecision(3);
+      var attr=
+      {
+         seq:   lc[0],
+         n1:    lc[1],
+         n2:    lc[2],
+         cost:  lc[3],
+         geom:  lc[4],
+         label: labl
+      }
+      //var feat = new OpenLayers.Feature.Vector(polygon,attr);
+      var feat = new OpenLayers.Feature.Vector(line,attr);
+      lyr.addFeatures(feat);
+      if (!bounds) {
+         bounds = feat.geometry.getBounds();
+      } else {
+         bounds.extend(feat.geometry.getBounds());
+      }
+   }
+
+   if (lyr.getVisibility() && locs.length >0) {
+      var b1 = map.calculateBounds();
+      if (!b1.contains(bounds)) {
+         map.zoomToExtent(bounds);
+      }
+   }
+   lyr.addFeatures([routeLayer.start, routeLayer.end]);
+   return bounds;
+}
+
 routeLayer.prototype.LayerUpdate = function() {
    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
@@ -323,10 +315,11 @@ routeLayer.prototype.LayerUpdate = function() {
    q = "" ;
 
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
-   routeLayer.prototype.getSourceNodeID();   
-   routeLayer.prototype.getTargetNodeID();
-   
-   
+   if (sourceid == 0 ) {
+      routeLayer.prototype.getSourceNodeID();
+      routeLayer.prototype.getTargetNodeID();
+   }
+
    var url = PROXY + DB_URL + "qn=13&s="+sourceid+"&t="+targetid;
 
    console.log(url);

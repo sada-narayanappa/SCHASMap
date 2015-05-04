@@ -100,8 +100,7 @@
                     <p>Find interesting trajectories - query</p>
                     <input type="button" value="Place Start Node"  onclick="routeLayer.setCanAddStartPoint(true)" />
                     <input type="button" value="Place End Node"  onclick="routeLayer.setCanAddEndPoint(true)" />
-                    <input type="button" value="Center start/end Nodes"  onclick="alert('Center start and end nodes')" />
-                    <input type="button" value="Compute Route" onclick="routeLayer.compute(map)"/>
+                    <input type="button" value="Compute Route" onclick="routeLayer.instance.LayerUpdate()"/>
                 </div>
                 <div id="tabs-3" style="height:440px;overflow-y:auto;">
                     <p>Pick Users</p>
