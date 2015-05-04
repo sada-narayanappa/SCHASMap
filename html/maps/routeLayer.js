@@ -105,7 +105,7 @@ routeLayer.prototype.AddLayer = function(map) {
    });
    layer.setVisibility(true);
    console.log("ROUTE " + routeLayer.start + " " + routeLayer.end );
-   routeLayer.prototype.LayerUpdate();
+   setTimeout(routeLayer.prototype.LayerUpdate,2000);
    return layer;
 }
 
@@ -342,7 +342,7 @@ routeLayer.prototype.LayerUpdate = function() {
       success: function (data) {
          data = data.trim();
          console.log(data)
-         myThis.AddFeatures(data, true)
+         routeLayer.prototype.AddFeatures(data, true)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
