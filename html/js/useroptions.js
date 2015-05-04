@@ -35,7 +35,7 @@ function getUserOptions() {
 }
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
 function setUserOptions(map) {
-  // console.log("called setUserOptions");
+      console.log("called setUserOptions");
    //map.zoom = userOptions.zoom;
    var cp = cPoint1(userOptions.centerLon, userOptions.centerLat)
    var lonlat = new OpenLayers.LonLat(cp.x, cp.y);
@@ -46,6 +46,7 @@ function setUserOptions(map) {
 }
 function setMapLayers(map) {
    //printAllMapLayers(map);
+   //printBaseLayers(map)
    for ( j=0;  j < map.layers.length; j++) {
       map.layers[j].setVisibility(false);
    }
@@ -53,13 +54,20 @@ function setMapLayers(map) {
    for( i= 0;i<userOptions.myLayers.length;i++) {
    for ( j=0;  j < map.layers.length; j++) {
          if (userOptions.myLayers[i]==map.layers[j].name) {
+
+            if( map.layers[j].isBaseLayer){
+               map.baseLayer= map.layers[j]; // set Base layer explicit
+              // console.log("set base map layer"+map.layers[j].name);
+            }
             map.layers[j].setVisibility(true);
+
             //console.log("visible map layer"+map.layers[j].name);
             break;
          }
       }
    }
    //printVisibleMapLayers(map);
+   printBaseLayers(map);
 }
 
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
@@ -68,6 +76,7 @@ function saveUserOptions(map) {
    /*printAllMapLayers(map);
    printVisibleMapLayers(map);
    printInVisibleMapLayers(map);*/
+   printBaseLayers(map)
    updateMapLayers(map)
    p = cPoint(map.center)
    userOptions.centerLon = p.x;
@@ -127,4 +136,16 @@ function printUserOptonsLayers() {
       }
    console.log("!!!!!!!!!!!!!!!!!!!  end of user selected layers !!!!!!!!!!!!!!!!!!!!!!!!");
    }
-
+function printBaseLayers(map) {
+   console.log(" ??????????- Printing base layers????????? :")
+   //console.log("** No of layers"+map.getNumLayers());
+   for (i = 0; i < map.layers.length; i++) {
+      if (map.layers[i].isBaseLayer) {
+         console.log(map.layers[i].name)
+         if (map.layers[i].visibility) {
+            console.log("** visibile Base layer is  **" + map.layers[i].name+" and layer index is "+map.getLayerIndex(map.layers[i]));
+         }
+      }
+   }
+   console.log("???????????????? End of Base Layer ????????????????????????????????????? ");
+}

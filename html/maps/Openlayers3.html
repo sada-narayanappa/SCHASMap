@@ -26,6 +26,7 @@
     <script src="trackLayer.js"></script>
     <script src="syntheticLayer.js"></script>
 
+
     <link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
 
     <script>
@@ -89,12 +90,30 @@
             <div id="tabs">
                 <ul>
                     <li><a href="#tabs-3">Pick/ User</a></li>
-                    <li><a href="#tabs-1">Utilities</a></li>
+                    <li><a href="#tabs-1">Settings</a></li>
                     <li><a href="#tabs-2">Trajectories</a></li>
 
                 </ul>
                 <div id="tabs-1">
-                    <input type="button" onclick="findLocation()" value="Find my Location">
+
+                        <label>
+                            Username
+                            <input name="signin_v1[username]"  type="text">
+                        </label>
+                        <label>
+                            Password
+                            <input name="signin_v1[password]"  type="password">
+                        </label>
+                        <input  value="Login" type="submit">
+
+                    <!--
+                  <label for="username">username :</label>
+                  <input type="text" id="query" size=25 name="userName" value=""/><br>
+                  <label for="password">password :</label>
+                  <input type="text" id="query" size=25 name="password" value=""/><br>
+
+                  <input type="submit" value="Validate"/>
+               <input type="button" onclick="findLocation()" value="Find my Location"> -->
                 </div>
                 <div id="tabs-2">
                     <p>Find interesting trajectories - query</p>
@@ -157,6 +176,8 @@
             if ( i == 0) {
                 CURRENT_PARMS = p;
             }
+
+
         }
         $("#tabs-3").html(str);
     }
@@ -165,6 +186,7 @@
         url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9"
         submitForm({URL: url, fdata: {}, CB: setUserSessions })
     }
+
 </script>
 </body>
 </html>
