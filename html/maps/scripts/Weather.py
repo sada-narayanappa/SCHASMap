@@ -103,6 +103,7 @@ def run():
 
     d = datetime.datetime.utcnow()
     unixtime = calendar.timegm(d.utctimetuple())
+    lastGoodTime="";
     for i, r in enumerate(rows):
         st = r[idi];
         xm = r[xmi];
@@ -111,7 +112,10 @@ def run():
         vl = True if r[val].startswith('t') else False;
         print st, lt, ln,vl, xm;
         dat,jas, jsn, raw = getWeatherLatLon( lt, ln)
-        insert(st, dat, jas,jsn, raw, unixtime);
+        lastGoodTime = dat or lastGoodTime;
+        # This stupid lastGoodTime is here because sometimes we fail to data and
+        # And we error out - hence the hack
+        insert(st, lastGoodTime, jas,jsn, raw, unixtime);
         #print w;
         if (i == 200):
             break;
