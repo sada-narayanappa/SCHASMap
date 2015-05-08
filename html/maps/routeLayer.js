@@ -316,8 +316,6 @@ routeLayer.prototype.LayerUpdate = function() {
    var e = getMapBoundedBox(true);
    var q;
 
-   q = "" ;
-
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
    if (sourceid == 1 ) {
       routeLayer.prototype.getSourceNodeID();
