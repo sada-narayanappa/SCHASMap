@@ -167,8 +167,12 @@
                 mobile_id = d[0]
                 str = str + "<hr>"
             }
-            s = "setURL('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
-            p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'"; // containst mobile_id and session num
+
+            if ( d[1].indexOf("-") < 0) {
+                p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'"; // containst mobile_id and session num
+            } else {
+                p = "'mobile_id="+ d[0] + "&measured_at=" + d[1] + "'"; // containst mobile_id and session num
+            }
             s = "changeTrackLayer(" + p + ")";
             a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
             str = str  + a;
@@ -183,7 +187,8 @@
     }
 
     function runQuery1(divName) {
-        url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9"
+        url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9a"
+        url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=15"
         submitForm({URL: url, fdata: {}, CB: setUserSessions })
     }
 

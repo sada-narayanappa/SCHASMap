@@ -2,7 +2,7 @@
 var userOptions = {
    myMobileID:       "",
    myMapView:        [0,0,0,0],
-   myLayers:         ["layer1", "layer2"],
+   myLayers:         ["OpenStreetMap", "Weather Sta Voronoi"],
    myUserID:         "",
    hideControlPanel: false,
    controlPanelHide: "",
@@ -21,32 +21,23 @@ var defaultUserOptions = {
 // Read the userOptions JSON from cookie named USER_OPTIONS
 function getUserOptions() {
    var uo = localStorage.getItem("userOptions");
-   console.log("User options: " + uo);
    if ( uo !== "undefined") {
       eval(uo);
       if (typeof($uo) !== "undefined" ) {
          userOptions = $uo
-         console.log( "Got USER OPTIONS");
-         console.log( userOptions);
       } else {
-         console.log("Could not get userOptions")
       }
    }
 }
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
 function setUserOptions(map) {
-      console.log("called setUserOptions");
-   //map.zoom = userOptions.zoom;
    var cp = cPoint1(userOptions.centerLon, userOptions.centerLat)
    var lonlat = new OpenLayers.LonLat(cp.x, cp.y);
    map.setCenter(lonlat, userOptions.zoom);
    setMapLayers(map)
-   console.log("Center: " + lonlat + " zoom:" + map.zoom + "\n" + map.center );
 
 }
 function setMapLayers(map) {
-   //printAllMapLayers(map);
-   //printBaseLayers(map)
    for ( j=0;  j < map.layers.length; j++) {
       map.layers[j].setVisibility(false);
    }
@@ -57,26 +48,18 @@ function setMapLayers(map) {
 
             if( map.layers[j].isBaseLayer){
                map.baseLayer= map.layers[j]; // set Base layer explicit
-              // console.log("set base map layer"+map.layers[j].name);
             }
             map.layers[j].setVisibility(true);
 
-            //console.log("visible map layer"+map.layers[j].name);
             break;
          }
       }
    }
-   //printVisibleMapLayers(map);
-   printBaseLayers(map);
+   //printBaseLayers(map);
 }
 
 // SAVE  userOptions JSON from cookie named USER_OPTIONS
 function saveUserOptions(map) {
-   console.log("called saveUserOptions");
-   /*printAllMapLayers(map);
-   printVisibleMapLayers(map);
-   printInVisibleMapLayers(map);*/
-   printBaseLayers(map)
    updateMapLayers(map)
    p = cPoint(map.center)
    userOptions.centerLon = p.x;
@@ -137,15 +120,15 @@ function printUserOptonsLayers() {
    console.log("!!!!!!!!!!!!!!!!!!!  end of user selected layers !!!!!!!!!!!!!!!!!!!!!!!!");
    }
 function printBaseLayers(map) {
-   console.log(" ??????????- Printing base layers????????? :")
+   //console.log(" ??????????- Printing base layers????????? :")
    //console.log("** No of layers"+map.getNumLayers());
    for (i = 0; i < map.layers.length; i++) {
       if (map.layers[i].isBaseLayer) {
-         console.log(map.layers[i].name)
+         //console.log(map.layers[i].name)
          if (map.layers[i].visibility) {
-            console.log("** visibile Base layer is  **" + map.layers[i].name+" and layer index is "+map.getLayerIndex(map.layers[i]));
+            //console.log("** visibile Base layer is  **" + map.layers[i].name+" and layer index is "+map.getLayerIndex(map.layers[i]));
          }
       }
    }
-   console.log("???????????????? End of Base Layer ????????????????????????????????????? ");
+   //console.log("???????????????? End of Base Layer ????????????????????????????????????? ");
 }
