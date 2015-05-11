@@ -177,7 +177,7 @@ function getPop(o) {
          "</div>"
    return str;
 }
-colors = " blue, fuchsia, green, 0000ff, maroon, navy, olive, orange,purple, red, yellow"
+colors = " blue, fuchsia, green, #800000, #99CCFF , maroon, navy, olive, orange,purple, red, #7ACC29, purple, #660033"
 colors = colors.split(",");
 for ( c in colors ) {
    colors[c] = colors[c].trim();
