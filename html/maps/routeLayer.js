@@ -104,7 +104,7 @@ routeLayer.prototype.AddLayer = function(map) {
       //$self.LayerUpdate()
    });
    layer.setVisibility(true);
-   console.log("ROUTE " + routeLayer.start + " " + routeLayer.end );
+   //console.log("ROUTE " + routeLayer.start + " " + routeLayer.end );
    setTimeout(routeLayer.prototype.LayerUpdate,2000);
    return layer;
 }
@@ -184,7 +184,7 @@ routeLayer.prototype.getSourceNodeID = function() {
    var PROXY = "../cgi-bin/proxy.py?url=";
 
    var url = PROXY + DB_URL + "qn=12&lon="+startLon+"&lat="+ startLat;
-   console.log(url);
+   //console.log(url);
 
    $.ajax({
       type: "GET",
@@ -199,7 +199,7 @@ routeLayer.prototype.getSourceNodeID = function() {
          //console.log(data)
          eval(data);
 		 sourceid = $rs["rows"][0];
-		 console.log(sourceid);
+		 //console.log(sourceid);
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
@@ -221,7 +221,7 @@ routeLayer.prototype.getTargetNodeID = function() {
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
    var url = PROXY + DB_URL + "qn=12&lon="+endLon+"&lat="+ endLat;
 
-   console.log(url);
+   //console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
@@ -238,7 +238,7 @@ routeLayer.prototype.getTargetNodeID = function() {
          //console.log(data)
          eval(data);
 		 targetid = $rs["rows"][0];
-		 console.log(targetid);		 
+		 //console.log(targetid);
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
@@ -324,7 +324,7 @@ routeLayer.prototype.LayerUpdate = function() {
 
    var url = PROXY + DB_URL + "qn=13&s="+sourceid+"&t="+targetid;
 
-   console.log(url);
+   //console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
@@ -339,7 +339,7 @@ routeLayer.prototype.LayerUpdate = function() {
       cache: false,
       success: function (data) {
          data = data.trim();
-         console.log(data)
+         //console.log(data)
          routeLayer.prototype.AddFeatures(data, true)
       },
       error: function(xhr, stat, err) {

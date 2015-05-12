@@ -177,7 +177,7 @@ function getPop(o) {
          "</div>"
    return str;
 }
-colors = " blue, fuchsia, green, 0000ff, maroon, navy, olive, orange,purple, red, yellow"
+colors = " blue, fuchsia, green, #800000, #99CCFF , maroon, navy, olive, orange,purple, red, #7ACC29, purple, #660033"
 colors = colors.split(",");
 for ( c in colors ) {
    colors[c] = colors[c].trim();
@@ -266,6 +266,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
          prevObj = obj;
       }
       var label = (locs.length > 2) ? lc[2].substring(14,19) : lc[2]
+      var label = (locs.length > 2) ? lc[2].substring(12,17) : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
 
@@ -341,13 +342,19 @@ function trackLayerUpdate(parms,bounds) {
    var url = config.PROXY + TL_URL
 
    if (parms) {
-      url = url+ parms;
+      if ( parms.indexOf("session") > 0) {
+         url = url+ parms;
+      } else {
+         TL_URL= "http://www.geospaces.org/aura/webroot/db.jsp?qn=6a&type=js&";
+         url = config.PROXY + TL_URL
+         url = url+ parms;
+      }
       CURRENT_PARMS = parms;
    } else if ( $.urlAllParams()) {
       url = url+ $.urlAllParams();
    } else {
       //url = url+ CURRENT_PARMS;
-      console.log(CURRENT_PARMS);
+      //console.log(CURRENT_PARMS);
    }
 
    //console.log( url)
