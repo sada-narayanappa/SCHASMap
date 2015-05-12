@@ -25,10 +25,23 @@
     <script src="routeLayer.js"></script>
     <script src="trackLayer.js"></script>
     <script src="syntheticLayer.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen, projection"
+          href="http://www.blueprintcss.org/blueprint/screen.css" />
+    <link rel="stylesheet"  type="text/css" media="screen, projection"
+          href="http://www.blueprintcss.org/blueprint/plugins/buttons/screen.css" />
+    <link rel="stylesheet" type="text/css" media="print"
+          href="http://www.blueprintcss.org/blueprint/print.css" />
+    <!--[if IE]><link rel="stylesheet" type="text/css" media="screen, projection"
+                      href="http://www.blueprintcss.org/blueprint/ie.css"><![endif]-->
+
 
 
     <link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
 
+    <style type="text/css">
+        #loginContent { width: 350px; margin: 100px auto; }
+        button[type] { margin: 0.5em 0; }
+    </style>
     <script>
         $(function() {
             $( "#tabs" ).tabs();
@@ -44,7 +57,7 @@
                 userOptions = defaultUserOptions;
 
             runQuery1(); // load the information
-            ControlPanelToggle(userOptions.controlPanel)
+            ControlPanelToggle(userOptions.controlPanel);
             trackLayerUpdate(userOptions.myUserID, false);
             setUserOptions(map);
         }
@@ -59,10 +72,10 @@
         d = onOff || document.getElementById('formcontent').style.display;
 
         if ( d == "none") {
-            d = "block"
+            d = "block";
             userOptions.controlPanel = "none"
         } else {
-            d = "none"
+            d = "none";
             userOptions.controlPanel = "block";
         }
         document.getElementById('formcontent').style.display = d;
@@ -91,29 +104,58 @@
                 <ul>
                     <li><a href="#tabs-3">Pick/ User</a></li>
                     <li><a href="#tabs-1">Settings</a></li>
-                    <li><a href="#tabs-2">Trajectories</a></li>
+                    <li><a href="#tabs-2">Utilities</a></li>
 
                 </ul>
                 <div id="tabs-1">
 
-                        <label>
-                            Username
-                            <input name="signin_v1[username]"  type="text">
-                        </label>
-                        <label>
-                            Password
-                            <input name="signin_v1[password]"  type="password">
-                        </label>
-                        <input  value="Login" type="submit">
+                    <div id="loginContent" class="container">
+                        <div id="loginResult" style="display:none;">
+                        </div>
+                        <form id="loginForm" name="loginForm" method="post" action="">
+                            <fieldset>
+                                <legend>Enter information</legend>
+                                <p>
+                                    <label for="username">Username</label>
+                                    <br />
+                                    <input type="text" id="username" name="username" class="text" size="20" />
+                                </p>
+                                <p>
+                                    <label for="password">Password</label>
+                                    <br />
+                                    <input type="password" id="password" name="password" class="text" size="20" />
+                                </p>
+                                <p>
+                                    <button type="button" class="button positive" onclick="runQuery2();">
+                                        <img alt="ok" src=
+                                                "http://www.blueprintcss.org/blueprint/plugins/buttons/icons/tick.png" />
+                                        Login
+                                    </button>
+                                </p>
+                            </fieldset>
+                        </form>
+                    </div>
 
                     <!--
-                  <label for="username">username :</label>
-                  <input type="text" id="query" size=25 name="userName" value=""/><br>
-                  <label for="password">password :</label>
-                  <input type="text" id="query" size=25 name="password" value=""/><br>
+                                          <label>
+                                              Username
 
-                  <input type="submit" value="Validate"/>
-               <input type="button" onclick="findLocation()" value="Find my Location"> -->
+                                              <input name="username" id="username" type="text">
+                                          </label>
+                                          <label>
+                                              Password
+                                              <input name="password"  id="password" type="password">
+                                          </label>
+                                          <input  value="Login" type="button" name="signMeIn" onclick="runQuery2()";>
+
+                                      <!--
+                                    <label for="username">username :</label>
+                                    <input type="text" id="query" size=25 name="userName" value=""/><br>
+                                    <label for="password">password :</label>
+                                    <input type="text" id="query" size=25 name="password" value=""/><br>
+
+                                    <input type="submit" value="Validate"/>
+                                 <input type="button" onclick="findLocation()" value="Find my Location"> -->
                 </div>
                 <div id="tabs-2">
                     <p>Find interesting trajectories - query</p>
@@ -141,7 +183,7 @@
         }
     }
     function setURL(parms) {
-        s = top.window.location.href
+        s = top.window.location.href;
         if (s.lastIndexOf("?") > 0) {
             s = s.substring(a, s.lastIndexOf("?"));
         }
@@ -159,18 +201,18 @@
         var type = $rs.coltypes;
         var data = $rs.rows || $rs[Object.keys($rs)[0]];
 
-        str = ""
+        str = "";
         mobile_id = "";
         for ( i in data) {
             d = data [i];
             if (mobile_id != d[0]) {
-                mobile_id = d[0]
+                mobile_id = d[0];
                 str = str + "<hr>"
             }
             s = "setURL('mobile_id="+ d[0] + "&session_num=" + d[1] + "')";
             p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'"; // containst mobile_id and session num
             s = "changeTrackLayer(" + p + ")";
-            a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
+            a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n";
             str = str  + a;
 
             if ( i == 0) {
@@ -181,11 +223,76 @@
         }
         $("#tabs-3").html(str);
     }
+    function validateUserAccount(text){
+        console.log("called validateUserAccount");
+        eval(text);
+        var data1 = $rs.rows || $rs[Object.keys($rs)[0]];
+        if(data1.size >0){
+            console.log("user is authenticated");
+        }
+        else{
+            console.log("user is not authenticated");
+        }
+
+    }
 
     function runQuery1(divName) {
-        url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9"
+        url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9";
+        //http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=14&cname=sada&passwd=password
         submitForm({URL: url, fdata: {}, CB: setUserSessions })
     }
+
+  function runQuery2(){ // loginForm is submitted
+      var username = $('#username').val(); // get username
+      var password = $('#password').val(); // get password
+            if (username && password) { // values are not empty
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=14",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+
+                    data: "cname=" + username + "&passwd=" + password,
+
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+
+                        $('div#loginResult').text(""
+                        + ", textStatus: " + textStatus
+                        + ", errorThrown: " + errorThrown);
+                        $('div#loginResult').addClass("error");
+                    },
+                    success: function(data){
+                        if (data.error) { // script returned error
+                            $('div#loginResult').text("data.error: " + data.error);
+                            $('div#loginResult').addClass("error");
+                        } // if
+                        else { // data recieved
+                            eval(data);
+//                            console.log("recieved text is "+data);
+                            var data2 = $rs.rows || $rs[Object.keys($rs)[0]];
+                            if(data2.length > 0) {
+                                $('div#loginResult').text("Welcome, Please update your details");
+                                $('div#loginResult').addClass("success");
+                               // $('form#loginForm').hide();
+                            }
+                                else{
+
+                                    $('div#loginResult').text("Login Failed: " );
+                                    $('div#loginResult').addClass("error");
+
+                                }
+                                }
+                    } // success
+                }); // ajax
+            } // if
+            else {
+                $('div#loginResult').text("Please enter username and password");
+                $('div#loginResult').addClass("error");
+            } // else
+            $('div#loginResult').fadeIn();
+            return false;
+  }
 
 </script>
 </body>
