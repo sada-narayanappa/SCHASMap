@@ -38,6 +38,7 @@
 
     <style type="text/css">
         #loginContent { width: 350px; margin: 100px auto; }
+        #profileContent { width: 350px; margin: 100px auto; }
         button[type] { margin: 0.5em 0; }
     </style>
     <script>
@@ -58,6 +59,7 @@
             ControlPanelToggle(userOptions.controlPanel);
             trackLayerUpdate(userOptions.myUserID, false);
             setUserOptions(map);
+            $('div#profile').hide();
         }
     </script>
 
@@ -107,7 +109,7 @@
                 </ul>
                 <div id="tabs-1">
 
-                    <div id="loginContent" class="container">
+                    <div id="loginContent">
                         <div id="loginResult" style="display:none;">
                         </div>
                         <form id="loginForm" name="loginForm" method="post" action="">
@@ -134,6 +136,63 @@
                         </form>
                     </div>
 
+                    <div id="profile">
+                        <div id="profileResult" style="display:none;">
+                        </div>
+                        <form id="profileForm" name="profileForm" method="post" action="">
+                            <fieldset>
+                                <legend>Update Personal Information</legend>
+
+                                <p>
+                                    <label for="fname">First Name</label>
+                                    <br />
+                                    <input type="text" id="fname" name="fname" class="text" size="30" />
+                                </p>
+                                <p>
+                                    <label for="lname">Last Name</label>
+                                    <br />
+                                    <input type="text" id="lname" name="lname" class="text" size="30" />
+                                </p>
+                                <p>
+                                    <label for="address">Address</label>
+                                    <br />
+                                    <input type="textarea" id="address" name="address" class="text"  />
+                                </p>
+                                <p>
+                                    <label for="cellphone">cell phone</label>
+                                    <br />
+                                    <input type="text" id="cellphone" name="cellphone" class="text" size="20" />
+                                </p>
+                                <p>
+                                    <label for="mobileid">Mobile id</label>
+                                    <br />
+                                    <input type="text" id="mobileid" name="mobileid" class="text" size="20" />
+                                </p>
+                                <p>
+                                    <label for="homephone">Home phone</label>
+                                    <br />
+                                    <input type="text" id="homephone" name="homephone" class="text" size="20" />
+                                </p>
+                                <p>
+                                    <label for="home_location">Home location</label>
+                                    <br />
+                                    <input type="text" id="home_location" name="home_location" class="text" size="20" />
+                                </p>
+
+
+                                <p>
+                                    <button type="button" class="button positive" onclick="runQuery3();">
+                                        <img alt="ok" src=
+                                                "http://www.blueprintcss.org/blueprint/plugins/buttons/icons/tick.png" />
+                                        Update
+                                    </button>
+                                </p>
+                            </fieldset>
+                        </form>
+
+
+                    </div>
+
 
                 </div>
                 <div id="tabs-2">
@@ -156,6 +215,7 @@
 </div>
 
 <script>
+    var userSysId;
     function clearAllMapPopups() {
         while( map.popups.length ) {
             map.removePopup(map.popups[0]);
@@ -207,18 +267,7 @@
         }
         $("#tabs-3").html(str);
     }
-    function validateUserAccount(text){
-        console.log("called validateUserAccount");
-        eval(text);
-        var data1 = $rs.rows || $rs[Object.keys($rs)[0]];
-        if(data1.size >0){
-            console.log("user is authenticated");
-        }
-        else{
-            console.log("user is not authenticated");
-        }
 
-    }
 
     function runQuery1(divName) {
         url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9a"
@@ -254,12 +303,24 @@
                     } // if
                     else { // data recieved
                         eval(data);
-//                            console.log("recieved text is "+data);
                         var data2 = $rs.rows || $rs[Object.keys($rs)[0]];
                         if(data2.length > 0) {
-                            $('div#loginResult').text("Welcome, Please update your details");
-                            $('div#loginResult').addClass("success");
-                            // $('form#loginForm').hide();
+                            $('div#loginContent').hide();
+                            $('div#profile').show();
+                            $('#profileForm').get(0).reset();
+
+                            for ( i in data2)
+                                d = data2 [i];
+                             userSysId = d[0];
+                            $("#fname").val(d[1].replace(null,""));
+                            $("#lname").val(d[2].replace(null,""));
+                            $("#address").val(d[3].replace(null,""));
+                            $("#cellphone").val(d[4].replace(null,""));
+                            $("#mobileid").val(d[5].replace(null,""));
+                            $("#homephone").val(d[7].replace(null,""));
+                            $("#home_location").val(d[9].replace(null,""));
+
+                          //  ["userid","fname","lname","cname","address","cellphone","mobileid","homephone","passwd","home_location"]
                         }
                         else{
 
@@ -278,6 +339,58 @@
         return false;
     }
 
+    function runQuery3(){ // profileForm is submitted
+
+        var fname = $('#fname').val(); // get username
+        var lname = $('#lname').val();
+        var address = $('#address').val();
+        var cellphone = $('#cellphone').val();
+        var mobileid = $('#mobileid').val();
+        var homephone = $('#homephone').val();
+        var home_location = $('#home_location').val();
+
+
+     ///   var sqlQuerytoUpdate = "update public.user set lname='"+lname+"' , fname='" + fname+ "' , address='" + address+ "', cellphone='" + cellphone+ "', mobileid='" + mobileid+ "', homephone='" + homephone+ "', home_location='" + home_location+ "'where userid ="+userSysId;
+
+        if (lname && fname) { // values are not empty
+            $.ajax({
+                type: "GET",
+                url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=16",
+                contentType: "application/text; charset=utf-8",
+                dataType: "text",
+                data: "fname=" + fname + "&lname=" + lname+ "&address=" + address+ "&passwd=" + cellphone+ "&cellphone=" +
+                mobileid+ "&mobileid=" + homephone+"&home_location=" + home_location+"&userId=" + userSysId,
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                    console.log( XMLHttpRequest.responseText);
+                    $('div#profileResult').text(""
+                    + ", textStatus: " + textStatus
+                    + ", errorThrown: " + errorThrown);
+                    $('div#profileResult').addClass("error");
+                }, // error
+                // script call was successful
+                success: function(data){
+                    if (data.error) { // script returned error
+                        $('div#profileResult').text("data.error: " + data.error);
+                        $('div#profileResult').addClass("error");
+                    } // if
+                    else { // data recieved
+                       // eval(data);
+                        $('div#profileResult').text("Profile saved");
+                        $('div#profileResult').addClass("success");
+
+
+                    }
+                } // success
+            }); // ajax
+        } // if
+        else {
+            $('div#profileResult').text("Please enter the required fields");
+            $('div#profileResult').addClass("error");
+        } // else
+        $('div#profileResult').fadeIn();
+        return false;
+    }
 
 </script>
 </body>
