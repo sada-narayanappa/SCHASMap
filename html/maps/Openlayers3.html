@@ -26,11 +26,7 @@
     <script src="trackLayer.js"></script>
     <script src="syntheticLayer.js"></script>
     <link rel="stylesheet" type="text/css" media="screen, projection"
-          href="http://www.blueprintcss.org/blueprint/screen.css" />
-    <link rel="stylesheet"  type="text/css" media="screen, projection"
-          href="http://www.blueprintcss.org/blueprint/plugins/buttons/screen.css" />
-    <link rel="stylesheet" type="text/css" media="print"
-          href="http://www.blueprintcss.org/blueprint/print.css" />
+          href="screen.css" />
     <!--[if IE]><link rel="stylesheet" type="text/css" media="screen, projection"
                       href="http://www.blueprintcss.org/blueprint/ie.css"><![endif]-->
 
@@ -59,7 +55,24 @@
             ControlPanelToggle(userOptions.controlPanel);
             trackLayerUpdate(userOptions.myUserID, false);
             setUserOptions(map);
-            $('div#profile').hide();
+
+            var name = localStorage.getItem('name');
+            console.log("name from localstorage is "+name);
+            if (typeof name !== 'undefined' && name !== null){
+             /*   $('div#loginContent').hide();
+               $('div#profile').hide();
+                $('div#useroptions').show();*/
+                showMenu();
+
+            } else {
+                console.log("name is null"+name);
+               // document.getElementById('loginResult').innerHTML = "Hello !"+ name;
+                /*$('div#loginContent').show();
+                $('div#profile').hide();
+                $('div#useroptions').hide();*/
+                showloginForm();
+
+            }
         }
     </script>
 
@@ -81,6 +94,7 @@
         document.getElementById('formcontent').style.display = d;
     }
 </script>
+
 <div id='form'>
     <form name="input" action="javascript: submitform();" method="post">
         <div style="font-variant: small-caps; text-align: right; width: 100%; background-color: grey">
@@ -117,13 +131,13 @@
                                 <legend>Enter information</legend>
                                 <p>
                                     <label for="username">Username</label>
-                                    <br />
-                                    <input type="text" id="username" name="username" class="text" size="20" />
+
+                                    <input type="text" id="username" name="username" class="text" size="10" />
                                 </p>
                                 <p>
                                     <label for="password">Password</label>
-                                    <br />
-                                    <input type="password" id="password" name="password" class="text" size="20" />
+
+                                    <input type="password" id="password" name="password" class="text" size="10" />
                                 </p>
                                 <p>
                                     <button type="button" class="button positive" onclick="runQuery2();">
@@ -136,46 +150,62 @@
                         </form>
                     </div>
 
+
+                    <div id="useroptions">
+
+                        <p>
+                            <button type="button" class="button positive" onclick="getProfileFromDB();">
+
+                                Edit Profile
+                            </button>
+                            |
+
+                            <button type="button" class="button positive" onclick="changepassword();">
+
+                                Change Password
+                            </button>
+                            |
+                            <button type="button" class="button positive" onclick="logout();">
+
+                                Log out
+                            </button>
+                        </p>
+                    </div>
+
+
+
                     <div id="profile">
                         <div id="profileResult" style="display:none;">
                         </div>
                         <form id="profileForm" name="profileForm" method="post" action="">
                             <fieldset>
                                 <legend>Update Personal Information</legend>
-
                                 <p>
                                     <label for="fname">First Name</label>
-                                    <br />
                                     <input type="text" id="fname" name="fname" class="text" size="30" />
                                 </p>
                                 <p>
                                     <label for="lname">Last Name</label>
-                                    <br />
                                     <input type="text" id="lname" name="lname" class="text" size="30" />
                                 </p>
                                 <p>
                                     <label for="address">Address</label>
-                                    <br />
                                     <input type="textarea" id="address" name="address" class="text"  />
                                 </p>
                                 <p>
                                     <label for="cellphone">cell phone</label>
-                                    <br />
                                     <input type="text" id="cellphone" name="cellphone" class="text" size="20" />
                                 </p>
                                 <p>
                                     <label for="mobileid">Mobile id</label>
-                                    <br />
                                     <input type="text" id="mobileid" name="mobileid" class="text" size="20" />
                                 </p>
                                 <p>
                                     <label for="homephone">Home phone</label>
-                                    <br />
                                     <input type="text" id="homephone" name="homephone" class="text" size="20" />
                                 </p>
                                 <p>
                                     <label for="home_location">Home location</label>
-                                    <br />
                                     <input type="text" id="home_location" name="home_location" class="text" size="20" />
                                 </p>
 
@@ -192,9 +222,8 @@
 
 
                     </div>
-
-
                 </div>
+
                 <div id="tabs-2">
                     <p>Find interesting trajectories - query</p>
                     <input type="button" value="Place Start Node"  onclick="routeLayer.setCanAddStartPoint(true)" />
@@ -305,22 +334,10 @@
                         eval(data);
                         var data2 = $rs.rows || $rs[Object.keys($rs)[0]];
                         if(data2.length > 0) {
-                            $('div#loginContent').hide();
-                            $('div#profile').show();
-                            $('#profileForm').get(0).reset();
 
-                            for ( i in data2)
-                                d = data2 [i];
-                             userSysId = d[0];
-                            $("#fname").val(d[1].replace(null,""));
-                            $("#lname").val(d[2].replace(null,""));
-                            $("#address").val(d[3].replace(null,""));
-                            $("#cellphone").val(d[4].replace(null,""));
-                            $("#mobileid").val(d[5].replace(null,""));
-                            $("#homephone").val(d[7].replace(null,""));
-                            $("#home_location").val(d[9].replace(null,""));
 
-                          //  ["userid","fname","lname","cname","address","cellphone","mobileid","homephone","passwd","home_location"]
+                            editprofile(data2);
+
                         }
                         else{
 
@@ -339,6 +356,103 @@
         return false;
     }
 
+    function getProfileFromDB(){ // loginForm is submitted
+        username = localStorage.getItem('name');
+        console.log("username got from locastorgae is "+username);
+
+        $.ajax({
+            type: "GET",
+            url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=17",
+            contentType: "application/json; charset=utf-8",
+            dataType: "text",
+            // send username and password as parameters to the python script
+            data: "cname=" +username,
+            // script call was *not* successful
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+            }, // error
+            // script call was successful
+            success: function(data){
+                if (data.error) { // script returned error
+
+                } // if
+                else { // data recieved
+                    eval(data);
+                    var data2 = $rs.rows || $rs[Object.keys($rs)[0]];
+                    if(data2.length > 0) {
+
+                        editprofile(data2);
+
+                    }
+                    else{
+                        alert("Fetching the user information failed..please login again");
+                        showloginForm();
+                        return false;
+                    }
+                }
+            } // success
+        }); // ajax
+    }
+
+
+
+    function logout() { // profileForm is submitted
+        localStorage.removeItem('name');
+       showloginForm();
+
+    }
+    function editprofile(data2) {
+
+
+                    if(data2.length > 0) {
+
+
+                        for ( i in data2)
+                            d = data2 [i];
+                        localStorage.setItem('name', d[3]);
+                        userSysId = d[0];
+                        $("#fname").val(d[1].replace(null,""));
+                        $("#lname").val(d[2].replace(null,""));
+                        $("#address").val(d[4].replace(null,""));
+                        $("#cellphone").val(d[5].replace(null,""));
+                        $("#mobileid").val(d[6].replace(null,""));
+                        $("#homephone").val(d[7].replace(null,""));
+                        $("#home_location").val(d[9].replace(null,""));
+                        showProfile();
+                        showMenuAlways();
+
+                        //  ["userid","fname","lname","cname","address","cellphone","mobileid","homephone","passwd","home_location"]
+                    }
+
+
+                }
+    function changepassword(){
+
+    }
+
+    function showMenu(){
+        $('div#loginContent').hide();
+        $('div#profile').hide();
+        $('div#useroptions').show();
+
+    }
+    function showMenuAlways(){
+        $('div#useroptions').show();
+
+    }
+
+    function showloginForm(){
+        $('div#loginContent').show();
+        $('div#useroptions').hide();
+        $('div#profile').hide();
+
+    }
+    function showProfile(){
+        $('div#loginContent').hide();
+        $('div#useroptions').hide();
+        $('div#profile').show();
+
+    }
     function runQuery3(){ // profileForm is submitted
 
         var fname = $('#fname').val(); // get username
@@ -350,7 +464,8 @@
         var home_location = $('#home_location').val();
 
 
-     ///   var sqlQuerytoUpdate = "update public.user set lname='"+lname+"' , fname='" + fname+ "' , address='" + address+ "', cellphone='" + cellphone+ "', mobileid='" + mobileid+ "', homephone='" + homephone+ "', home_location='" + home_location+ "'where userid ="+userSysId;
+     ///   var sqlQuerytoUpdate = "update public.user set lname='"+lname+"' , fname='" + fname+ "' , address='" + address+ "', cellphone='" + cellphone+
+     // "', mobileid='" + mobileid+ "', homephone='" + homephone+ "', home_location='" + home_location+ "'where userid ="+userSysId;
 
         if (lname && fname) { // values are not empty
             $.ajax({
@@ -358,8 +473,8 @@
                 url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=16",
                 contentType: "application/text; charset=utf-8",
                 dataType: "text",
-                data: "fname=" + fname + "&lname=" + lname+ "&address=" + address+ "&passwd=" + cellphone+ "&cellphone=" +
-                mobileid+ "&mobileid=" + homephone+"&home_location=" + home_location+"&userId=" + userSysId,
+                data: "fname=" + fname + "&lname=" + lname+ "&address=" + address+ "&cellphone=" + cellphone+ "&mobileid=" +
+                mobileid+ "&homephone=" + homephone+"&home_location=" + home_location+"&userSysId=" + userSysId,
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
                     console.log( XMLHttpRequest.responseText);
@@ -369,17 +484,21 @@
                     $('div#profileResult').addClass("error");
                 }, // error
                 // script call was successful
+                complete : function(){
+                    alert(this.url)
+                },
                 success: function(data){
                     if (data.error) { // script returned error
                         $('div#profileResult').text("data.error: " + data.error);
                         $('div#profileResult').addClass("error");
                     } // if
                     else { // data recieved
-                       // eval(data);
-                        $('div#profileResult').text("Profile saved");
-                        $('div#profileResult').addClass("success");
-
-
+                                $.ajax({
+                                    url: "http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload"
+                                }).done(function() {
+                                    $('div#profileResult').text("Profile saved");
+                                    $('div#profileResult').addClass("success");
+                                });
                     }
                 } // success
             }); // ajax
@@ -391,7 +510,12 @@
         $('div#profileResult').fadeIn();
         return false;
     }
-
+/*
+    $(document).ready(function() {
+        //console.log("before loading the userinfo.html");
+        $('#tabs-1').load('Userinfo.html');
+    });*/
 </script>
+
 </body>
 </html>
