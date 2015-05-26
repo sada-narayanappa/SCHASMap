@@ -129,7 +129,7 @@ possibleRoutesLayer.setCanAddEndPoint = function(canAddEnd){
 	possibleRoutesLayer.canAddStartPoint = false;
 }
 
-function posssibleRouteLayerVisible(){
+function posssibleRoutesLayerVisible(){
 	//console.log("Layer Visible: ", layer.getVisibility())
 	return layer.getVisibility();
 }
