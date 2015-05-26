@@ -54,6 +54,16 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 				routeLayer.AddEndPoint(lon,lat);
 			}
 		}
+                if(possibleRoutesLayerVisible() && (possibleRoutesLayer.getCanAddStartPoint() || possibleRoutesLayer.getCanAddEndPoint())){
+			if(possibleRoutesLayer.getCanAddStartPoint()){
+				possibleRoutesLayer.setCanAddStartPoint(false);
+				possibleRoutesLayer.AddStartPoint(lon,lat);
+			}
+			else if(possibleRoutesLayer.getCanAddEndPoint()){
+				possibleRoutesLayer.setCanAddEndPoint(false);
+				possibleRoutesLayer.AddEndPoint(lon,lat);
+			}
+		}
 	}
 });
 
@@ -175,6 +185,7 @@ function init() {
    var stv = new stationLayerVoronoi().AddLayer(map);
    var roads = new roadsLayer(map).AddLayer(map);
    var route = new routeLayer(map).AddLayer(map);
+   var routes = new possibleRoutesLayer(map).AddLayer(map);
 
 }//end Init() function
 

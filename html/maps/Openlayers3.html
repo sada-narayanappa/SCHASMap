@@ -23,6 +23,7 @@
     <script src="stationsLayer.js"></script>
     <script src="roadsLayer.js"></script>
     <script src="routeLayer.js"></script>
+    <script src="possibleRoutesLayer.js"></script>
     <script src="trackLayer.js"></script>
     <script src="syntheticLayer.js"></script>
     <link rel="stylesheet" type="text/css" media="screen, projection"
@@ -119,6 +120,7 @@
                     <li><a href="#tabs-3">Pick/ User</a></li>
                     <li><a href="#tabs-1">Settings</a></li>
                     <li><a href="#tabs-2">Utilities</a></li>
+                    <li><a href="#tabs-4">Possible Routes</a></li>
 
                 </ul>
                 <div id="tabs-1">
@@ -232,6 +234,12 @@
                 </div>
                 <div id="tabs-3" style="height:440px;overflow-y:auto;">
                     <p>Pick Users</p>
+                </div>
+                <div id="tabs-4">
+                    <p>Find Possible Routes</p>
+                    <input type="button" value="Place Start Node"  onclick="possibleRoutesLayer.setCanAddStartPoint(true)" />
+                    <input type="button" value="Place End Node"  onclick="possibleRoutesLayer.setCanAddEndPoint(true)" />
+                    <input type="button" value="Compute Route" onclick="possibleRoutesLayer.instance.LayerUpdate()"/>
                 </div>
 
             </div>
