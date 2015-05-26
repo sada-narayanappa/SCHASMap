@@ -78,7 +78,7 @@ possibleRoutesLayer.prototype.AddLayer = function(map) {
       labelYOffset: "-4"
    };
    var style = new OpenLayers.Style(template, {context: context});
-   layer = new OpenLayers.Layer.Vector('Routing Layer', {
+   layer = new OpenLayers.Layer.Vector('Possible Routes Layer', {
       styleMap: new OpenLayers.StyleMap(style),
       renderers: renderer
    });
