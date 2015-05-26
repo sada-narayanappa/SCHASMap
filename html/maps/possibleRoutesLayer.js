@@ -26,7 +26,7 @@ possibleRoutesLayer.clear = function(map) {
    possibleRoutesLayer.canAddEndPoint = false;
 
    var lyr = possibleRoutesLayer.instance.layer;
-   lyr.removeAllFeatures()
+   lyr.removeAllFeatures();
    lyr.destroyFeatures();
 }
 
