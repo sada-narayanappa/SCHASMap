@@ -5,7 +5,7 @@ var possibleRoutesLayer = function(){
    var route   = null;
 }
 
-var layer = null;
+var possrouteslayer = null;
 var startLon = -93.2130;
 var startLat = 45.0259;
 var sourceid = 1;
@@ -78,35 +78,35 @@ possibleRoutesLayer.prototype.AddLayer = function(map) {
       labelYOffset: "-4"
    };
    var style = new OpenLayers.Style(template, {context: context});
-   layer = new OpenLayers.Layer.Vector('Possible Routes Layer', {
+   possrouteslayer = new OpenLayers.Layer.Vector('Possible Routes Layer', {
       styleMap: new OpenLayers.StyleMap(style),
       renderers: renderer
    });
 
-   this.layer = layer;
-   map.addLayer(layer);
+   this.possrouteslayer = possrouteslayer;
+   map.addLayer(possrouteslayer);
 
    possibleRoutesLayer.start = possibleRoutesLayer.MakePointFeature(-93.2130,45.0259,"S", "green" );
    possibleRoutesLayer.end   = possibleRoutesLayer.MakePointFeature(-93.2074,45.0206,"T", "red" );
    this.getSourceNodeID();
    this.getTargetNodeID();
 
-   layer.addFeatures([possibleRoutesLayer.start, possibleRoutesLayer.end]);
+   possrouteslayer.addFeatures([possibleRoutesLayer.start, possibleRoutesLayer.end]);
 
-   layer.events.register("visibilitychanged", layer, function(evt) {
-      if ( layer.getVisibility() ) {
+   possrouteslayer.events.register("visibilitychanged", possrouteslayer, function(evt) {
+      if ( possrouteslayer.getVisibility() ) {
         //$self.LayerUpdate()
-         globalLayer = layer;
-         map.zoomToExtent(layer.getDataExtent())
+         globalLayer = possrouteslayer;
+         map.zoomToExtent(possrouteslayer.getDataExtent())
       }
    })
    map.events.register('moveend', map, function() {
       //$self.LayerUpdate()
    });
-   layer.setVisibility(true);
+   possrouteslayer.setVisibility(true);
    //console.log("ROUTE " + routeLayer.start + " " + routeLayer.end );
    setTimeout(possibleRoutesLayer.prototype.LayerUpdate,2000);
-   return layer;
+   return possrouteslayer;
 }
 
 possibleRoutesLayer.getCanAddStartPoint = function() {
@@ -131,25 +131,25 @@ possibleRoutesLayer.setCanAddEndPoint = function(canAddEnd){
 
 function possibleRoutesLayerVisible(){
 	//console.log("Layer Visible: ", layer.getVisibility())
-	return layer.getVisibility();
+	return possrouteslayer.getVisibility();
 }
 
 possibleRoutesLayer.AddStartPoint = function(lon,lat) {
-	layer.removeFeatures(possibleRoutesLayer.start);
-	startLon = lon;
-	startLat = lat;
+	possrouteslayer.removeFeatures(possibleRoutesLayer.start);
+	this.startLon = lon;
+	this.startLat = lat;
 	possibleRoutesLayer.start = possibleRoutesLayer.MakePointFeature(lon,lat,"S", "green" );
-   layer.addFeatures([possibleRoutesLayer.start]);
+   possrouteslayer.addFeatures([possibleRoutesLayer.start]);
    possibleRoutesLayer.instance.getSourceNodeID();
    //routeLayer.prototype.LayerUpdate();
 }
 
 possibleRoutesLayer.AddEndPoint = function(lon,lat) {
-	layer.removeFeatures(possibleRoutesLayer.end);	
-	endLon = lon;
-	endLat = lat;
+	possrouteslayer.removeFeatures(possibleRoutesLayer.end);	
+	this.endLon = lon;
+	this.endLat = lat;
    possibleRoutesLayer.end   = possibleRoutesLayer.MakePointFeature(lon,lat,"T", "red" );
-   layer.addFeatures([possibleRoutesLayer.end]);
+   possrouteslayer.addFeatures([possibleRoutesLayer.end]);
    possibleRoutesLayer.instance.getTargetNodeID();
    //routeLayer.prototype.LayerUpdate();
 }
@@ -183,7 +183,7 @@ possibleRoutesLayer.prototype.getSourceNodeID = function() {
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
 
-   var url = PROXY + DB_URL + "qn=12&lon="+startLon+"&lat="+ startLat;
+   var url = PROXY + DB_URL + "qn=12&lon="+this.startLon+"&lat="+ this.startLat;
    //console.log(url);
 
    $.ajax({
@@ -219,7 +219,7 @@ possibleRoutesLayer.prototype.getTargetNodeID = function() {
    q = "" ;
 
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
-   var url = PROXY + DB_URL + "qn=12&lon="+endLon+"&lat="+ endLat;
+   var url = PROXY + DB_URL + "qn=12&lon="+this.endLon+"&lat="+ this.endLat;
 
    //console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
@@ -247,7 +247,7 @@ possibleRoutesLayer.prototype.getTargetNodeID = function() {
 }
 
 possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
-   lyr = layer;
+   lyr = possrouteslayer;
    eval(data);
    var locs = $rs["rows"]
 
@@ -322,7 +322,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
       possibleRoutesLayer.prototype.getTargetNodeID();
    }
 
-   var url = PROXY + DB_URL + "qn=13&s="+sourceid+"&t="+targetid;
+   var url = PROXY + DB_URL + "qn=13&s="+this.sourceid+"&t="+this.targetid;
 
    //console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
