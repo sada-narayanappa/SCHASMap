@@ -237,7 +237,7 @@ possibleRoutesLayer.prototype.getTargetNodeID = function() {
       success: function (data) {
          //console.log(data)
          eval(data);
-		 targetid = $rs["rows"][0];
+		 this.targetid = $rs["rows"][0];
 		 //console.log(targetid);
       },
       error: function(xhr, stat, err) {
@@ -317,14 +317,14 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    var q;
 
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
-   if (sourceid == 1 ) {
+   if (this.sourceid == 1 ) {
       possibleRoutesLayer.prototype.getSourceNodeID();
       possibleRoutesLayer.prototype.getTargetNodeID();
    }
 
    var url = PROXY + DB_URL + "qn=13&s="+this.sourceid+"&t="+this.targetid;
 
-   //console.log(url);
+   console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
