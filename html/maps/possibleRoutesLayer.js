@@ -258,7 +258,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
    //console.log("GOT: " + locs.length)
    for(var i=0; i<locs.length; ++i) {
       var lc = locs[i];
-      $rss = JSON.parse(lc[4]);
+      $rss = JSON.parse(lc[5]);
 
       if ( !$rss.coordinates||$rss.coordinates[0].length <=0|| $rss.coordinates[0][0].length<=0) {
          return
@@ -278,14 +278,15 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       var line = new OpenLayers.Geometry.LineString(points);
       //var polygon = new OpenLayers.Geometry.Polygon([ring]);
 
-      labl = (lc[3]*1000).toPrecision(3);
+      labl = (lc[4]*1000).toPrecision(3);
       var attr=
       {
          seq:   lc[0],
-         n1:    lc[1],
-         n2:    lc[2],
-         cost:  lc[3],
-         geom:  lc[4],
+         route: lc[1],
+         n1:    lc[2],
+         n2:    lc[3],
+         cost:  lc[4],
+         geom:  lc[5],
          label: labl
       }
       //var feat = new OpenLayers.Feature.Vector(polygon,attr);
@@ -318,7 +319,8 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    
    var numRoutesElement = document.getElementById("numRoutes");
    var numRoutes = numRoutesElement.value;
-   console.log("number of routes selected" + numRoutes);
+   numRoutes = 1; //Replace the selected number of routes with 1 for now until drawing is capable of handling multiple routes
+   //console.log("number of routes selected" + numRoutes);
    
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
    if (posssourceid == 1 ) {
@@ -326,7 +328,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
       possibleRoutesLayer.prototype.getTargetNodeID();
    }
 
-   var url = PROXY + DB_URL + "qn=13&s="+ posssourceid +"&t="+posstargetid;
+   var url = PROXY + DB_URL + "qn=21&s="+ posssourceid +"&t="+posstargetid+"&k="+numRoutes;
 
    //console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
