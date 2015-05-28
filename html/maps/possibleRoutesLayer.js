@@ -316,8 +316,9 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    var e = getMapBoundedBox(true);
    var q;
    
-   var numRoutes = document.getElementById("numRoutes");
-   console.log("number of routs selected" + numRoutes);
+   var numRoutesElement = document.getElementById("numRoutes");
+   var numRoutes = numRoutesElement.value;
+   console.log("number of routes selected" + numRoutes);
    
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
    if (posssourceid == 1 ) {
