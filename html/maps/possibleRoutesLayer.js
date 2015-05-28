@@ -315,7 +315,10 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
 
    var e = getMapBoundedBox(true);
    var q;
-
+   
+   var numRoutes = document.getElementById("numRoutes");
+   console.log("number of routs selected" + numRoutes);
+   
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
    if (posssourceid == 1 ) {
       possibleRoutesLayer.prototype.getSourceNodeID();
@@ -324,7 +327,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
 
    var url = PROXY + DB_URL + "qn=13&s="+ posssourceid +"&t="+posstargetid;
 
-   console.log(url);
+   //console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
