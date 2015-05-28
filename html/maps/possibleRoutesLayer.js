@@ -330,7 +330,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
 
    var url = PROXY + DB_URL + "qn=21&s="+ posssourceid +"&t="+posstargetid+"&k="+numRoutes;
 
-   //console.log(url);
+   console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
