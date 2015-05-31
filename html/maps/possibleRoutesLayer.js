@@ -337,7 +337,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    $.ajax({
       type: "GET",
       url:  url,
-      timeout: 2000,
+      timeout: 5000,
       data: 	{},
       contentType: "",
       dataType: "text",
