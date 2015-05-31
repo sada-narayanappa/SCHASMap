@@ -282,7 +282,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       var attr=
       {
          seq:   lc[0],
-         route: lc[1],
+         //routenum: lc[1],
          n1:    lc[2],
          n2:    lc[3],
          cost:  lc[4],
