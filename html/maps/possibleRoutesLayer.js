@@ -9,8 +9,8 @@ var possrouteslayer = null;
 var possstartLon = -93.2130;
 var possstartLat = 45.0259;
 var posssourceid = 1;
-var possendLon = -93.20599423828163;
-var possendLat = 45.0206;
+var possendLon = -93.2181;
+var possendLat = 45.0242;
 var posstargetid = 1;
 
 possibleRoutesLayer.prototype.layer    = null;
@@ -86,8 +86,8 @@ possibleRoutesLayer.prototype.AddLayer = function(map) {
    this.possrouteslayer = possrouteslayer;
    map.addLayer(possrouteslayer);
 
-   possibleRoutesLayer.start = possibleRoutesLayer.MakePointFeature(-93.2130,45.0259,"S", "green" );
-   possibleRoutesLayer.end   = possibleRoutesLayer.MakePointFeature(-93.2074,45.0206,"T", "red" );
+   possibleRoutesLayer.start = possibleRoutesLayer.MakePointFeature(possstartLon,possstartLat,"S", "yellow" );
+   possibleRoutesLayer.end   = possibleRoutesLayer.MakePointFeature(possendLon,possendLat,"T", "cyan" );
    this.getSourceNodeID();
    this.getTargetNodeID();
 
@@ -319,7 +319,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    
    var numRoutesElement = document.getElementById("numRoutes");
    var numRoutes = numRoutesElement.value;
-   numRoutes = 1; //Replace the selected number of routes with 1 for now until drawing is capable of handling multiple routes
+   numRoutes = 2; //Replace the selected number of routes with 1 for now until drawing is capable of handling multiple routes
    //console.log("number of routes selected" + numRoutes);
    
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
@@ -328,7 +328,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
       possibleRoutesLayer.prototype.getTargetNodeID();
    }
 
-   var url = PROXY + DB_URL + "qn=21&s="+ posssourceid +"&t="+posstargetid+"&k="+numRoutes;
+   var url = PROXY + DB_URL + "qn=21&s="+ posssourceid  +"&t="+posstargetid+"&k="+numRoutes;
 
    console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
@@ -337,7 +337,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    $.ajax({
       type: "GET",
       url:  url,
-      timeout: 5000,
+      timeout: 15000,
       data: 	{},
       contentType: "",
       dataType: "text",

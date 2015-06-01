@@ -54,7 +54,7 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 				routeLayer.AddEndPoint(lon,lat);
 			}
 		}
-                if(possibleRoutesLayerVisible() && (possibleRoutesLayer.getCanAddStartPoint() || possibleRoutesLayer.getCanAddEndPoint())){
+      if(possibleRoutesLayerVisible() && (possibleRoutesLayer.getCanAddStartPoint() || possibleRoutesLayer.getCanAddEndPoint())){
 			if(possibleRoutesLayer.getCanAddStartPoint()){
 				possibleRoutesLayer.setCanAddStartPoint(false);
 				possibleRoutesLayer.AddStartPoint(lon,lat);

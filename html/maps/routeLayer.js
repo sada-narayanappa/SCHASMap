@@ -9,9 +9,10 @@ var layer = null;
 var startLon = -93.2130;
 var startLat = 45.0259;
 var sourceid = 1;
-var endLon = -93.20599423828163;
-var endLat = 45.0206;
+var endLon = -93.2181;
+var endLat = 45.0242;
 var targetid = 1;
+
 
 routeLayer.prototype.layer    = null;
 routeLayer.prototype.features = null;
@@ -86,8 +87,8 @@ routeLayer.prototype.AddLayer = function(map) {
    this.layer = layer;
    map.addLayer(layer);
 
-   routeLayer.start = routeLayer.MakePointFeature(-93.2130,45.0259,"S", "green" );
-   routeLayer.end   = routeLayer.MakePointFeature(-93.2074,45.0206,"T", "red" );
+   routeLayer.start = routeLayer.MakePointFeature(startLon,startLat,"S", "green" );
+   routeLayer.end   = routeLayer.MakePointFeature(endLon,endLat,"T", "red" );
    this.getSourceNodeID();
    this.getTargetNodeID();
 
@@ -324,7 +325,7 @@ routeLayer.prototype.LayerUpdate = function() {
 
    var url = PROXY + DB_URL + "qn=13&s="+sourceid+"&t="+targetid;
 
-   //console.log(url);
+   console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
