@@ -42,6 +42,9 @@ possibleRoutesLayer.prototype.AddLayer = function(map) {
    var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
 
+   var color1 = "blue, fuchsia, green, #800000, #99CCFF , maroon, navy, olive, orange,purple, red, #7ACC29, purple, #660033"
+   var colors = color1.split(",");
+
    var context = {
       getRadius: function(feature) {
          ret = 10; //(map.zoom < 9) ? 2 : 3;
@@ -61,11 +64,18 @@ possibleRoutesLayer.prototype.AddLayer = function(map) {
             r = feature.attributes.fillcolor;
          }
          return r;
+      },
+      StrokeColor: function(feature) {
+         var idx = feature.attributes.routeNum;
+         r = "black"
+         if ( idx != undefined )
+            r =  colors[idx];
+         return r;
       }
    };
    var template = {
       pointRadius: "${getRadius}",
-      strokeColor: "purple",
+      strokeColor: "${StrokeColor}",
       fillColor: "${FillColor}",
       fillOpacity: 0.4,
       strokeWidth: "4",
@@ -282,7 +292,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       var attr=
       {
          seq:   lc[0],
-         //routenum: lc[1],
+         routeNum: lc[1],
          n1:    lc[2],
          n2:    lc[3],
          cost:  lc[4],
@@ -319,7 +329,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    
    var numRoutesElement = document.getElementById("numRoutes");
    var numRoutes = numRoutesElement.value;
-   numRoutes = 2; //Replace the selected number of routes with 1 for now until drawing is capable of handling multiple routes
+   //numRoutes = 1; //Replace the selected number of routes with 1 for now until drawing is capable of handling multiple routes
    //console.log("number of routes selected" + numRoutes);
    
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
@@ -337,7 +347,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    $.ajax({
       type: "GET",
       url:  url,
-      timeout: 15000,
+      timeout: 60000,
       data: 	{},
       contentType: "",
       dataType: "text",
