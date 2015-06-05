@@ -288,7 +288,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       var line = new OpenLayers.Geometry.LineString(points);
       //var polygon = new OpenLayers.Geometry.Polygon([ring]);
 
-      labl = (lc[4]*1000).toPrecision(3);
+      labl = (lc[4]*.000621371).toPrecision(3);//convert from meters to miles
       var attr=
       {
          seq:   lc[0],
