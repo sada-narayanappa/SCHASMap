@@ -306,7 +306,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       //var ring = new OpenLayers.Geometry.LinearRing(points);
       var line = new OpenLayers.Geometry.LineString(points);
       //var polygon = new OpenLayers.Geometry.Polygon([ring]);
-
+      
       labl = (lc[4]*.000621371).toPrecision(3);//convert from meters to miles
       var attr=
       {
@@ -320,6 +320,22 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       }
       //var feat = new OpenLayers.Feature.Vector(polygon,attr);
       var feat = new OpenLayers.Feature.Vector(line,attr);
+      
+      if(middle){
+      var popup = new OpenLayers.Popup("Total Miles",
+                 OpenLayers.LonLat.fromString(feat.geometry.getCentroid(true).toShortString()),
+                 null,
+                 "Total Miles: " + totalMiles[lc[1]], // + feature.attributes.Latitude + ", " + feature.attributes.Longitude + "<br>" + "Humidity: " + feature.attributes.Humidity + "<br>" + "Temperature: " + feature.attributes.temp + "<br>" + "Speed: " + feature.attributes.Speed + "<br>" + "Date/Time: " + feature.attributes.DateTime,
+                 null,
+                 true,
+                 null
+         );
+         popup.autoSize = true;
+         popup.maxSize = new OpenLayers.Size(400, 800);
+         popup.fixedRelativePosition = true;
+         feat.popup = popup;
+         map.addPopup(popup);
+     }
       lyr.addFeatures(feat);
       if (!bounds) {
          bounds = feat.geometry.getBounds();
