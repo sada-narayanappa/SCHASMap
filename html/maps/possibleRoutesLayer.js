@@ -157,8 +157,8 @@ possibleRoutesLayer.AddStartPoint = function(lon,lat) {
 
 possibleRoutesLayer.AddEndPoint = function(lon,lat) {
 	possrouteslayer.removeFeatures(possibleRoutesLayer.end);	
-	possendLon = lon;
-	possendLat = lat;
+	possibleRoutesLayer.possendLon = lon;
+	possibleRoutesLayer.possendLat = lat;
    possibleRoutesLayer.end   = possibleRoutesLayer.MakePointFeature(lon,lat,"T", "red" );
    possrouteslayer.addFeatures([possibleRoutesLayer.end]);
    possibleRoutesLayer.instance.getTargetNodeID();
@@ -230,7 +230,7 @@ possibleRoutesLayer.prototype.getTargetNodeID = function() {
    q = "" ;
 
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
-   var url = PROXY + DB_URL + "qn=12&lon="+possendLon+"&lat="+ possendLat;
+   var url = PROXY + DB_URL + "qn=12&lon="+possibleRoutesLayer.possendLon+"&lat="+ possibleRoutesLayer.possendLat;
 
    //console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
@@ -248,7 +248,7 @@ possibleRoutesLayer.prototype.getTargetNodeID = function() {
       success: function (data) {
          //console.log(data)
          eval(data);
-		 posstargetid = $rs["rows"][0];
+		 possibleRoutesLayer.posstargetid = $rs["rows"][0];
 		 //console.log(targetid);
       },
       error: function(xhr, stat, err) {
