@@ -260,6 +260,16 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
    lyr = possrouteslayer;
    eval(data);
    var locs = $rs["rows"]
+   
+   var totalMiles = [];
+   var edgesInRoute = [];
+   for(var i=0; i<locs.length; ++i){
+       
+       var locEntry = locs[i];
+       edgesInRoute[locEntry[1]]=edgesInRoute[locEntry[1]]+1;
+       totalMiles[locEntry[1]] = totalMiles[locEntry[1]] + (locEntry[4]*.000621371).toPrecision(3);
+   }
+   
 
    lyr.removeAllFeatures()
    lyr.destroyFeatures();
@@ -267,7 +277,16 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
    var bounds = null;
    //console.log("GOT: " + locs.length)
    for(var i=0; i<locs.length; ++i) {
+      
+       
       var lc = locs[i];
+      
+      var middle = false;
+      //check to see if current entry is the middle of a route (to display total miles popup)
+      if(i === Math.floor(edgesInRoute[lc[1]]/2)){
+          middle = true; 
+      }
+      
       $rss = JSON.parse(lc[5]);
 
       if ( !$rss.coordinates||$rss.coordinates[0].length <=0|| $rss.coordinates[0][0].length<=0) {
