@@ -3,15 +3,16 @@ var possibleRoutesLayer = function(){
    var start = null;
    var end   = null;
    var route   = null;
+   var possrouteslayer = null;
+   var possstartLon = -93.2130;
+   var possstartLat = 45.0259;
+   var posssourceid = 1;
+   var possendLon = -93.2181;
+   var possendLat = 45.0242;
+   var posstargetid = 1;
 }
 
-var possrouteslayer = null;
-var possstartLon = -93.2130;
-var possstartLat = 45.0259;
-var posssourceid = 1;
-var possendLon = -93.2181;
-var possendLat = 45.0242;
-var posstargetid = 1;
+
 
 possibleRoutesLayer.prototype.layer    = null;
 possibleRoutesLayer.prototype.features = null;
