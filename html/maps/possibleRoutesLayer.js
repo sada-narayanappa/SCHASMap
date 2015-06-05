@@ -3,16 +3,15 @@ var possibleRoutesLayer = function(){
    var start = null;
    var end   = null;
    var route   = null;
-   var possrouteslayer = null;
-   var possstartLon = -93.2130;
-   var possstartLat = 45.0259;
-   var posssourceid = 1;
-   var possendLon = -93.2181;
-   var possendLat = 45.0242;
-   var posstargetid = 1;
 }
 
-
+var possrouteslayer = null;
+var possstartLon = -93.2130;
+var possstartLat = 45.0259;
+var posssourceid = 1;
+var possendLon = -93.2181;
+var possendLat = 45.0242;
+var posstargetid = 1;
 
 possibleRoutesLayer.prototype.layer    = null;
 possibleRoutesLayer.prototype.features = null;
@@ -97,8 +96,8 @@ possibleRoutesLayer.prototype.AddLayer = function(map) {
    this.possrouteslayer = possrouteslayer;
    map.addLayer(possrouteslayer);
 
-   possibleRoutesLayer.start = possibleRoutesLayer.MakePointFeature(possibleRoutesLayer.possstartLon,possibleRoutesLayer.possstartLat,"S", "yellow" );
-   possibleRoutesLayer.end   = possibleRoutesLayer.MakePointFeature(possibleRoutesLayer.possendLon,possibleRoutesLayer.possendLat,"T", "cyan" );
+   possibleRoutesLayer.start = possibleRoutesLayer.MakePointFeature(possstartLon,possstartLat,"S", "yellow" );
+   possibleRoutesLayer.end   = possibleRoutesLayer.MakePointFeature(possendLon,possendLat,"T", "cyan" );
    this.getSourceNodeID();
    this.getTargetNodeID();
 
@@ -147,8 +146,8 @@ function possibleRoutesLayerVisible(){
 
 possibleRoutesLayer.AddStartPoint = function(lon,lat) {
 	possrouteslayer.removeFeatures(possibleRoutesLayer.start);
-	possibleRoutesLayer.possstartLon = lon;
-	possibleRoutesLayer.possstartLat = lat;
+	possstartLon = lon;
+	possstartLat = lat;
 	possibleRoutesLayer.start = possibleRoutesLayer.MakePointFeature(lon,lat,"S", "green" );
    possrouteslayer.addFeatures([possibleRoutesLayer.start]);
    possibleRoutesLayer.instance.getSourceNodeID();
@@ -157,8 +156,8 @@ possibleRoutesLayer.AddStartPoint = function(lon,lat) {
 
 possibleRoutesLayer.AddEndPoint = function(lon,lat) {
 	possrouteslayer.removeFeatures(possibleRoutesLayer.end);	
-	possibleRoutesLayer.possendLon = lon;
-	possibleRoutesLayer.possendLat = lat;
+	possendLon = lon;
+	possendLat = lat;
    possibleRoutesLayer.end   = possibleRoutesLayer.MakePointFeature(lon,lat,"T", "red" );
    possrouteslayer.addFeatures([possibleRoutesLayer.end]);
    possibleRoutesLayer.instance.getTargetNodeID();
@@ -194,7 +193,7 @@ possibleRoutesLayer.prototype.getSourceNodeID = function() {
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
 
-   var url = PROXY + DB_URL + "qn=12&lon="+possibleRoutesLayer.possstartLon+"&lat="+ possibleRoutesLayer.possstartLat;
+   var url = PROXY + DB_URL + "qn=12&lon="+possstartLon+"&lat="+ possstartLat;
    //console.log(url);
 
    $.ajax({
@@ -209,7 +208,7 @@ possibleRoutesLayer.prototype.getSourceNodeID = function() {
       success: function (data) {
          //console.log(data)
          eval(data);
-		 possibleRoutesLayer.posssourceid = $rs["rows"][0];
+		 posssourceid = $rs["rows"][0];
 		 //console.log(sourceid);
       },
       error: function(xhr, stat, err) {
@@ -230,7 +229,7 @@ possibleRoutesLayer.prototype.getTargetNodeID = function() {
    q = "" ;
 
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
-   var url = PROXY + DB_URL + "qn=12&lon="+possibleRoutesLayer.possendLon+"&lat="+ possibleRoutesLayer.possendLat;
+   var url = PROXY + DB_URL + "qn=12&lon="+possendLon+"&lat="+ possendLat;
 
    //console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
@@ -248,7 +247,7 @@ possibleRoutesLayer.prototype.getTargetNodeID = function() {
       success: function (data) {
          //console.log(data)
          eval(data);
-		 possibleRoutesLayer.posstargetid = $rs["rows"][0];
+		 posstargetid = $rs["rows"][0];
 		 //console.log(targetid);
       },
       error: function(xhr, stat, err) {
@@ -334,12 +333,12 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    //console.log("number of routes selected" + numRoutes);
    
    //var url = PROXY + DB_URL + "qn=13&s=133072&t=71857" ;
-   if (possibleRoutesLayer.posssourceid == 1 ) {
+   if (posssourceid == 1 ) {
       possibleRoutesLayer.prototype.getSourceNodeID();
       possibleRoutesLayer.prototype.getTargetNodeID();
    }
 
-   var url = PROXY + DB_URL + "qn=21&s="+ possibleRoutesLayer.posssourceid  +"&t="+ possibleRoutesLayer.posstargetid +"&k="+numRoutes;
+   var url = PROXY + DB_URL + "qn=21&s="+ posssourceid  +"&t="+posstargetid+"&k="+numRoutes;
 
    console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
