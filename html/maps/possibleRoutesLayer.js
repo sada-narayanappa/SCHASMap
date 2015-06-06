@@ -284,6 +284,8 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       var middle = false;
       //check to see if current entry is the middle of a route (to display total miles popup)
       console.log("Found middle:" + i);
+      console.log(edgesInRoute[lc[1]]);
+      console.log(edgesInRoute[lc[1]]/2);
       console.log(Math.floor(edgesInRoute[lc[1]]/2));
       if(i === Math.floor(edgesInRoute[lc[1]]/2)){
           middle = true; 
