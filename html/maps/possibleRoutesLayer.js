@@ -267,9 +267,9 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
        
        var locEntry = locs[i];
        edgesInRoute[locEntry[1]] = edgesInRoute[locEntry[1]] || 0;
-       edgesInRoute[locEntry[1]]=edgesInRoute[locEntry[1]]+1;
+       edgesInRoute[locEntry[1]]=parseFloat(edgesInRoute[locEntry[1]])+1;
        totalMiles[locEntry[1]] = totalMiles[locEntry[1]] || 0;
-       totalMiles[locEntry[1]] = totalMiles[locEntry[1]] + (locEntry[4]*.000621371).toPrecision(3);
+       totalMiles[locEntry[1]] = parseFloat(totalMiles[locEntry[1]]) + parseFloat((locEntry[4]*.000621371).toPrecision(3));
    }
    
 
@@ -284,8 +284,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       var lc = locs[i];
       
       var middle = false;
-      //check to see if current entry is the middle of a route (to display total miles popup)
-      console.log("Found middle:" + i);
+      //check to see if current entry is the middle of a route (to display total miles popup)      
       console.log(edgesInRoute[lc[1]]);
       console.log(edgesInRoute[lc[1]]/2);
       console.log(Math.floor(edgesInRoute[lc[1]]/2));
