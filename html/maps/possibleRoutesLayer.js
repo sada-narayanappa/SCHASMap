@@ -278,17 +278,25 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
 
    var bounds = null;
    //console.log("GOT: " + locs.length)
+   var currentSeq = -1;
+   var currentRoute = -1;
    for(var i=0; i<locs.length; ++i) {
+      
       
        
       var lc = locs[i];
+      
+      if(currentRoute != lc[1]){
+          currentSeq = 0;
+          currentRoute = lc[1];
+      }
       
       var middle = false;
       //check to see if current entry is the middle of a route (to display total miles popup)      
       //console.log(edgesInRoute[lc[1]]);
       //console.log(edgesInRoute[lc[1]]/2);
       //console.log(Math.floor(edgesInRoute[lc[1]]/2));
-      if(lc[0] === Math.floor(edgesInRoute[lc[1]]/2)){
+      if(currentSeq === Math.floor(edgesInRoute[lc[1]]/2)){
           middle = true; 
           console.log("Found middle:" + i);
       }
@@ -348,7 +356,11 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       } else {
          bounds.extend(feat.geometry.getBounds());
       }
+      
+      currentSeq = currentSeq + 1;
    }
+   
+   
 
    if (lyr.getVisibility() && locs.length >0) {
       var b1 = map.calculateBounds();
