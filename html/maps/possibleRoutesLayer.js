@@ -266,7 +266,9 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
    for(var i=0; i<locs.length; ++i){
        
        var locEntry = locs[i];
+       edgesInRoute[locEntry[1]] = edgesInRoute[locEntry[1]] || 0;
        edgesInRoute[locEntry[1]]=edgesInRoute[locEntry[1]]+1;
+       totalMiles[locEntry[1]] = totalMiles[locEntry[1]] || 0;
        totalMiles[locEntry[1]] = totalMiles[locEntry[1]] + (locEntry[4]*.000621371).toPrecision(3);
    }
    
