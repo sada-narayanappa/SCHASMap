@@ -288,7 +288,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       console.log(edgesInRoute[lc[1]]);
       console.log(edgesInRoute[lc[1]]/2);
       console.log(Math.floor(edgesInRoute[lc[1]]/2));
-      if(i === Math.floor(edgesInRoute[lc[1]]/2)){
+      if(lc[0] === Math.floor(edgesInRoute[lc[1]]/2)){
           middle = true; 
           console.log("Found middle:" + i);
       }
