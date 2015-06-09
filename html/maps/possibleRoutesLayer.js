@@ -109,6 +109,10 @@ possibleRoutesLayer.prototype.AddLayer = function(map) {
          globalLayer = possrouteslayer;
          map.zoomToExtent(possrouteslayer.getDataExtent())
       }
+      else
+      {
+          possibleRoutesLayer.prototype.removePopups();
+      }
    })
    map.events.register('moveend', map, function() {
       //$self.LayerUpdate()
@@ -256,6 +260,12 @@ possibleRoutesLayer.prototype.getTargetNodeID = function() {
    });
 }
 
+possibleRoutesLayer.prototype.removePopups = function() {
+    while( map.popups.length ) {
+         map.removePopup(map.popups[0]);
+    }
+}
+
 possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
    lyr = possrouteslayer;
    eval(data);
@@ -272,8 +282,9 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
        totalMiles[locEntry[1]] = parseFloat(totalMiles[locEntry[1]]) + parseFloat((locEntry[4]*.000621371).toPrecision(3));
    }
    
-
-   lyr.removeAllFeatures()
+   
+   possibleRoutesLayer.prototype.removePopups();
+   lyr.removeAllFeatures();
    lyr.destroyFeatures();
 
    var bounds = null;
@@ -335,7 +346,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       //var feat = new OpenLayers.Feature.Vector(polygon,attr);
       var feat = new OpenLayers.Feature.Vector(line,attr);
       
-      if(middle){
+      if(middle && possibleRoutesLayerVisible()){
       var popup = new OpenLayers.Popup("Total Miles",
                  OpenLayers.LonLat.fromString(feat.geometry.getCentroid(true).toShortString()),
                  null,
@@ -346,7 +357,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
          );
          popup.autoSize = true;
          popup.maxSize = new OpenLayers.Size(400, 800);
-         popup.fixedRelativePosition = true;
+         popup.fixedRelativePosition = true;                 
          feat.popup = popup;
          map.addPopup(popup);
      }
