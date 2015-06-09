@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+f<!DOCTYPE HTML>
 <html>
 <head>
     <title>SCHAS Maps</title>
@@ -59,19 +59,13 @@
             var name = localStorage.getItem('name');
             console.log("name from localstorage is "+name);
             if (typeof name !== 'undefined' && name !== null){
-             /*   $('div#loginContent').hide();
-               $('div#profile').hide();
-                $('div#useroptions').show();*/
                 showMenu();
+                $('[href="#tabs-3"]').closest('li').show();
 
             } else {
                 console.log("name is null"+name);
-               // document.getElementById('loginResult').innerHTML = "Hello !"+ name;
-                /*$('div#loginContent').show();
-                $('div#profile').hide();
-                $('div#useroptions').hide();*/
                 showloginForm();
-
+                $('[href="#tabs-3"]').closest('li').hide();
             }
         }
     </script>
@@ -152,6 +146,8 @@
                     </div>
 
 
+
+
                     <div id="useroptions">
 
                         <p>
@@ -172,6 +168,46 @@
                             </button>
                         </p>
                     </div>
+
+
+
+                    <div id="changePassword">
+                        <div id="changePasswordResult" style="display:none;">
+                        </div>
+                        <form id="changePasswordForm" name="loginForm" method="post" action="">
+                            <fieldset>
+                                <legend>Enter information</legend>
+                                <p>
+                                    <label for="password">Enter current Password</label>
+
+                                    <input type="password" id="currentPassword" name="currentPassword" class="text" size="10" />
+                                </p>
+                                <p>
+                                    <label for="password">Enter New Password</label>
+
+                                    <input type="password" id="newPassword" name="newPassword" class="text" size="10" />
+                                </p>
+                                <p>
+                                    <label for="password">Repeat New Password</label>
+
+                                    <input type="password" id="newPassword1" name="newPassword1" class="text" size="10" />
+                                </p>
+                                <p>
+                                    <button type="button" class="button positive" onclick="submitPassword();">
+                                        <img alt="ok" src=
+                                                "http://www.blueprintcss.org/blueprint/plugins/buttons/icons/tick.png" />
+                                        Change password
+                                    </button>
+                                </p>
+                            </fieldset>
+                        </form>
+                    </div>
+
+
+
+
+
+
 
 
 
@@ -231,8 +267,8 @@
                     <input type="button" value="Place End Node"  onclick="routeLayer.setCanAddEndPoint(true)" />
                     <input type="button" value="Compute Route" onclick="routeLayer.instance.LayerUpdate()"/>
                 </div>
-                <div id="tabs-3" style="height:440px;overflow-y:auto;">
-                    <p>Pick Users</p>
+               <div id="tabs-3" style="height:440px;overflow-y:auto;">
+                    <p></p>
                 </div>
                 <div id="tabs-4">
                     <p>Probabilistic Route Analysis</p>
@@ -307,9 +343,27 @@
 
 
     function runQuery1(divName) {
-        url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9a"
-        url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=15"
-        submitForm({URL: url, fdata: {}, CB: setUserSessions })
+        loggedInUserName = localStorage.getItem('name');
+        //console.log("inside runquery1 and is name from localstorage is "+name); 
+        if (typeof loggedInUserName !== 'undefined' && loggedInUserName !== null) {
+
+            if (loggedInUserName == 'admin') {
+                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9a"
+                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=15"
+                submitForm({URL: url, fdata: {}, CB: setUserSessions})
+            }
+            else {
+               // console.log("not an admin user.. not loaded");
+                loggedInUserMobile_Id = localStorage.getItem('mobile_id');
+                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=22&mobile_id="+loggedInUserMobile_Id;
+                submitForm({URL: url, fdata: {}, CB: setUserSessions})
+
+            }
+        }
+        else {
+            // console.log("name is null"+loggedInUserName); 
+            showloginForm();
+        }
     }
 
     function runQuery2(){ // loginForm is submitted
@@ -390,6 +444,7 @@
                     if(data2.length > 0) {
 
                         editprofile(data2);
+                        runQuery1();
 
                     }
                     else{
@@ -406,18 +461,21 @@
 
     function logout() { // profileForm is submitted
         localStorage.removeItem('name');
+        localStorage.removeItem('mobile_id');
        showloginForm();
+        //$('[href="#tabs-3”]’).closest('li').hide();
+        $('[href="#tabs-3"]').closest('li').hide();
 
     }
+
+
     function editprofile(data2) {
 
-
                     if(data2.length > 0) {
-
-
                         for ( i in data2)
                             d = data2 [i];
                         localStorage.setItem('name', d[3]);
+                        localStorage.setItem('mobile_id',d[6]);
                         userSysId = d[0];
                         $("#fname").val(d[1].replace(null,""));
                         $("#lname").val(d[2].replace(null,""));
@@ -428,17 +486,25 @@
                         $("#home_location").val(d[9].replace(null,""));
                         showProfile();
                         showMenuAlways();
+                        $('[href="#tabs-3"]').closest('li').show();
+                        runQuery1();
+
+
+
 
                         //  ["userid","fname","lname","cname","address","cellphone","mobileid","homephone","passwd","home_location"]
                     }
-
-
                 }
     function changepassword(){
-
+        console.log("called change password function");
+        $('div#loginContent').hide();
+        $('div#profile').hide();
+        $('div#useroptions').show();
+        $('div#changePassword').show();
     }
 
     function showMenu(){
+        $('div#changePassword').hide();
         $('div#loginContent').hide();
         $('div#profile').hide();
         $('div#useroptions').show();
@@ -448,21 +514,22 @@
         $('div#useroptions').show();
 
     }
-
     function showloginForm(){
         $('div#loginContent').show();
         $('div#useroptions').hide();
         $('div#profile').hide();
-
+        $('div#changePassword').hide();
     }
+
     function showProfile(){
         $('div#loginContent').hide();
         $('div#useroptions').hide();
         $('div#profile').show();
+        $('div#changePassword').hide();
 
     }
-    function runQuery3(){ // profileForm is submitted
 
+    function runQuery3(){ // profileForm is submitted
         var fname = $('#fname').val(); // get username
         var lname = $('#lname').val();
         var address = $('#address').val();
@@ -470,7 +537,6 @@
         var mobileid = $('#mobileid').val();
         var homephone = $('#homephone').val();
         var home_location = $('#home_location').val();
-
 
      ///   var sqlQuerytoUpdate = "update public.user set lname='"+lname+"' , fname='" + fname+ "' , address='" + address+ "', cellphone='" + cellphone+
      // "', mobileid='" + mobileid+ "', homephone='" + homephone+ "', home_location='" + home_location+ "'where userid ="+userSysId;
