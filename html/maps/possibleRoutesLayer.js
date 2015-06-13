@@ -271,6 +271,9 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
    eval(data);
    var locs = $rs["rows"]
    
+   var color1 = "blue, fuchsia, green, #800000, #99CCFF , maroon, navy, olive, orange,purple, red, #7ACC29, purple, #660033"
+   var colors = color1.split(",");
+   
    var totalMiles = [];
    var edgesInRoute = [];
    for(var i=0; i<locs.length; ++i){
@@ -358,7 +361,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
          popup.autoSize = true;
          popup.maxSize = new OpenLayers.Size(400, 800);
          popup.fixedRelativePosition = true;  
-         popup.border = "3px solid #0000ff";
+         popup.border = "2px solid "+colors[lc[1]];
          feat.popup = popup;
          map.addPopup(popup);
      }
