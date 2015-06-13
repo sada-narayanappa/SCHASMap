@@ -279,7 +279,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
        edgesInRoute[locEntry[1]] = edgesInRoute[locEntry[1]] || 0;
        edgesInRoute[locEntry[1]]=parseFloat(edgesInRoute[locEntry[1]])+1;
        totalMiles[locEntry[1]] = totalMiles[locEntry[1]] || 0;
-       totalMiles[locEntry[1]] = parseFloat(totalMiles[locEntry[1]]).toPercision(3) + parseFloat((locEntry[4]*.000621371).toPrecision(3));
+       totalMiles[locEntry[1]] = parseFloat(totalMiles[locEntry[1]].toPrecision(4)) + parseFloat((locEntry[4]*.000621371).toPrecision(4));
    }
    
    
