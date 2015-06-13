@@ -350,10 +350,13 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       var feat = new OpenLayers.Feature.Vector(line,attr);
       
       if(middle && possibleRoutesLayerVisible()){
+          var precisionDigElement = document.getElementById("precisionDig");
+          var precisionDig = precisionDigElement.value;
+          
       var popup = new OpenLayers.Popup("Total Miles",
                  OpenLayers.LonLat.fromString(feat.geometry.getCentroid(true).toShortString()),
                  null,
-                 "Total Miles: " + totalMiles[lc[1]].toPrecision(4), // + feature.attributes.Latitude + ", " + feature.attributes.Longitude + "<br>" + "Humidity: " + feature.attributes.Humidity + "<br>" + "Temperature: " + feature.attributes.temp + "<br>" + "Speed: " + feature.attributes.Speed + "<br>" + "Date/Time: " + feature.attributes.DateTime,
+                 "Total Miles: " + totalMiles[lc[1]].toPrecision(precisionDig), // + feature.attributes.Latitude + ", " + feature.attributes.Longitude + "<br>" + "Humidity: " + feature.attributes.Humidity + "<br>" + "Temperature: " + feature.attributes.temp + "<br>" + "Speed: " + feature.attributes.Speed + "<br>" + "Date/Time: " + feature.attributes.DateTime,
                  null,
                  true,
                  null
