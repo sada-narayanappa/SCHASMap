@@ -312,7 +312,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       //console.log(Math.floor(edgesInRoute[lc[1]]/2));
       if(currentSeq === Math.floor(edgesInRoute[lc[1]]/2)){
           middle = true; 
-          console.log("Found middle:" + i);
+          //console.log("Found middle:" + i);
       }
       
       $rss = JSON.parse(lc[5]);
@@ -411,7 +411,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
 
    var url = PROXY + DB_URL + "qn=21&s="+ posssourceid  +"&t="+posstargetid+"&k="+numRoutes;
 
-   console.log(url);
+   //console.log(url);
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
