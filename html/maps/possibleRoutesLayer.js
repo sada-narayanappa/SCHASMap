@@ -357,7 +357,8 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
          );
          popup.autoSize = true;
          popup.maxSize = new OpenLayers.Size(400, 800);
-         popup.fixedRelativePosition = true;                 
+         popup.fixedRelativePosition = true;  
+         popup.border = "3px";
          feat.popup = popup;
          map.addPopup(popup);
      }
