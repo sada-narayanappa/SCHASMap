@@ -430,7 +430,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
          //console.log(data)
          var endTime = Date.now();
          var elapsedSeconds = (endTime - startTime);         
-         document.getElementByID("elapsedTime").innerHTML = "Calculation Time: " + elapsedSeconds.toString() + " Milliseconds";
+         document.getElementById("elapsedTime").innerHTML = "Calculation Time: " + elapsedSeconds.toString() + " Milliseconds";
          possibleRoutesLayer.prototype.AddFeatures(data, true)         
       },
       error: function(xhr, stat, err) {
