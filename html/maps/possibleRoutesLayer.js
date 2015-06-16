@@ -391,6 +391,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
 }
 
 possibleRoutesLayer.prototype.LayerUpdate = function() {
+   var startTime = Date.now();
    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
@@ -427,7 +428,10 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
       success: function (data) {
          data = data.trim();
          //console.log(data)
-         possibleRoutesLayer.prototype.AddFeatures(data, true)
+         var endTime = Date.now();
+         var elapsedSeconds = (endTime - startTime);         
+         document.getElementByID("elapsedTime").innerHTML = "Calculation Time: " + elapsedSeconds.toString() + " Milliseconds";
+         possibleRoutesLayer.prototype.AddFeatures(data, true)         
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
