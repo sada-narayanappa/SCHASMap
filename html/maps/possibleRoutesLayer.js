@@ -25,6 +25,7 @@ possibleRoutesLayer.clear = function(map) {
    possibleRoutesLayer.start  = null;
    possibleRoutesLayer.end    = null;
    possibleRoutesLayer.route  = null;
+   possibleRoutesLayer.possRoutesLayerAjax = null;
    possibleRoutesLayer.canAddStartPoint = false;
    possibleRoutesLayer.canAddEndPoint = false;
    
