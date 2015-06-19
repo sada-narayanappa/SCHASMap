@@ -3,7 +3,7 @@ var possibleRoutesLayer = function(){
    var start = null;
    var end   = null;
    var route   = null;
-   var possRoutesLayerAjax = null;
+   
 }
 
 var possrouteslayer = null;
@@ -13,6 +13,7 @@ var posssourceid = 1;
 var possendLon = -93.2181;
 var possendLat = 45.0242;
 var posstargetid = 1;
+var possRoutesLayerAjax = [];
 
 
 
@@ -24,8 +25,7 @@ possibleRoutesLayer.prototype.bounds   = null;
 possibleRoutesLayer.clear = function(map) {
    possibleRoutesLayer.start  = null;
    possibleRoutesLayer.end    = null;
-   possibleRoutesLayer.route  = null;
-   possibleRoutesLayer.possRoutesLayerAjax = [];
+   possibleRoutesLayer.route  = null;   
    possibleRoutesLayer.canAddStartPoint = false;
    possibleRoutesLayer.canAddEndPoint = false;
    
