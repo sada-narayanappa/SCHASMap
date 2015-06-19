@@ -397,10 +397,10 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
 
 possibleRoutesLayer.prototype.CancelButton = function() {
     document.getElementById("computeButton").value = "Compute Route";
-    for(var i = possibleRoutesLayer.possRoutesLayerAjax.length; i > 0  ; i--){
-        var ajaxReq = possibleRoutesLayer.possRoutesLayerAjax[i];
+    for(var i = possRoutesLayerAjax.length; i > 0  ; i--){
+        var ajaxReq = possRoutesLayerAjax[i];
         ajaxReq.abort();
-        possibleRoutesLayer.possRoutesLayerAjax.pop();
+        possRoutesLayerAjax.pop();
         console.log("Removed an Ajax Request")
     }
         
@@ -459,7 +459,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
-   possibleRoutesLayer.possRoutesLayerAjax.push(ajaxReq);
+   possRoutesLayerAjax.push(ajaxReq);
 }
 
 
