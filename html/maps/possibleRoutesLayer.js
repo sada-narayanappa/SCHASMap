@@ -294,12 +294,22 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
        overallTotalMiles = overallTotalMiles + parseFloat((locEntry[4]*.000621371).toPrecision(4));
    }
    
+   var evenPercentage = parseFloat(100/totalMiles.length);
+   var avgRouteLength = parseFloat(overallTotalMiles/totalMiles.length);
+   var distFromAvgOfRoute = [];
+   var totalAbsDistFromAvg = 0;
+   
    if(totalMiles.length===1){
-       probabilities[0]=1;
+       probabilities[0]=100;
    }
    else{
        for(var i = 0; i<totalMiles.length;i++){
-           probabilities[i]=(1-parseFloat((totalMiles[i]/overallTotalMiles).toPrecision(4)))*100;
+           totalAbsDistFromAvg = totalAbsDistFromAvg + Math.abs(avgRouteLength - totalMiles[i])
+           distFromAvgOfRoute[i] = avgRouteLength - totalMiles[i];
+       }
+       for(var i = 0; i<totalMiles.length;i++){
+           var percDiff = 1+parseFloat(distFromAvgOfRoute[i]/totalAbsDistFromAvg);
+           probabilities[i] = parseFloat(evenPercentage*percDiff);
        }
    }
    
@@ -374,7 +384,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       var popup = new OpenLayers.Popup("Total Miles",
                  OpenLayers.LonLat.fromString(feat.geometry.getCentroid(true).toShortString()),
                  null,
-                 "Total Miles: " + totalMiles[lc[1]].toPrecision(precisionDig) + "<br>Probability: " + probabilities[lc[1]] +"%", // + feature.attributes.Latitude + ", " + feature.attributes.Longitude + "<br>" + "Humidity: " + feature.attributes.Humidity + "<br>" + "Temperature: " + feature.attributes.temp + "<br>" + "Speed: " + feature.attributes.Speed + "<br>" + "Date/Time: " + feature.attributes.DateTime,
+                 "Total Miles: " + totalMiles[lc[1]].toPrecision(precisionDig) + "<br>Probability: " + probabilities[lc[1]].toPrecision(4) +"%", // + feature.attributes.Latitude + ", " + feature.attributes.Longitude + "<br>" + "Humidity: " + feature.attributes.Humidity + "<br>" + "Temperature: " + feature.attributes.temp + "<br>" + "Speed: " + feature.attributes.Speed + "<br>" + "Date/Time: " + feature.attributes.DateTime,
                  null,
                  true,
                  null
