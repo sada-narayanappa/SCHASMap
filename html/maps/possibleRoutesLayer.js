@@ -3,7 +3,7 @@ var possibleRoutesLayer = function(){
    var start = null;
    var end   = null;
    var route   = null;
-   var possRoutesLayerAjax = [];
+   var possRoutesLayerAjax = null;
 }
 
 var possrouteslayer = null;
@@ -27,6 +27,7 @@ possibleRoutesLayer.clear = function(map) {
    possibleRoutesLayer.route  = null;
    possibleRoutesLayer.canAddStartPoint = false;
    possibleRoutesLayer.canAddEndPoint = false;
+   
 
    var lyr = possibleRoutesLayer.instance.layer;
    lyr.removeAllFeatures();
