@@ -3,6 +3,7 @@ var possibleRoutesLayer = function(){
    var start = null;
    var end   = null;
    var route   = null;
+   var possRoutesLayerAjax = [];
 }
 
 var possrouteslayer = null;
@@ -12,6 +13,8 @@ var posssourceid = 1;
 var possendLon = -93.2181;
 var possendLat = 45.0242;
 var posstargetid = 1;
+
+
 
 possibleRoutesLayer.prototype.layer    = null;
 possibleRoutesLayer.prototype.features = null;
@@ -392,6 +395,13 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
 
 possibleRoutesLayer.prototype.CancelButton = function() {
     document.getElementById("computeButton").value = "Compute Route";
+    for(var i = possibleRoutesLayer.prototype.possRoutesLayerAjax.length; i > 0  ; i--){
+        var ajaxReq = possibleRoutesLayer.prototype.possRoutesLayerAjax[i];
+        ajaxReq.abort();
+        possibleRoutesLayer.prototype.possRoutesLayerAjax.pop();
+        console.log("Removed an Ajax Request")
+    }
+        
 }
 
 possibleRoutesLayer.prototype.LayerUpdate = function() {
@@ -425,7 +435,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
-   $.ajax({
+   var ajaxReq = $.ajax({
       type: "GET",
       url:  url,
       timeout: 60000,
@@ -447,6 +457,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });
+   possibleRoutesLayer.prototype.possRoutesLayerAjax.push(ajaxReq);
 }
 
 
