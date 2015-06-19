@@ -397,7 +397,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
 
 possibleRoutesLayer.prototype.CancelButton = function() {
     document.getElementById("computeButton").value = "Compute Route";
-    for(var i = possRoutesLayerAjax.length; i > 0  ; i--){
+    for(var i = possRoutesLayerAjax.length-1; i > 0  ; i--){
         var ajaxReq = possRoutesLayerAjax[i];
         ajaxReq.abort();
         possRoutesLayerAjax.pop();
