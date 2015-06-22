@@ -290,8 +290,8 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
        edgesInRoute[locEntry[1]] = edgesInRoute[locEntry[1]] || 0;
        edgesInRoute[locEntry[1]]=parseFloat(edgesInRoute[locEntry[1]])+1;
        totalMiles[locEntry[1]] = totalMiles[locEntry[1]] || 0;
-       totalMiles[locEntry[1]] = parseFloat(totalMiles[locEntry[1]].toPrecision(4)) + parseFloat((locEntry[4]*.000621371).toPrecision(4));
-       overallTotalMiles = overallTotalMiles + parseFloat((locEntry[4]*.000621371).toPrecision(4));
+       totalMiles[locEntry[1]] = parseFloat(totalMiles[locEntry[1]]) + parseFloat((locEntry[4]*.000621371));
+       overallTotalMiles = overallTotalMiles + parseFloat((locEntry[4]*.000621371));
    }
    
    var evenPercentage = parseFloat(100/totalMiles.length);
@@ -308,7 +308,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
            distFromAvgOfRoute[i] = avgRouteLength - totalMiles[i];
        }
        for(var i = 0; i<totalMiles.length;i++){
-           var percDiff = 1+parseFloat(distFromAvgOfRoute[i]/totalAbsDistFromAvg);
+           var percDiff = 1+parseFloat(distFromAvgOfRoute[i]/totalAbsDistFromAvg); // distFromAvgOfRoute[i]/avgroute and totalAbsDistFromAvg/totalAverage(totalMiles.length*avgRouteLength)
            console.log("Even Percent: "+ evenPercentage);
            console.log("Percent Diff: "+ percDiff)
            console.log("Total Distance from Average: "+totalAbsDistFromAvg);
