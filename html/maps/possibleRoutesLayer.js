@@ -440,7 +440,7 @@ possibleRoutesLayer.prototype.StoreRoutes = function(seq, route, node, edge, rou
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
    
-   var url = PROXY + DB_URL + "qn=23&seq="+seq + "&route="+route+"&node="+node+"&edge="+edge+"&routecost="+routecost+"&st_asgeojson="+st_asgeojson+"&sourceNode="+posssourceid+"&targetNode="+posstargetid; ;
+   var url = PROXY + DB_URL + "qn=23&seq="+seq + "&route="+route+"&node="+node+"&edge="+edge+"&rc="+routecost+"&st_asgeojson="+st_asgeojson+"&sourceNode="+posssourceid+"&targetNode="+posstargetid; ;
    console.log(url);
    
    var myThis = this;
