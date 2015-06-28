@@ -368,6 +368,8 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
       //var polygon = new OpenLayers.Geometry.Polygon([ring]);
       
       labl = (lc[4]*.000621371).toPrecision(3);//convert from meters to miles
+      possibleRoutesLayer.prototype.StoreRoutes(lc[0],lc[1],lc[2],lc[3],lc[4],lc[5],posssourceid,posstargetid);
+      
       var attr=
       {
          seq:   lc[0],
@@ -431,6 +433,33 @@ possibleRoutesLayer.prototype.CancelButton = function() {
         console.log("Removed an Ajax Request")
     }
         
+}
+
+possibleRoutesLayer.prototype.StoreRoutes = function(seq, route, node, edge, routecost, st_asgeojson) {
+   var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
+   var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+   var PROXY = "../cgi-bin/proxy.py?url=";
+   
+   var url = PROXY + DB_URL + "qn=23&seq="+seq + "&route="+route+"&node="+node+"&edge="+edge+"&routecost="+routecost+"&st_asgeojson="+st_asgeojson+"&sourceNode="+posssourceid+"&targetNode="+posstargetid; ;
+   console.log(url);
+   
+   var myThis = this;
+   var ajaxReq = $.ajax({
+      type: "GET",
+      url:  url,
+      timeout: 60000,
+      data: 	{},
+      contentType: "",
+      dataType: "text",
+      processdata: true,
+      cache: false,
+      success: function (data) {          
+      },
+      error: function(xhr, stat, err) {
+         console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
+      }
+   });
+    
 }
 
 possibleRoutesLayer.prototype.LayerUpdate = function() {
