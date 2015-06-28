@@ -441,7 +441,7 @@ possibleRoutesLayer.prototype.StoreRoutes = function(seq, route, node, edge, rou
    var PROXY = "../cgi-bin/proxy.py?url=";
    
    var url = PROXY + DB_URL + "qn=23&seq="+seq + "&route="+route+"&node="+node+"&edge="+edge+"&rc="+routecost+"&st_asgeojson="+st_asgeojson+"&sourcenode="+posssourceid+"&targetnode="+posstargetid; ;
-   console.log(url);
+   //console.log(url);
    
    var myThis = this;
    var ajaxReq = $.ajax({
