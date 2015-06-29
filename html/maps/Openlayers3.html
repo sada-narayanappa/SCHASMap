@@ -283,6 +283,7 @@
                     <input type="button" value="Place Start Node"  onclick="possibleRoutesLayer.setCanAddStartPoint(true)" />
                     <input type="button" value="Place End Node"  onclick="possibleRoutesLayer.setCanAddEndPoint(true)" />
                     <input type="button" id="computeButton" value="Compute Route" onclick="possibleRoutesLayer.instance.LayerUpdate()"/>
+                    <img src="loading.gif" id="loading" style="visibility:hidden" width="35" height="35"/>
                     <br>
                     Number of Routes: <input id="numRoutes" type="number" name="Number of Routes" value="1" min="1" style="width: 35px" max="15"/>
                     <br>                    

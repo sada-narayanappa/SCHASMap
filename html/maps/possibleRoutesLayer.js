@@ -426,6 +426,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
 
 possibleRoutesLayer.prototype.CancelButton = function() {
     document.getElementById("computeButton").value = "Compute Route";
+    document.getElementById("loading").style.visibility = "hidden";
     for(var i = possRoutesLayerAjax.length-1; i > 0  ; i--){
         var ajaxReq = possRoutesLayerAjax[i];
         ajaxReq.abort();
@@ -464,10 +465,11 @@ possibleRoutesLayer.prototype.StoreRoutes = function(seq, route, node, edge, rou
 
 possibleRoutesLayer.prototype.LayerUpdate = function() {
    var startTime = Date.now();
-   if(document.getElementById("computeButton").value === "Cancel"){
+   if(document.getElementById("computeButton").value === "Cancel"){       
        possibleRoutesLayer.prototype.CancelButton();
        return;
    }
+   document.getElementById("loading").style.visibility = "visible";
    document.getElementById("computeButton").value = "Cancel";
    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
@@ -509,6 +511,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
          var elapsedSeconds = (endTime - startTime);         
          document.getElementById("elapsedTime").innerHTML = "Calculation Time: " + elapsedSeconds.toString() + " Milliseconds";
          document.getElementById("computeButton").value = "Compute Route";
+         document.getElementById("loading").style.visibility = "hidden";
          possibleRoutesLayer.prototype.AddFeatures(data, true)         
       },
       error: function(xhr, stat, err) {
