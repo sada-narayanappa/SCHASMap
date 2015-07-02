@@ -309,10 +309,10 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
        }
        for(var i = 0; i<totalMiles.length;i++){
            var percDiff = 1+parseFloat(distFromAvgOfRoute[i]/totalAbsDistFromAvg); // distFromAvgOfRoute[i]/avgroute and totalAbsDistFromAvg/totalAverage(totalMiles.length*avgRouteLength)
-           console.log("Even Percent: "+ evenPercentage);
-           console.log("Percent Diff: "+ percDiff)
-           console.log("Total Distance from Average: "+totalAbsDistFromAvg);
-           console.log("Route Distance From Average: "+distFromAvgOfRoute[i]);           
+           //console.log("Even Percent: "+ evenPercentage);
+           //console.log("Percent Diff: "+ percDiff)
+           //console.log("Total Distance from Average: "+totalAbsDistFromAvg);
+           //console.log("Route Distance From Average: "+distFromAvgOfRoute[i]);           
            probabilities[i] = parseFloat(evenPercentage*percDiff);
        }
    }
