@@ -292,8 +292,12 @@
                     Digits of Precision: <input id="precisionDig" type="number" name="Digits of Precision" value="4" min="1" style="width: 35px" max="8"/>
                     <br>
                     <p id="elapsedTime"></p>
-                    <br
-                    
+                    <br>
+                    <input type="button" value="Analyze Route"  onclick="possibleRoutesLayer.analyzeRoute()" />
+                    <br>
+                    <div id="ResultsSection" style="width: 350px; height: 150px; overflow-y: scroll; display: none;">
+                        <p id="ResultsParagraph"></p>
+                    </div>
                 </div>
 
             </div>

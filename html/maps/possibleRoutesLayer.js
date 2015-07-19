@@ -424,6 +424,11 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
    return bounds;
 }
 
+possibleRoutesLayer.analyzeRoute = function(){
+    console.log("TODO: Analyze route based on SCHASDB request");
+    document.getElementById("ResultsSection").style.display = "block";
+}
+
 possibleRoutesLayer.prototype.CancelButton = function() {
     document.getElementById("computeButton").value = "Compute Route";
     document.getElementById("loading").style.visibility = "hidden";
@@ -431,7 +436,7 @@ possibleRoutesLayer.prototype.CancelButton = function() {
         var ajaxReq = possRoutesLayerAjax[i];
         ajaxReq.abort();
         possRoutesLayerAjax.pop();
-        console.log("Removed an Ajax Request")
+        //console.log("Removed an Ajax Request")
     }
         
 }
