@@ -435,7 +435,9 @@ possibleRoutesLayer.analyzeRoute = function(){
             + "<b>Route "+ i +"</b>" 
             + "   Color: " +"<span style= &quot color:"+ colors[i] +" &quot >"+ colors[i]+"</span>"+  +"<br>" 
             + "   Probability: " + probabilites[i] +"<br>"
-            + "   Length in miles: " + totalMiles[i].toPrecision(precisionDig) +"<br>";    
+            + "   Length in miles: " + totalMiles[i].toPrecision(precisionDig) +"<br>"; 
+    
+    console.log("Route " + i +" finished." )
     }
     
 }
