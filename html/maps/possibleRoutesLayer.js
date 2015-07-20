@@ -496,7 +496,9 @@ possibleRoutesLayer.analyzeRoute = function(){
     for(var i = 0; i < routeNumbers.length;i++){
         var stationPos = uniqueStations.indexOf(stations[i]);
         lengthWithProbs[stationPos] = lengthWithProbs[stationPos] || 0;
-        lengthWithProbs[stationPos] = lengthWithProbs[stationPos] + probabilities[routeNumbers[i]]*lengths[i].toPrecision(precisionDig);
+        lengthWithProbs[stationPos] = lengthWithProbs[stationPos] + probabilities[routeNumbers[i]]*.01*lengths[i].toPrecision(precisionDig);
+        lengthWithEvenProbs[stationPos] = lengthWithEvenProbs[stationPos] || 0;
+        lengthWithEvenProbs[stationPos] = lengthWithEvenProbs[stationPos] + (1/numRoutes)*lengths[i].toPrecision(precisionDig);
     }
     
     document.getElementById("ResultsParagraph").innerHTML = "<b> DATA </b> <br>"+"----------------------------------------------------------------<br>";
@@ -511,7 +513,12 @@ possibleRoutesLayer.analyzeRoute = function(){
     
     //console.log("Route " + i +" finished." )
     }
-    document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML +  "<b> ESTIMATES </b> <br>"
+    document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML +  "<b> ESTIMATES WITH EVEN PROBABILITIES </b> <br>"    
+    for(var i = 0; i < uniqueStations.length; i++ ){
+        document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
+            + "Estimated length in "+ uniqueStations[i] +": "+ lengthWithEvenProbs[i].toPrecision(precisionDig)+"<br>"; 
+    }
+    document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML +"----------------------------------------------------------------<br>" +  "<b> ESTIMATES WITH LENGTH SPECIFIC PROBABILITIES </b> <br>"    
     for(var i = 0; i < uniqueStations.length; i++ ){
         document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
             + "Estimated length in "+ uniqueStations[i] +": "+ lengthWithProbs[i].toPrecision(precisionDig)+"<br>"; 
