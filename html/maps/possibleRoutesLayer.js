@@ -433,9 +433,12 @@ possibleRoutesLayer.analyzeRoute = function(){
     document.getElementById("ResultsSection").style.display = "block";
     document.getElementById("ResultsParagraph").innerHTML = "";    
     for(var i = 0; i< probabilities.length;i++){
+    var colorSpan = document.createElement("span");
+    colorSpan.style.color = colors[i];
+    colorSpan.innerHTML = colors[i];
     document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
             + "<b>Route "+ i +"</b> <br>" 
-            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Color: " +"<span style=&quot;color:"+ colors[i] +"&quot;>"+ colors[i]+"</span> <br>" 
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Color: " +colorSpan+" <br>" 
             + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Probability: " + probabilities[i] +"<br>"
             + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length in miles: " + totalMiles[i].toPrecision(precisionDig) +"<br>"; 
     
