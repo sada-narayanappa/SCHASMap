@@ -482,7 +482,8 @@ possibleRoutesLayer.analyzeRoute = function(){
     
     var routeStationString = [];
     for(var i = 0; i < routeNumbers.length;i++){
-        routeStationString[routeNumbers[i]] = routeStationString[routeNumbers[i]]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length in station " + stations[i]+": " + lengths[i] + "<br>";
+        routeStationString[routeNumbers[i]] = routeStationString[routeNumbers[i]] || "";
+        routeStationString[routeNumbers[i]] = routeStationString[routeNumbers[i]]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length in station " + stations[i]+": " + lengths[i].toPrecision(precisionDig) + "<br>";
         console.log("Route String: " + routeStationString[routeNumbers[i]]);
     }
     
