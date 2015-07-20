@@ -14,8 +14,10 @@ var possendLon = -93.2181;
 var possendLat = 45.0242;
 var posstargetid = 1;
 var possRoutesLayerAjax = [];
-
-
+var probabilities = [];
+var color1 = "blue, fuchsia, green, #800000, #99CCFF , maroon, navy, olive, orange,purple, red, #7ACC29, purple, #660033";
+var colors = color1.split(",");
+var totalMiles = [];
 
 possibleRoutesLayer.prototype.layer    = null;
 possibleRoutesLayer.prototype.features = null;
@@ -47,8 +49,8 @@ possibleRoutesLayer.prototype.AddLayer = function(map) {
    var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
 
-   var color1 = "blue, fuchsia, green, #800000, #99CCFF , maroon, navy, olive, orange,purple, red, #7ACC29, purple, #660033"
-   var colors = color1.split(",");
+   
+   
 
    var context = {
       getRadius: function(feature) {
@@ -279,9 +281,9 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
    var color1 = "blue, fuchsia, green, #800000, #99CCFF , maroon, navy, olive, orange,purple, red, #7ACC29, purple, #660033"
    var colors = color1.split(",");
    
-   var totalMiles = [];
+   probabilites = [];
+   totalMiles = [];
    var edgesInRoute = [];
-   var probabilities = [];
    var overallTotalMiles = 0;
    
    for(var i=0; i<locs.length; ++i){
@@ -427,6 +429,15 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
 possibleRoutesLayer.analyzeRoute = function(){
     console.log("TODO: Analyze route based on SCHASDB request");
     document.getElementById("ResultsSection").style.display = "block";
+    document.getElementById("ResultsParagraph").innerHTML = "";
+    for(var i = 0; i< probabilites.length;i++){
+    document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
+            + "<b>Route "+ i +"</b>" 
+            + "   Color: " +"<span style= &quot color:"+ colors[i] +" &quot >"+ colors[i]+"</span>"+  +"<br>" 
+            + "   Probability: " + probabilites[i] +"<br>"
+            + "   Length in miles: " + totalMiles[i].toPrecision(precisionDig) +"<br>";    
+    }
+    
 }
 
 possibleRoutesLayer.prototype.CancelButton = function() {
