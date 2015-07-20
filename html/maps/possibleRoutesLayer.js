@@ -481,21 +481,40 @@ possibleRoutesLayer.analyzeRoute = function(){
     
     
     var routeStationString = [];
+    var uniqueStations = [];
+    var lengthWithProbs = [];
+    var lengthWithEvenProbs = [];
+    
     for(var i = 0; i < routeNumbers.length;i++){
         routeStationString[routeNumbers[i]] = routeStationString[routeNumbers[i]] || "";
         routeStationString[routeNumbers[i]] = routeStationString[routeNumbers[i]]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length in station " + stations[i]+": " + lengths[i].toPrecision(precisionDig) + "<br>";
         console.log("Route String: " + routeStationString[routeNumbers[i]]);
+        if(uniqueStations.indexOf(stations[i])==-1){
+            uniqueStations.push(stations[i]);
+        }
+    }
+    for(var i = 0; i < routeNumbers.length;i++){
+        var stationPos = uniqueStations.indexOf(stations[i]);
+        lengthWithProbs[stationPos] = lengthWithProbs[stationPos] || 0;
+        lengthWithProbs[stationPos] = lengthWithProbs[stationPos] + probabilities[routeNumbers[i]]*lengths[i].toPrecision(precisionDig);
     }
     
+    document.getElementById("ResultsParagraph").innerHTML = "<b> DATA </b> <br>"+"----------------------------------------------------------------<br>";
     for(var i = 0; i< probabilities.length;i++){
     document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
             + "<b>Route "+ i +"</b> <br>" 
             + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Color: " +"<span style=\"color:"+ colors[i] +";font-weight:bold;\">"+ colors[i]+"</span> <br>" 
             + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Probability: " + probabilities[i].toPrecision(4) +"%<br>"
             + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total length: " + totalMiles[i].toPrecision(precisionDig) +"<br>"
-            + routeStationString[i]; 
+            + routeStationString[i]
+            +"----------------------------------------------------------------<br>"; 
     
     //console.log("Route " + i +" finished." )
+    }
+    document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML +  "<b> ESTIMATES </b> <br>"
+    for(var i = 0; i < uniqueStations.length; i++ ){
+        document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
+            + "Estimated length in "+ uniqueStations[i] +": "+ lengthWithProbs[i].toPrecision(precisionDig)+"<br>"; 
     }
     
 }
