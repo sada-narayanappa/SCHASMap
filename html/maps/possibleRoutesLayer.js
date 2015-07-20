@@ -434,10 +434,10 @@ possibleRoutesLayer.analyzeRoute = function(){
     document.getElementById("ResultsParagraph").innerHTML = "";    
     for(var i = 0; i< probabilities.length;i++){
     document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
-            + "<b>Route "+ i +"</b>" 
-            + "   Color: " +"<span style= &quot color:"+ colors[i] +" &quot >"+ colors[i]+"</span>"+  +"<br>" 
-            + "   Probability: " + probabilities[i] +"<br>"
-            + "   Length in miles: " + totalMiles[i].toPrecision(precisionDig) +"<br>"; 
+            + "<b>Route "+ i +"</b> <br>" 
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Color: " +"<span style=&quot;color:"+ colors[i] +"&quot;>"+ colors[i]+"</span> <br>" 
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Probability: " + probabilities[i] +"<br>"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length in miles: " + totalMiles[i].toPrecision(precisionDig) +"<br>"; 
     
     //console.log("Route " + i +" finished." )
     }
