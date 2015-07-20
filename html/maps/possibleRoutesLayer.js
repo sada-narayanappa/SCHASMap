@@ -431,13 +431,62 @@ possibleRoutesLayer.analyzeRoute = function(){
     var precisionDigElement = document.getElementById("precisionDig");
     var precisionDig = precisionDigElement.value;
     document.getElementById("ResultsSection").style.display = "block";
-    document.getElementById("ResultsParagraph").innerHTML = "";    
+    document.getElementById("ResultsParagraph").innerHTML = "";
+    
+    var routeNumbers = [];
+    var stations = [];
+    var lengths = [];
+   
+    
+    //get Intersection
+    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
+    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+    var PROXY = "../cgi-bin/proxy.py?url=";
+    var numRoutesElement = document.getElementById("numRoutes");
+    var numRoutes = numRoutesElement.value;
+    
+    var url = PROXY + DB_URL + "qn=24&s="+ posssourceid  +"&t="+posstargetid+"&k="+numRoutes;
+    
+    var myThis = this;
+    var ajaxReq = $.ajax({
+       type: "GET",
+       url:  url,
+       timeout: 60000,
+       data: 	{},
+       contentType: "",
+       dataType: "text",
+       processdata: true,
+       cache: false,
+       success: function (data) {
+          data = data.trim();
+          //console.log(data)
+          eval(data);
+          var locs = $rs["rows"]
+          for(var i=0; i<locs.length; ++i){
+            var locEntry = locs[i];
+            routeNumbers[i] = locEntry[3];
+            stations[i] = locEntry[2];
+            lengths[i] = locEntry[1];
+          }
+       },
+       error: function(xhr, stat, err) {
+          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
+       }
+    });
+    
+    var routeStationString = [];
+    for(var i = 0; i < routeNumbers.length;i++){
+        routeStationString[routeNumbers[i]] = routeStationString[routeNumbers[i]]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length in station " + stations[i]+": " + lengths[i] + "<br>";
+        
+    }
+    
     for(var i = 0; i< probabilities.length;i++){
     document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
             + "<b>Route "+ i +"</b> <br>" 
             + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Color: " +"<span style=\"color:"+ colors[i] +";font-weight:bold;\">"+ colors[i]+"</span> <br>" 
             + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Probability: " + probabilities[i].toPrecision(4) +"%<br>"
-            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length in miles: " + totalMiles[i].toPrecision(precisionDig) +"<br>"; 
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total length: " + totalMiles[i].toPrecision(precisionDig) +"<br>"
+            + routeStationString[i]; 
     
     //console.log("Route " + i +" finished." )
     }
