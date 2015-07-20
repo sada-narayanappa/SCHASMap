@@ -446,6 +446,7 @@ possibleRoutesLayer.analyzeRoute = function(){
     var numRoutes = numRoutesElement.value;
     
     var url = PROXY + DB_URL + "qn=24&s="+ posssourceid  +"&t="+posstargetid+"&k="+numRoutes;
+    console.log(url);
     
     var myThis = this;
     var ajaxReq = $.ajax({
@@ -454,6 +455,7 @@ possibleRoutesLayer.analyzeRoute = function(){
        timeout: 60000,
        data: 	{},
        contentType: "",
+       async: false,
        dataType: "text",
        processdata: true,
        cache: false,
@@ -465,8 +467,11 @@ possibleRoutesLayer.analyzeRoute = function(){
           for(var i=0; i<locs.length; ++i){
             var locEntry = locs[i];
             routeNumbers[i] = locEntry[3];
+            console.log("RouteNumber = "+ locEntry[3]);
             stations[i] = locEntry[2];
+            console.log("StationID = "+ locEntry[2]);
             lengths[i] = locEntry[1];
+            console.log("length = "+ locEntry[1]);
           }
        },
        error: function(xhr, stat, err) {
@@ -474,10 +479,11 @@ possibleRoutesLayer.analyzeRoute = function(){
        }
     });
     
+    
     var routeStationString = [];
     for(var i = 0; i < routeNumbers.length;i++){
         routeStationString[routeNumbers[i]] = routeStationString[routeNumbers[i]]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length in station " + stations[i]+": " + lengths[i] + "<br>";
-        
+        console.log("Route String: " + routeStationString[routeNumbers[i]]);
     }
     
     for(var i = 0; i< probabilities.length;i++){
