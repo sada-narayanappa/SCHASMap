@@ -428,6 +428,8 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
 
 possibleRoutesLayer.analyzeRoute = function(){
     console.log("TODO: Analyze route based on SCHASDB request");
+    var precisionDigElement = document.getElementById("precisionDig");
+    var precisionDig = precisionDigElement.value;
     document.getElementById("ResultsSection").style.display = "block";
     document.getElementById("ResultsParagraph").innerHTML = "";    
     for(var i = 0; i< probabilities.length;i++){
