@@ -281,7 +281,7 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
    var color1 = "blue, fuchsia, green, #800000, #99CCFF , maroon, navy, olive, orange,purple, red, #7ACC29, purple, #660033"
    var colors = color1.split(",");
    
-   probabilites = [];
+   probabilities = [];
    totalMiles = [];
    var edgesInRoute = [];
    var overallTotalMiles = 0;
@@ -429,16 +429,15 @@ possibleRoutesLayer.prototype.AddFeatures = function (data, zoomToBounds){
 possibleRoutesLayer.analyzeRoute = function(){
     console.log("TODO: Analyze route based on SCHASDB request");
     document.getElementById("ResultsSection").style.display = "block";
-    document.getElementById("ResultsParagraph").innerHTML = "";
-    console.log("for loop length = " + probabilites.length);
-    for(var i = 0; i< probabilites.length;i++){
+    document.getElementById("ResultsParagraph").innerHTML = "";    
+    for(var i = 0; i< probabilities.length;i++){
     document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
             + "<b>Route "+ i +"</b>" 
             + "   Color: " +"<span style= &quot color:"+ colors[i] +" &quot >"+ colors[i]+"</span>"+  +"<br>" 
-            + "   Probability: " + probabilites[i] +"<br>"
+            + "   Probability: " + probabilities[i] +"<br>"
             + "   Length in miles: " + totalMiles[i].toPrecision(precisionDig) +"<br>"; 
     
-    console.log("Route " + i +" finished." )
+    //console.log("Route " + i +" finished." )
     }
     
 }
