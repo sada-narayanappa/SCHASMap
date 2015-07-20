@@ -430,6 +430,7 @@ possibleRoutesLayer.analyzeRoute = function(){
     console.log("TODO: Analyze route based on SCHASDB request");
     document.getElementById("ResultsSection").style.display = "block";
     document.getElementById("ResultsParagraph").innerHTML = "";
+    console.log("for loop length = " + probabilites.length);
     for(var i = 0; i< probabilites.length;i++){
     document.getElementById("ResultsParagraph").innerHTML = document.getElementById("ResultsParagraph").innerHTML 
             + "<b>Route "+ i +"</b>" 
