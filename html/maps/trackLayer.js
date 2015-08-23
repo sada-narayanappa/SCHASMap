@@ -108,7 +108,7 @@ function AddTrackingLayer(map) {
 }
 
 function setTrackLayerVisibility(bool){
-    layer.setVisibility(bool);
+    trackLayer.setVisibility(bool);
 }
 
 function RemoveThisFeature(id) {
