@@ -325,8 +325,7 @@
         top.window.location.href = s;
     }
 
-    function changeTrackLayer(p, updateBounds ) {
-        setTrackLayerVisibility(true);
+    function changeTrackLayer(p, updateBounds ) {        
         userOptions.myUserID = p;
         trackLayerUpdate(p, true);
     }
@@ -352,7 +351,7 @@
                 p = "'mobile_id="+ d[0] + "&measured_at=" + d[1] + "'"; // containst mobile_id and session num
             }
             s = "changeTrackLayer(" + p + ")";
-            a = "<a href=# onclick=" + s + " >" + d[0] + "," + d[1] + "</a><br/>\n"
+            a = "<a href=# onclick=\"setTrackLayerVisibility(true);" + s + ";\" >" + d[0] + "," + d[1] + "</a><br/>\n"
             str = str  + a;
 
             if ( i == 0) {
