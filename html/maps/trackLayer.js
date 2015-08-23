@@ -107,6 +107,10 @@ function AddTrackingLayer(map) {
    return layer;
 }
 
+function setTrackLayerVisibility(bool){
+    layer.setVisibility(bool);
+}
+
 function RemoveThisFeature(id) {
    console.log("Will remove feature: " + id);
 
