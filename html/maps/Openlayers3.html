@@ -72,7 +72,7 @@
             } else {
                 console.log("name is null"+name);
                 showloginForm();
-                $('[href="#tabs-3"]').closest('li').hide();
+                $('[href="#tabs-3"]').closest('li').show();
             }
         }
     </script>
@@ -381,7 +381,9 @@
             }
         }
         else {
-            // console.log("name is null"+loggedInUserName); 
+            //Not logged in, show synthetic route data            
+            url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=22&mobile_id=Synthetic";
+            submitForm({URL: url, fdata: {}, CB: setUserSessions})
             showloginForm();
         }
     }
