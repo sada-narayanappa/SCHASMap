@@ -88,9 +88,11 @@
         if ( d == "none") {
             d = "block";
             userOptions.controlPanel = "none"
+            document.getElementById("ControlPanelImage").src = "http://www.clker.com/cliparts/O/S/I/l/m/L/minus-sign-subtract-md.png";
         } else {
             d = "none";
             userOptions.controlPanel = "block";
+            document.getElementById("ControlPanelImage").src = "http://www.clker.com/cliparts/6/9/3/2/119499444664447017ark_new.svg.thumb.png";
         }
         document.getElementById('formcontent').style.display = d;
     }
@@ -100,7 +102,7 @@
     <form name="input" action="javascript: submitform();" method="post">
         <div style="font-variant: small-caps; text-align: right; width: 100%; background-color: grey">
             Control Panel
-            <img src="http://www.clker.com/cliparts/O/S/I/l/m/L/minus-sign-subtract-md.png"
+            <img id="ControlPanelImage" src="http://www.clker.com/cliparts/O/S/I/l/m/L/minus-sign-subtract-md.png"
                  width="16px" onclick="ControlPanelToggle()" /><hr/>
             <input type="button" value="Save my Options" onclick="saveUserOptions(map)"/>
             <input type="button" value="Set my Options" onclick="setUserOptions(map)"/>
