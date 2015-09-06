@@ -521,11 +521,17 @@
                     }
                 }
     function changepassword(){
-        console.log("called change password function");
-        $('div#loginContent').hide();
-        $('div#profile').hide();
-        $('div#useroptions').show();
-        $('div#changePassword').show();
+        //console.log("called change password function");
+        loggedInUserName = localStorage.getItem('name');
+         if (loggedInUserName == 'admin') {
+                alert("You can not change the admin account password.");
+         }
+         else{
+                $('div#loginContent').hide();
+                $('div#profile').hide();
+                $('div#useroptions').show();
+                $('div#changePassword').show();
+         }
     }
 
     function showMenu(){
