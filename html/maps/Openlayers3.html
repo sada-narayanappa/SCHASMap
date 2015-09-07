@@ -338,7 +338,7 @@
         var type = $rs.coltypes;
         var data = $rs.rows || $rs[Object.keys($rs)[0]];
 
-        str = "";
+        str = "<form>";
         mobile_id = "";
         for ( i in data) {
             d = data [i];
@@ -353,13 +353,16 @@
                 p = "'mobile_id="+ d[0] + "&measured_at=" + d[1] + "'"; // containst mobile_id and session num
             }
             s = "changeTrackLayer(" + p + ")";
-            a = "<a href=# onclick=\"setTrackLayerVisibility(true);" + s + ";\" >" + d[0] + "," + d[1] + "</a><br/>\n"
+            
+            a = "<label><input type=\"checkbox\" onclick=\"setTrackLayerVisibility(true);" + s + ";\" name=\"Session\" value=\"Route\">" + d[0] + "," + d[1] "<br/></label>\n"
+            //a = "<a href=# onclick=\"setTrackLayerVisibility(true);" + s + ";\" >" + d[0] + "," + d[1] + "</a><br/>\n"
             str = str  + a;
 
             if ( i == 0) {
                 CURRENT_PARMS = p;
             }
         }
+        str = str + "</form>"
         $("#tabs-3").html(str);
     }
 
