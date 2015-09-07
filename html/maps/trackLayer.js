@@ -249,7 +249,7 @@ function distance(f) {
 function trackRemoveFeatureByMobIDAndMeasuredAt(mobileID, measured_at){
     trackLayer.layer.removeFeatures(trackLayer.layer.getFeatureById(featureID));
     for(var f=0;f<layer.features.length;f++) {
-        if(trackLayer.layer.features[f].attributes.obj.mobile_id == mobileID && trackLayer.layer.features[f].attributes.obj.measured_at == measured_at) {
+        if(trackLayer.layer.features[f].attributes.obj.mobile_id == mobileID.toString() && trackLayer.layer.features[f].attributes.obj.measured_at == measured_at.toString()) {
             trackLayer.layer.removeFeatures(trackLayer.layer.features[f]);
         }
     }
