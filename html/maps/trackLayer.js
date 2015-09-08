@@ -278,8 +278,8 @@ function trackAddFeatures(data, lyr, updateBounds) {
    loni = cols.indexOf("lon");
    speedi = cols.indexOf("speed");
 
-   lyr.removeAllFeatures()
-   lyr.destroyFeatures();
+   //lyr.removeAllFeatures()
+   //lyr.destroyFeatures();
 
    if (locs.length == 0 || lati < 0 || loni < 0) {
       return;
