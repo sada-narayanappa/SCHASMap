@@ -195,7 +195,11 @@ function getColor(o) {
 
 function getLineStyle(speed){
     if(speed<4){
-        return "dash";
+        return "dot";
+    } if(speed<6){
+      return "dashdot";
+    } if(speed<10){
+      return "dash";
     }
     else{
         return "solid";

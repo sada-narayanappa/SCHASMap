@@ -76,6 +76,8 @@ function init() {
 
    map = new OpenLayers.Map( {div: "mapdiv", units: 'm'});   
    var mapnik = new OpenLayers.Layer.OSM();
+   mapnik.opacity = 0.5;  // Make background transparent
+
 
    map.addLayer(mapnik);
    glayers= [
