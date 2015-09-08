@@ -60,7 +60,7 @@
 
             runQuery1(); // load the information
             ControlPanelToggle(userOptions.controlPanel);
-            //trackLayerUpdate(userOptions.myUserID, false); This line causes track layer to add every users tracks to the layer not just the one with the myUserID
+            trackLayerUpdate(userOptions.myUserID, false);
             setUserOptions(map);
 
             var name = localStorage.getItem('name');
@@ -321,7 +321,7 @@
 
     function changeTrackLayer(p, updateBounds ) {        
         userOptions.myUserID = p;
-        //trackLayerUpdate(p, true); I believe this line is adding all users tracks to track layer and not just the myUserID.
+        trackLayerUpdate(p, true);
     }
     function setUserSessions(text) {
         eval(text);
