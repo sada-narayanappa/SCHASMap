@@ -323,7 +323,9 @@
 
     function changeTrackLayer(p, updateBounds ) {        
         userOptions.myUserID = p;
-        trackLayerUpdate(p, true);
+        if(userOptions.myUserID!==null){
+            trackLayerUpdate(p, true);
+        }
     }
     function setUserSessions(text) {
         eval(text);
