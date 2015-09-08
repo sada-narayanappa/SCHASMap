@@ -60,7 +60,9 @@
 
             runQuery1(); // load the information
             ControlPanelToggle(userOptions.controlPanel);
-            trackLayerUpdate(userOptions.myUserID, false);
+            if(userOptions.myUserID!==null){
+                trackLayerUpdate(userOptions.myUserID, false);
+            }
             setUserOptions(map);
 
             var name = localStorage.getItem('name');
