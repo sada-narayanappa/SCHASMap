@@ -44,7 +44,7 @@ function AddTrackingLayer(map) {
 
    layer.events.register("visibilitychanged", layer, function(evt) {
       if ( layer.getVisibility() ) {
-         trackLayerUpdate()
+         //trackLayerUpdate()
          map.zoomToExtent(layer.getDataExtent())
       }
    })
