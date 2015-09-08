@@ -40,7 +40,7 @@ function AddTrackingLayer(map) {
    map.addLayer(layer);
    trackLayer.layer = layer;
 
-   trackLayerUpdate();
+   //trackLayerUpdate(); This line seems to be adding all tracks the tracks to the layer despite some users not having permission to view all. Removing for now.
 
    layer.events.register("visibilitychanged", layer, function(evt) {
       if ( layer.getVisibility() ) {
@@ -250,12 +250,7 @@ function distance(f) {
    return dist;
 }
 
-function trackRemoveFeatureByMobIDAndMeasuredAt(mobileID, measured_at){
-    //trackLayer.layer.removeFeatures(trackLayer.layer.getFeatureById(featureID));
-    console.log(measured_at.toString());
-    console.log(trackLayer.layer.features[0].attributes.obj.measured_at);
-    console.log(trackLayer.layer.features[0].attributes.obj.mobile_id + mobileID.toString());
-    
+function trackRemoveFeatureByMobIDAndMeasuredAt(mobileID, measured_at){    
     for(var f=0;f<trackLayer.layer.features.length;f++) {
         if(trackLayer.layer.features[f].attributes.obj.mobile_id == mobileID.toString() && trackLayer.layer.features[f].attributes.obj.measured_at.substring(0,10) == measured_at.toString()) {
             trackLayer.layer.removeFeatures(trackLayer.layer.features[f]);
