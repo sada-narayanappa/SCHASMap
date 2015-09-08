@@ -353,6 +353,7 @@ function addLine(points, obj , lyr, speeds) {
         lobj.dist = (DISTANCE/1000/1.6).toFixed(2) + " Miles";
         lobj.id = -1;
         lobj.measured_at = obj.measured_at;
+        lobj.mobile_id = obj.mobile_id;
 
         lineFeature.attributes.obj = lobj;
         lyr.addFeatures([lineFeature]);
