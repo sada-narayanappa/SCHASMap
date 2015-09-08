@@ -392,6 +392,7 @@ function trackLayerUpdate(parms,bounds) {
       //url = url+ CURRENT_PARMS;
       //console.log(CURRENT_PARMS);
    }
+   console.log(url);
 
    //console.log( url)
 
