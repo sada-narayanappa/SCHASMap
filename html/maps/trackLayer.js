@@ -363,6 +363,7 @@ function trackLayerUpdate(parms,bounds) {
    if ( !trackLayer || !trackLayer.map || !trackLayer.layer.getVisibility() ) {
       return;
    }
+   console.log(parms + " start");
 
    if (  trackLayer.map.zoom < 1  ) {
       trackLayer.layer.removeAllFeatures()
@@ -380,15 +381,19 @@ function trackLayerUpdate(parms,bounds) {
    if (parms) {
       if ( parms.indexOf("session") > 0) {
          url = url+ parms;
+         console.log(url + " parms.indexOf");
       } else {
          TL_URL= "http://www.geospaces.org/aura/webroot/db.jsp?qn=6a&type=js&";
          url = config.PROXY + TL_URL
          url = url+ parms;
+         console.log(url + " Else")
       }
       CURRENT_PARMS = parms;
    } else if ( $.urlAllParams()) {
       url = url+ $.urlAllParams();
+      console.log(url + " Else IF")
    } else {
+       console.log("Else")
       //url = url+ CURRENT_PARMS;
       //console.log(CURRENT_PARMS);
    }
