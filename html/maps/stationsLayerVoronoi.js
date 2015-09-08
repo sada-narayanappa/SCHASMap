@@ -27,6 +27,8 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
       },
       FillColor: function(feature) {
          c = ["green", "#FFE4C4", "#DEB887",,"#DAA520", "#CD853F",  "#A0522D", "#B22222", "yellow","pink" ];
+         c = ["#333333","#4D4D4D","#666666","#808080","#999999","#B2B2B2","#CCCCCC" ,"#E6E6E6","#8B8989", "#ADACAC", "#D0CFCF","#CDC9C9"];
+
          r = Math.floor(Math.random() * c.length);
 
          //return (feature.data.isValid) ? c[r]: "red";
