@@ -27,20 +27,11 @@
     <script src="trackLayer.js"></script>
     <script src="syntheticLayer.js"></script>
 
-    <link rel="stylesheet" href="http://www.blueprintcss.org/blueprint/screen.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet" href="http://www.blueprintcss.org/blueprint/print.css" type="text/css" media="print">
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="http://www.blueprintcss.org/blueprint/ie.css" type="text/css" media="screen, projection">
-    <![endif]-->
-
-    <!--<link rel="stylesheet" type="text/css" media="screen, projection" href="screen.css" />-->
-    <!--[if IE]><link rel="stylesheet" type="text/css" media="screen, projection"
-                      href="http://www.blueprintcss.org/blueprint/ie.css"><![endif]-->
-
+    <link rel="stylesheet" type="text/css" href="screen.css">
     <link rel="stylesheet" type="text/css" href="SCHASstylesheet.css">
 
     <style type="text/css">
-        #loginContent { width: 350px; margin: 100px auto; }    
+        #loginContent { width: 350px; margin: 100px auto; }
         #profileContent { width: 350px; margin: 100px auto; }
         button[type] { margin: 0.5em 0; }
     </style>
@@ -87,7 +78,7 @@
     function ControlPanelToggle(onOff) {  //onOff = none, block -> if none ->opens
         d = onOff || document.getElementById('formcontent').style.display;
 
-        if ( d == "none") {
+        if ( d == "none")  {
             d = "block";
             userOptions.controlPanel = "none"
             document.getElementById("ControlPanelImage").src = "http://www.clker.com/cliparts/O/S/I/l/m/L/minus-sign-subtract-md.png";
@@ -139,12 +130,12 @@
                                 <p>
                                     <label for="username">Username</label>
 
-                                    <input type="text" id="username" name="username" class="text" size="15" />
+                                    <input type="text" id="username" name="username" class="text" size="10" />
                                 </p>
                                 <p>
                                     <label for="password">Password</label>
 
-                                    <input type="password" id="password" name="password" class="text" size="15" />
+                                    <input type="password" id="password" name="password" class="text" size="10" />
                                 </p>
                                 <p>
                                     <button type="button" class="button positive" onclick="runQuery2();">
