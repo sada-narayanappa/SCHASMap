@@ -125,7 +125,7 @@ function syntheticStationLayerUpdate() {
       cache: false,
       success: function (data) {
          //somedata=data
-         myThis.syntheticAddFeatures(data, syntheticStationLayer.layer)
+         myThis.syntheticAddFeatures(data, syntheticStationLayer)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
