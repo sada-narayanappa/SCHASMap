@@ -108,7 +108,6 @@ function syntheticStationLayerUpdate() {
    q = "select ST_X(geom) as lon, ST_Y(geom) as lat" +
    "from (SELECT (ST_Dump(center_geom)).geom FROM weather_delaunay) AS foo"
 
-select ST_X(geom) as lon, ST_Y(geom) as lat from (SELECT (ST_Dump(center_geom)).geom FROM weather_delaunay) AS foo
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
