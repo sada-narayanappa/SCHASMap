@@ -184,7 +184,7 @@ function init() {
    AddTrackingLayer(map);
    AddSyntheticLayer(map);
    AddStationLayer(map);
-   //AddSyntheticStationLayer(map);
+   AddSyntheticStationLayer(map);
    var stv = new stationLayerVoronoi().AddLayer(map);
    var std = new stationLayerDelaunay().AddLayer(map);
    var roads = new roadsLayer(map).AddLayer(map);
