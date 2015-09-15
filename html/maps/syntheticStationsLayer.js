@@ -71,7 +71,7 @@ function syntheticAddFeatures(data, lyr){
       var point = xPoint(lc[0], lc[1]);
       attr=
       {
-         label: "Interp"
+         label: ""
       }
       var feat = new OpenLayers.Feature.Vector(point,attr);
       lyr.addFeatures(feat);
@@ -112,7 +112,7 @@ function syntheticStationLayerUpdate() {
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
    
 
-   console.log( PROXY + DB_URL + "q=" + (q))
+   //console.log( PROXY + DB_URL + "q=" + (q))
    var myThis = this;
    $.ajax({
       type: "GET",
