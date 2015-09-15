@@ -74,7 +74,7 @@ function syntheticAddFeatures(data, lyr){
          label: "Interp"
       }
       var feat = new OpenLayers.Feature.Vector(point,attr);
-      lyr.syntheticAddFeatures(feat);
+      lyr.AddFeatures(feat);
       if (!bounds) {
          bounds = feat.geometry.getBounds();
       } else {
