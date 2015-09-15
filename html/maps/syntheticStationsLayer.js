@@ -110,8 +110,9 @@ function syntheticStationLayerUpdate() {
 
 
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
+   
 
-   //console.log( PROXY + DB_URL + "q=" + (q))
+   console.log( PROXY + DB_URL + "q=" + (q))
    var myThis = this;
    $.ajax({
       type: "GET",
