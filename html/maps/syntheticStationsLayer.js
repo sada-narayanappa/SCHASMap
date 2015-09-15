@@ -105,7 +105,7 @@ function syntheticStationLayerUpdate() {
    var q = "select ST_X(center_geom) as lon, ST_Y(center_geom) as lat, gid " +
        "from weather_delaunay where center_geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
-   q = "select ST_X(geom) as lon, ST_Y(geom) as lat" +
+   q = "select ST_X(geom) as lon, ST_Y(geom) as lat " +
    "from (SELECT (ST_Dump(center_geom)).geom FROM weather_delaunay) AS foo"
 
 
