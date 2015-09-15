@@ -52,6 +52,8 @@ function AddSyntheticStationLayer(map) {
    map.events.register('moveend', map, function() {
       //syntheticStationLayerUpdate()
    });
+   
+   layer.setVisibility(false);
 
    return syntheticStationLayer;
 }
