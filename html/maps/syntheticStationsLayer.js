@@ -111,7 +111,7 @@ function syntheticStationLayerUpdate() {
    var url = PROXY + DB_URL + "q=" + encodeURIComponent(q);
 
    //console.log( PROXY + DB_URL + "q=" + (q))
-
+   var myThis = this;
    $.ajax({
       type: "GET",
       url:  url,
@@ -123,7 +123,7 @@ function syntheticStationLayerUpdate() {
       cache: false,
       success: function (data) {
          //somedata=data
-         syntheticAddFeatures(data, syntheticStationLayer)
+         myThis.syntheticAddFeatures(data, syntheticStationLayer.layer)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
