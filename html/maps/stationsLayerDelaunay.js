@@ -103,7 +103,7 @@ stationLayerDelaunay.prototype.AddFeatures = function (data, zoomToBounds){
       {
          label:   "", //lc[1],
          isValid: "", //(""+lc[2]).startsWith('f') ? false: true,
-         temp_f:  "32", // lc[3],
+         temp_f:  "", // lc[3],
          weather: "W" // lc[4]
       }
       var feat = new OpenLayers.Feature.Vector(polygon,attr);
