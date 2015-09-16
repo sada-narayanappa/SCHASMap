@@ -37,7 +37,7 @@ refinedStationLayerDelaunay.prototype.AddLayer = function(map) {
    };
    var template = {
       pointRadius: "${getRadius}",
-      strokeColor: "#000000",
+      strokeColor: "#00FF00",
       fillColor: "${FillColor}",
       fillOpacity: 0.4,
       strokeWidth: "${getStrokeWidth}",

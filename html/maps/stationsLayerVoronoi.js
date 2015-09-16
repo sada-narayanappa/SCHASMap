@@ -37,7 +37,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
    };
    var template = {
       pointRadius: "${getRadius}",
-      strokeColor: "#000000",
+      strokeColor: "#FF0000",
       fillColor: "${FillColor}",
       fillOpacity: 0.4,
       strokeWidth: "${getStrokeWidth}",
