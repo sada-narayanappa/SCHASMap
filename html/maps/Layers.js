@@ -188,6 +188,7 @@ function init() {
    var stv = new stationLayerVoronoi().AddLayer(map);
    var std = new stationLayerDelaunay().AddLayer(map);
    var rstd = new refinedStationLayerDelaunay().AddLayer(map);
+   var rstv = new refinedStationLayerVoronoi().AddLayer(map);
    var roads = new roadsLayer(map).AddLayer(map);
    var route = new routeLayer(map).AddLayer(map);
    var routes = new possibleRoutesLayer(map).AddLayer(map);
