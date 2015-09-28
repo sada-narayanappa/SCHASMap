@@ -206,7 +206,22 @@ function getLineStyle(speed){
     }
 }
 
-function trackAddPoint(lon, lat, layer, obj, label, ii ) {
+function getExternalGraphic(record_type){
+    if(record_type=="MILD ATTACK"){
+        return "mildAttack.png";
+    } if(record_type=="MEDIUM ATTACK"){
+      return "mediumAttack.png";
+    } if(record_type=="SEVERE ATTACK"){
+      return "severeAttack.png";
+    } if(record_type=="INHALER"){
+      return "inhaler.png";
+    }
+    else{
+        return "";
+    }
+}
+
+function trackAddPoint(lon, lat, layer, obj, label, ii, record_type ) {
    if (layer.map.zoom < 10) {
       label = "";
    }
@@ -225,7 +240,8 @@ function trackAddPoint(lon, lat, layer, obj, label, ii ) {
       fillcolor:  "#FFa500",
       fillcolor: (ii <=0 ) ? "transparent" : getColor(obj.mobile_id),
       fillcolor: (ii <=0 ) ? "white" : "white",
-      strokeWidth: (ii <=0 ) ? 5 : 2
+      strokeWidth: (ii <=0 ) ? 5 : 2,
+      externalGraphic: getExternalGraphic(record_type)
       //Humidity: dataArray[2],
       //temp: dataArray[1],
       //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
@@ -272,6 +288,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    lati = cols.indexOf("lat");
    loni = cols.indexOf("lon");
    speedi = cols.indexOf("speed");
+   record_typei = cols.indexOf("record_type");
 
    //lyr.removeAllFeatures()
    //lyr.destroyFeatures();
@@ -298,8 +315,9 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
       speeds.push(lc[speedi]);
+      
 
-      var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label, i);
+      var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label, i,lc[record_typei]);
       if (!bounds) {
          bounds = feat.geometry.getBounds();
       } else {
