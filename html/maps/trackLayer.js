@@ -235,8 +235,14 @@ function trackAddPoint(lon, lat, layer, obj, label, ii, record_type ) {
             externalGraphic: getExternalGraphic(record_type)
          };
     }
-    var pstyle = {};
-   var pointFeature = new OpenLayers.Feature.Vector(point, null, pstyle);
+    var pstyle = null;
+   
+   if(pstyle != null){
+        var pointFeature = new OpenLayers.Feature.Vector(point, null, pstyle);
+   }
+   else{
+       var pointFeature = new OpenLayers.Feature.Vector(point);
+   }
 
    pointFeature.attributes = {
       label: label,
