@@ -208,13 +208,13 @@ function getLineStyle(speed){
 
 function getExternalGraphic(record_type){    
     if(record_type=="MILD_ATTACK"){        
-        return "mildAttack.png";
+        return "../mildAttack.png";
     } if(record_type=="MEDIUM_ATTACK"){        
-      return "mediumAttack.png";
+      return "../mediumAttack.png";
     } if(record_type=="SEVERE_ATTACK"){
-      return "severeAttack.png";
+      return "../severeAttack.png";
     } if(record_type=="INHALER"){
-      return "inhaler.png";
+      return "../inhaler.png";
     }
     else{
         return "";
@@ -230,10 +230,12 @@ function trackAddPoint(lon, lat, layer, obj, label, ii, record_type ) {
 
    var point = xPoint(lon, lat);
    
-   var pstyle = {
-           externalGraphic: getExternalGraphic(record_type)
-        };
-
+   if(record_type=="MILD_ATTACK" || record_type=="MEDIUM_ATTACK" || record_type=="SEVERE_ATTACK" || record_type=="INHALER"){
+        var pstyle = {
+            externalGraphic: getExternalGraphic(record_type)
+         };
+    }
+    var pstyle = {};
    var pointFeature = new OpenLayers.Feature.Vector(point, null, pstyle);
 
    pointFeature.attributes = {
