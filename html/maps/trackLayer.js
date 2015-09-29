@@ -246,8 +246,8 @@ function trackAddPoint(lon, lat, layer, obj, label, ii, record_type ) {
       fillcolor: (ii <=0 ) ? "white" : "white",
       strokeWidth: (ii <=0 ) ? 5 : 2,
       externalGraphic: getExternalGraphic(record_type),
-      graphicHeight: 75,
-      graphicWidth: 75
+      graphicHeight: 20,
+      graphicWidth: 20
       //Humidity: dataArray[2],
       //temp: dataArray[1],
       //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
