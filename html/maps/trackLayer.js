@@ -207,12 +207,13 @@ function getLineStyle(speed){
 }
 
 function getExternalGraphic(record_type){
-    console.log("record_type")
+    console.log(record_type)
     if(record_type=="MILD ATTACK"){        
         return "mildAttack.png";
     } if(record_type=="MEDIUM ATTACK"){        
       return "mediumAttack.png";
     } if(record_type=="SEVERE ATTACK"){
+      console.log("severe attack found")
       return "severeAttack.png";
     } if(record_type=="INHALER"){
       return "inhaler.png";
