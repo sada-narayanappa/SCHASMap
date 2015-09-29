@@ -250,8 +250,8 @@ function trackAddPoint(lon, lat, layer, obj, label, ii, record_type ) {
       externalGraphic: getExternalGraphic(record_type),
       graphicHeight: 20,
       graphicWidth: 20,
-      graphicHeightSelected: 25,
-      graphicWidthSelected: 25
+      graphicHeightSelected: 30,
+      graphicWidthSelected: 30
       //Humidity: dataArray[2],
       //temp: dataArray[1],
       //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
