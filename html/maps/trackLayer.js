@@ -26,7 +26,9 @@ STYLEsm = new OpenLayers.StyleMap({
       pointRadius: 12,
       strokeColor: "#FF0000",
       color: "#0000FF",
-      strokeWidth: 2
+      strokeWidth: 2,
+      graphicHeight: "${graphicHeightSelected}",
+      graphicWidth: "${graphicWidthSelected}"
    }
 });
 
@@ -247,7 +249,9 @@ function trackAddPoint(lon, lat, layer, obj, label, ii, record_type ) {
       strokeWidth: (ii <=0 ) ? 5 : 2,
       externalGraphic: getExternalGraphic(record_type),
       graphicHeight: 20,
-      graphicWidth: 20
+      graphicWidth: 20,
+      graphicHeightSelected: 25,
+      graphicWidthSelected: 25
       //Humidity: dataArray[2],
       //temp: dataArray[1],
       //Speed: dataArray[5] + ", " + dataArray[6] + ", " + dataArray[7],
