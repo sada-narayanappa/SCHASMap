@@ -206,14 +206,12 @@ function getLineStyle(speed){
     }
 }
 
-function getExternalGraphic(record_type){
-    console.log(record_type)
+function getExternalGraphic(record_type){    
     if(record_type=="MILD_ATTACK"){        
         return "mildAttack.png";
     } if(record_type=="MEDIUM_ATTACK"){        
       return "mediumAttack.png";
     } if(record_type=="SEVERE_ATTACK"){
-      console.log("severe attack found")
       return "severeAttack.png";
     } if(record_type=="INHALER"){
       return "inhaler.png";
@@ -231,8 +229,12 @@ function trackAddPoint(lon, lat, layer, obj, label, ii, record_type ) {
    sWidth = (layer.map.zoom < 9) ? 0 : 2
 
    var point = xPoint(lon, lat);
+   
+   var pstyle = {
+           externalGraphic: getExternalGraphic(record_type)
+        };
 
-   var pointFeature = new OpenLayers.Feature.Vector(point);
+   var pointFeature = new OpenLayers.Feature.Vector(point, null, pstyle);
 
    pointFeature.attributes = {
       label: label,
