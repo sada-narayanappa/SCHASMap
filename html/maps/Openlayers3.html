@@ -371,7 +371,8 @@
             else {
                // console.log("not an admin user.. not loaded");
                 loggedInUserMobile_Id = localStorage.getItem('mobile_id');
-                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=22&mobile_id="+loggedInUserMobile_Id;
+                //url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=22&mobile_id="+loggedInUserMobile_Id;
+                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=25&username="+loggedInUserName;
                 submitForm({URL: url, fdata: {}, CB: setUserSessions})
 
             }
