@@ -74,7 +74,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
    return layer;
 }
 
-stationLayerVoronoi.prototype.AddWeatherFeatures = function (data, zoomToBounds){
+stationLayerVoronoi.prototype.AddFeatures = function (data, zoomToBounds){
    lyr = this.layer;
    eval(data);
    var locs = $rs["rows"]
@@ -154,7 +154,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
       cache: false,
       success: function (data) {
          //console.log(data)
-         myThis.AddWeatherFeatures(data, true)
+         myThis.AddFeatures(data, true)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
@@ -171,14 +171,14 @@ stationLayerVoronoi.prototype.LayerUpdateNearestWeather = function(date) {
    var q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
        "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
-   q = "SELECT concat('''',ST_AsGeoJSON(voronoi_geom), '''') as geom, a.station_id ,is_valid, temp_f,  weather_json, DATE(time_gmt) as dt" +
+   q = "SELECT concat('''',ST_AsGeoJSON(voronoi_geom), '''') as geom, a.station_id ,is_valid, temp_f,  weather_json, DATE(time_gmt) as dt " +
        "FROM weather_stations a LEFT OUTER JOIN  weather b ON a.station_id = b.station_id "+
        "WHERE is_interested=TRUE and " +
            " abs(time_gmt_unix-extract(epoch from '"+ date +"' at time zone 'gmt')) = (select min(abs(time_gmt_unix-extract(epoch from '"+ date +"' at time zone 'gmt'))) from weather) and a.state='MN'"
 
    var url = PROXY + DB_URL + "c=1&q=" + encodeURIComponent(q);
 
-   console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
+   //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
    $.ajax({
@@ -192,7 +192,7 @@ stationLayerVoronoi.prototype.LayerUpdateNearestWeather = function(date) {
       cache: false,
       success: function (data) {
          //console.log(data)
-         AddWeatherFeatures(data, true)
+         stationLayerVoronoi.prototype.AddFeatures(data, true)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
