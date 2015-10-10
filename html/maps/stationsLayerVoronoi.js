@@ -162,7 +162,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
    });
 }
 
-function LayerUpdateNearestWeather(date) {
+stationLayerVoronoi.prototype.LayerUpdateNearestWeather = function(date) {
    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
@@ -178,7 +178,7 @@ function LayerUpdateNearestWeather(date) {
 
    var url = PROXY + DB_URL + "c=1&q=" + encodeURIComponent(q);
 
-   //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
+   console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
 
    var myThis = this;
    $.ajax({
@@ -192,7 +192,7 @@ function LayerUpdateNearestWeather(date) {
       cache: false,
       success: function (data) {
          //console.log(data)
-         this.AddFeatures(data, true);
+         myThis.AddFeatures(data, true)
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
