@@ -56,6 +56,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
    });
 
    this.layer = layer;
+   stationLayerVoronoi.prototype.layer = layer;
    map.addLayer(layer);
 
    this.LayerUpdate()
