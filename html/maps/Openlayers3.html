@@ -459,7 +459,7 @@
         }
     }
     
-    /*function createAccount(){
+    function createAccount(){
         var username = $('#createUsername').val();
         var password = $('#createPassword').val();
         var confirmPassword = $('#createConfirmPassword').val();
@@ -470,6 +470,7 @@
         var mobileid = $('#createMobileid').val();
         var homephone = $('#createHomephone').val();
         var home_location = $('#createHome_location').val();
+        
         if(username && password && confirmPassword && password == confirmPassword ){
             $.ajax({
                 type: "GET",
@@ -481,19 +482,19 @@
                 // script call was *not* successful
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
-                    console.log( XMLHttpRequest.responseText);                    
+                    console.log( XMLHttpRequest.responseText);   
+                },
                 success: function(data){
                     alert("New Account Created");
                     showloginForm();
-                    }
-                } // success
+                }// success
             });
         }
         else{
             
             $('#createAccountMessage').text("Invalid username, or passwords do not match");
         }
-    } */
+    } 
 
     function runQuery2(){ // loginForm is submitted
         var username = $('#username').val(); // get username
@@ -634,6 +635,7 @@
          else{
                 $('div#loginContent').hide();
                 $('div#profile').hide();
+                $('div#createAccount').hide();
                 $('div#useroptions').show();
                 $('div#changePassword').show();
          }
@@ -644,6 +646,7 @@
         $('div#loginContent').hide();
         $('div#profile').hide();
         $('div#useroptions').show();
+        $('div#createAccount').hide();
 
     }
     function showMenuAlways(){
@@ -655,6 +658,7 @@
         $('div#useroptions').hide();
         $('div#profile').hide();
         $('div#changePassword').hide();
+        $('div#createAccount').hide();
     }
     
     function showCreateProfile(){
@@ -670,6 +674,7 @@
         $('div#useroptions').hide();
         $('div#profile').show();
         $('div#changePassword').hide();
+        $('div#createAccount').hide();
 
     }
 
