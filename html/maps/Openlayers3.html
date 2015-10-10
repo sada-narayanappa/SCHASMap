@@ -155,7 +155,7 @@
                         </form>
                     </div>
 
-                    <div id="createAccount" >
+                    <div id="createAccount" style="display: none;">
                         <form id="createAccountForm" name="createAccountForm" method="post" action="">
                             <legend>Create Account</legend>
                             <p>
@@ -200,10 +200,11 @@
                                 <input type="text" id="createHome_location" name="createHome_location" class="text" size="20" />
                             </p>
                         </form>
-                        <button type="button" class="button positive" ">                                        
+                        <span id="createAccountMessage" class="createAccountMessage"></span>
+                        <button type="button" class="button positive" onclick="createAccount()">                                        
                                         Create
                         </button>
-                        <button type="button" class="button positive" onclick="showLoginForm()">                                        
+                        <button type="button" class="button positive" onclick="showloginForm()">                                        
                                         Cancel
                         </button>
                     </div>
@@ -379,8 +380,8 @@
     
     function checkPass()
     {        
-        var password = document.getElementById('pass1');
-        var confirmPassword = document.getElementById('pass2');        
+        var password = document.getElementById('createPassword');
+        var confirmPassword = document.getElementById('createConfirmPassword');        
         var message = document.getElementById('confirmMessage');
 
         var matchColor = "#66cc66";
@@ -456,6 +457,42 @@
             url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=26&username=Synthetic";
             submitForm({URL: url, fdata: {}, CB: setUserSessions})
             showloginForm();
+        }
+    }
+    
+    function createAccount(){
+        var username = $('#createUsername').val();
+        var password = $('#createPassword').val();
+        var confirmPassword = $('#createConfirmPassword').val();
+        var fname = $('#createFname').val();
+        var lname = $('#createLname').val();
+        var address = $('#createAddress').val();
+        var cellphone = $('#createCellphone').val();
+        var mobileid = $('#createMobileid').val();
+        var homephone = $('#createHomephone').val();
+        var home_location = $('#createHome_location').val();
+        if(username && password && confirmPassword && password == confirmPassword ){
+            $.ajax({
+                type: "GET",
+                url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=27",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                // send username and password as parameters to the python script
+                data: "username=" + username + "&password=" + password + "&fname=" + fname+"&lname=" +lname+"&address="+address+"&cellphone="+cellphone+"&mobileid="+mobileid+"&homephone="+homephone+"&home_location="+home_location+"&viewable_mobileid="+mobileid,
+                // script call was *not* successful
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                    console.log( XMLHttpRequest.responseText);                    
+                success: function(data){
+                    alert("New Account Created");
+                    showloginForm();
+                    }
+                } // success
+            });
+        }
+        else{
+            
+            $('#createAccountMessage').text("Invalid username, or passwords do not match");
         }
     }
 
