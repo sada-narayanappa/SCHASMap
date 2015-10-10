@@ -162,7 +162,7 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
    });
 }
 
-stationLayerVoronoi.prototype.LayerUpdateNearestWeather = function(date) {
+function LayerUpdateNearestWeather(date) {
    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";

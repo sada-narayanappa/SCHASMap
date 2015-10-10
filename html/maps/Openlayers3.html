@@ -346,7 +346,7 @@
             }
             s = "changeTrackLayer(" + p + ")";
             
-            a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true); stationLayerVoronoi.prototype.LayerUpdateNearestWeather('"+d[1]+"');" + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+d[0]+"\',\'"+ d[1]+"\');}\" name=\"Session\" value=\"false\">" + d[0] + "," + d[1] + "<br/></label>\n";
+            a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true); LayerUpdateNearestWeather('"+d[1]+"');" + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+d[0]+"\',\'"+ d[1]+"\');}\" name=\"Session\" value=\"false\">" + d[0] + "," + d[1] + "<br/></label>\n";
             //a = "<a href=# onclick=\"setTrackLayerVisibility(true);" + s + ";\" >" + d[0] + "," + d[1] + "</a><br/>\n"
             str = str  + a;
 
