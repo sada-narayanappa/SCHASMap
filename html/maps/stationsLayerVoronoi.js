@@ -75,7 +75,7 @@ stationLayerVoronoi.prototype.AddLayer = function(map) {
 }
 
 stationLayerVoronoi.prototype.AddFeatures = function (data, zoomToBounds){
-   lyr = this.layer;
+   lyr = stationLayerVoronoi.prototype.layer;
    eval(data);
    var locs = $rs["rows"]
 
