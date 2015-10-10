@@ -162,4 +162,42 @@ stationLayerVoronoi.prototype.LayerUpdate = function() {
    });
 }
 
+stationLayerVoronoi.prototype.LayerUpdateNearestWeather = function(date) {
+   var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
+   var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+   var PROXY = "../cgi-bin/proxy.py?url=";
+
+   var e = getMapBoundedBox(true);
+   var q = "select ST_X(geom) as lon, ST_Y(geom) as lat, station_id " +
+       "from weather_stations where geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
+
+   q = "SELECT concat('''',ST_AsGeoJSON(voronoi_geom), '''') as geom, a.station_id ,is_valid, temp_f,  weather_json, DATE(time_gmt) as dt" +
+       "FROM weather_stations a LEFT OUTER JOIN  weather b ON a.station_id = b.station_id "+
+       "WHERE is_interested=TRUE and " +
+           " abs(time_gmt_unix-extract(epoch from '"+ date +"' at time zone 'gmt')) = (select min(abs(time_gmt_unix-extract(epoch from '"+ date +"' at time zone 'gmt'))) from weather) and a.state='MN'"
+
+   var url = PROXY + DB_URL + "c=1&q=" + encodeURIComponent(q);
+
+   //console.log( PROXY + DB_URL + "q=" + (q) + " \n\ne= where geom && ST_MakeEnvelope(" + e + ")")
+
+   var myThis = this;
+   $.ajax({
+      type: "GET",
+      url:  url,
+      timeout: 2000,
+      data: 	{},
+      contentType: "",
+      dataType: "text",
+      processdata: true,
+      cache: false,
+      success: function (data) {
+         //console.log(data)
+         myThis.AddFeatures(data, true)
+      },
+      error: function(xhr, stat, err) {
+         console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
+      }
+   });
+}
+
 
