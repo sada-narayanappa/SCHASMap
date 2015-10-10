@@ -192,7 +192,7 @@ function LayerUpdateNearestWeather(date) {
       cache: false,
       success: function (data) {
          //console.log(data)
-         stationLayerVoronoi.prototype.AddFeatures(data, true);
+         this.AddFeatures(data, true);
       },
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
