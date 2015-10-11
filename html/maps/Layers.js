@@ -184,6 +184,7 @@ function init() {
    AddTrackingLayer(map);
    AddSyntheticLayer(map);
    AddStationLayer(map);
+   AddUAEStationLayer(map);
    AddSyntheticStationLayer(map);
    var stv = new stationLayerVoronoi().AddLayer(map);
    var std = new stationLayerDelaunay().AddLayer(map);
@@ -196,6 +197,8 @@ function init() {
 }//end Init() function
 
 function submitform() {
+
+  
    var queryString = document.forms[0].query.value;
    OpenLayers.Request.POST({
       url: "http://www.openrouteservice.org/php/OpenLSLUS_Geocode.php",
