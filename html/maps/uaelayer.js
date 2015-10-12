@@ -1,9 +1,9 @@
 var uaestationLayer
-/* uae weather layer */
+
 function AddUAEStationLayer(map) {
    var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
- var test;
+
    var context = {
       getRadius: function(feature) {
          ret = (map.zoom < 9) ? 2 : 3;
@@ -104,8 +104,8 @@ function uaestationLayerUpdate() {
    var q = "select ST_X(T1.geom) as lon, ST_Y(T1.geom) as lat, T1.station_id " +
        "from weather_stations T1 INNER JOIN weatherae T2 ON (T1.station_id = T2.station_id) where T1.geom && ST_MakeEnvelope("+ e+") LIMIT 1000"
 
-   q = "select ST_X(T1.geom) as lon, ST_Y(T1.geom) as lat, T1.station_id " +
-   "from weather_stations T1 INNER JOIN weatherae T2 ON (T1.station_id = T2.station_id) WHERE T1.is_interested=TRUE "
+   q = "select  T1.lon as lon, T1.lat as lat, T1.station_id " +
+   "from weather_stationsae T1 INNER JOIN weatherae T2 ON (T1.station_id = T2.station_id) WHERE T1.is_interested=TRUE "
 
    
 
