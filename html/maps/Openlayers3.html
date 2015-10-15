@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>SCHAS Maps - With UAE weather stations</title>
+    <title>SCHAS Maps</title>
     <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
@@ -15,8 +15,6 @@
     <script src="../js/spatial1.js"></script>
 
     <script src="../js/useroptions.js"></script>
-
-
     <script src="Layers.js"></script>
     <script src="os.js"></script>
     <script src="utils.js"></script>
@@ -50,25 +48,21 @@
             init();
             initUserSettings();
         });
-
         function initUserSettings() { //initialize the control panel settings
             getUserOptions();
             if ( !userOptions )
                 userOptions = defaultUserOptions;
-
             runQuery1(); // load the information
             ControlPanelToggle(userOptions.controlPanel);
             if(userOptions.myUserID!==null){
                 trackLayerUpdate(userOptions.myUserID, false);
             }
             setUserOptions(map);
-
             var name = localStorage.getItem('name');
             console.log("name from localstorage is "+name);
             if (typeof name !== 'undefined' && name !== null){
                 showMenu();
                 $('[href="#tabs-3"]').closest('li').show();
-
             } else {
                 console.log("name is null"+name);
                 showloginForm();
@@ -84,7 +78,6 @@
 <script>
     function ControlPanelToggle(onOff) {  //onOff = none, block -> if none ->opens
         d = onOff || document.getElementById('formcontent').style.display;
-
         if ( d == "none")  {
             d = "block";
             userOptions.controlPanel = "none"
@@ -150,12 +143,67 @@
                                                 "http://www.blueprintcss.org/blueprint/plugins/buttons/icons/tick.png" />
                                         Login
                                     </button>
+                                    <button type="button" class="button positive" onclick="showCreateProfile()">                                        
+                                        Create Account
+                                    </button>
                                 </p>
                             </fieldset>
                         </form>
                     </div>
 
-
+                    <div id="createAccount" style="display: none;">
+                        <form id="createAccountForm" name="createAccountForm" method="post" action="">
+                            <legend>Create Account</legend>
+                            <p>
+                                <label for="createUsername">Username</label>
+                                <input type="text" id="createUsername" name="createUsername" class="text" size="10" />
+                            </p>
+                            <p>
+                                <label for="createPassword">Password</label>
+                                <input type="password" id="createPassword" name="createPassword" class="text" size="10" />
+                            </p>
+                            <p>
+                                <label for="createConfirmPassword">Confirm Password</label>
+                                <input type="password" id="createConfirmPassword" onkeyup="checkPass(); return false;" name="createConfirmPassword" class="text" size="10" />
+                                <span id="confirmMessage" class="confirmMessage"></span>
+                            </p>
+                            <p>
+                                <label for="createFname">First Name</label>
+                                <input type="text" id="createFname" name="createFname" class="text" size="30" />
+                            </p>
+                            <p>
+                                <label for="createLname">Last Name</label>
+                                <input type="text" id="createLname" name="createLname" class="text" size="30" />
+                            </p>
+                            <p>
+                                <label for="createAddress">Address</label>
+                                <input type="textarea" id="createAddress" name="createAddress" class="text"  />
+                            </p>
+                            <p>
+                                <label for="createCellphone">cell phone</label>
+                                <input type="text" id="createCellphone" name="createCellphone" class="text" size="20" />
+                            </p>
+                            <p>
+                                <label for="createMobileid">Mobile id</label>
+                                <input type="text" id="createMobileid" name="createMobileid" class="text" size="20" />
+                            </p>
+                            <p>
+                                <label for="createHomephone">Home phone</label>
+                                <input type="text" id="createHomephone" name="createHomephone" class="text" size="20" />
+                            </p>
+                            <p>
+                                <label for="createHome_location">Home location</label>
+                                <input type="text" id="createHome_location" name="createHome_location" class="text" size="20" />
+                            </p>
+                        </form>
+                        <span id="createAccountMessage" class="createAccountMessage"></span>
+                        <button type="button" class="button positive" onclick="createAccount()">                                        
+                                        Create
+                        </button>
+                        <button type="button" class="button positive" onclick="showloginForm()">                                        
+                                        Cancel
+                        </button>
+                    </div>
 
 
                     <div id="useroptions">
@@ -318,29 +366,45 @@
         s= s + "?" + parms;
         top.window.location.href = s;
     }
-
     function changeTrackLayer(p, updateBounds ) {        
         userOptions.myUserID = p;
         if(userOptions.myUserID!==null){
             trackLayerUpdate(p, true);
         }
     }
+    
+    function checkPass(){        
+        var password = document.getElementById('createPassword');
+        var confirmPassword = document.getElementById('createConfirmPassword');        
+        var message = document.getElementById('confirmMessage');
+        var matchColor = "#66cc66";
+        var noMatchColor = "#ff6666";
+        if(password.value == confirmPassword.value){
+            confirmPassword.style.backgroundColor = matchColor;
+            message.style.color = matchColor;
+            message.innerHTML = "Passwords Match"
+        }else{
+            confirmPassword.style.backgroundColor = noMatchColor;
+            message.style.color = noMatchColor;
+            message.innerHTML = "Please match the passwords"
+        }
+    }  
+    
     function setUserSessions(text) {
         eval(text);
         //console.log(text);
         var cols = $rs.colnames;
         var type = $rs.coltypes;
         var data = $rs.rows || $rs[Object.keys($rs)[0]];
-
         str = "<form>";
         mobile_id = "";
         for ( i in data) {
             d = data [i];
             if (mobile_id != d[0]) {
                 mobile_id = d[0]
-                str = str + "<hr>"
+                str = str + "<hr>" + d[2] + " " + d[3] + "<br>"
+                
             }
-
             if ( d[1].indexOf("-") < 0) {
                 p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'"; // containst mobile_id and session num
             } else {
@@ -348,10 +412,9 @@
             }
             s = "changeTrackLayer(" + p + ")";
             
-            a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true);" + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+d[0]+"\',\'"+ d[1]+"\');}\" name=\"Session\" value=\"false\">" + d[0] + "," + d[1] + "<br/></label>\n";
+            a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true); stationLayerVoronoi.prototype.LayerUpdateNearestWeather('"+d[1]+"'); " + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+d[0]+"\',\'"+ d[1]+"\');}\" name=\"Session\" value=\"false\">" + d[0] + "," + d[1] + "<br/></label>\n";
             //a = "<a href=# onclick=\"setTrackLayerVisibility(true);" + s + ";\" >" + d[0] + "," + d[1] + "</a><br/>\n"
             str = str  + a;
-
             if ( i == 0) {
                 CURRENT_PARMS = p;
             }
@@ -359,13 +422,10 @@
         str = str + "</form>"
         $("#tabs-3").html(str);
     }
-
-
     function runQuery1(divName) {
         loggedInUserName = localStorage.getItem('name');
         //console.log("inside runquery1 and is name from localstorage is "+name); 
         if (typeof loggedInUserName !== 'undefined' && loggedInUserName !== null) {
-
             if (loggedInUserName == 'admin') {
                 url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9a"
                 url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=15"
@@ -373,20 +433,55 @@
             }
             else {
                // console.log("not an admin user.. not loaded");
-                loggedInUserMobile_Id = localStorage.getItem('mobile_id');
-                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=22&mobile_id="+loggedInUserMobile_Id;
+                loggedInUserMobile_Id = localStorage.getItem('mobile_id');                
+                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=26&username="+loggedInUserName;
                 submitForm({URL: url, fdata: {}, CB: setUserSessions})
-
             }
         }
         else {
             //Not logged in, show synthetic route data            
-            url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=22&mobile_id=Synthetic";
+            url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=26&username=Synthetic";
             submitForm({URL: url, fdata: {}, CB: setUserSessions})
             showloginForm();
         }
     }
-
+    
+    function createAccount(){
+        var username = $('#createUsername').val();
+        var password = $('#createPassword').val();
+        var confirmPassword = $('#createConfirmPassword').val();
+        var fname = $('#createFname').val();
+        var lname = $('#createLname').val();
+        var address = $('#createAddress').val();
+        var cellphone = $('#createCellphone').val();
+        var mobileid = $('#createMobileid').val();
+        var homephone = $('#createHomephone').val();
+        var home_location = $('#createHome_location').val();
+        
+        if(username && password && confirmPassword && password == confirmPassword ){
+            $.ajax({
+                type: "GET",
+                url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=27",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                // send username and password as parameters to the python script
+                data: "username=" + username + "&password=" + password + "&fname=" + fname+"&lname=" +lname+"&address="+address+"&cellphone="+cellphone+"&mobileid="+mobileid+"&homephone="+homephone+"&home_location="+home_location+"&viewable_mobileid="+mobileid,
+                // script call was *not* successful
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                    console.log( XMLHttpRequest.responseText);   
+                },
+                success: function(data){
+                    alert("New Account Created");
+                    showloginForm();
+                }// success
+            });
+        }
+        else{
+            
+            $('#createAccountMessage').text("Invalid username, or passwords do not match");
+        }
+    } 
     function runQuery2(){ // loginForm is submitted
         var username = $('#username').val(); // get username
         var password = $('#password').val(); // get password
@@ -417,13 +512,9 @@
                         eval(data);
                         var data2 = $rs.rows || $rs[Object.keys($rs)[0]];
                         if(data2.length > 0) {
-
-
                             editprofile(data2);
-
                         }
                         else{
-
                             $('div#loginResult').text("Login Failed: " );
                             $('div#loginResult').addClass("error");
                         }
@@ -438,11 +529,9 @@
         $('div#loginResult').fadeIn();
         return false;
     }
-
     function getProfileFromDB(){ // loginForm is submitted
         username = localStorage.getItem('name');
         console.log("username got from locastorgae is "+username);
-
         $.ajax({
             type: "GET",
             url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=17",
@@ -452,21 +541,17 @@
             data: "cname=" +username,
             // script call was *not* successful
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-
             }, // error
             // script call was successful
             success: function(data){
                 if (data.error) { // script returned error
-
                 } // if
                 else { // data recieved
                     eval(data);
                     var data2 = $rs.rows || $rs[Object.keys($rs)[0]];
                     if(data2.length > 0) {
-
                         editprofile(data2);
                         runQuery1();
-
                     }
                     else{
                         alert("Fetching the user information failed..please login again");
@@ -477,9 +562,6 @@
             } // success
         }); // ajax
     }
-
-
-
     function logout() { // profileForm is submitted
         localStorage.removeItem('name');
         localStorage.removeItem('mobile_id');
@@ -487,12 +569,9 @@
         //$('[href="#tabs-3”]’).closest('li').hide();
         $('[href="#tabs-3"]').closest('li').show();
         runQuery1();
-
     }
-
-
+    
     function editprofile(data2) {
-
                     if(data2.length > 0) {
                         for ( i in data2)
                             d = data2 [i];
@@ -510,10 +589,6 @@
                         showMenuAlways();
                         $('[href="#tabs-3"]').closest('li').show();
                         runQuery1();
-
-
-
-
                         //  ["userid","fname","lname","cname","address","cellphone","mobileid","homephone","passwd","home_location"]
                     }
                 }
@@ -526,37 +601,43 @@
          else{
                 $('div#loginContent').hide();
                 $('div#profile').hide();
+                $('div#createAccount').hide();
                 $('div#useroptions').show();
                 $('div#changePassword').show();
          }
     }
-
     function showMenu(){
         $('div#changePassword').hide();
         $('div#loginContent').hide();
         $('div#profile').hide();
         $('div#useroptions').show();
-
+        $('div#createAccount').hide();
     }
     function showMenuAlways(){
         $('div#useroptions').show();
-
     }
     function showloginForm(){
         $('div#loginContent').show();
         $('div#useroptions').hide();
         $('div#profile').hide();
         $('div#changePassword').hide();
+        $('div#createAccount').hide();
     }
-
+    
+    function showCreateProfile(){
+        $('div#loginContent').hide();
+        $('div#useroptions').hide();
+        $('div#profile').hide();
+        $('div#changePassword').hide();
+        $('div#createAccount').show();
+    }
     function showProfile(){
         $('div#loginContent').hide();
         $('div#useroptions').hide();
         $('div#profile').show();
         $('div#changePassword').hide();
-
+        $('div#createAccount').hide();
     }
-
     function runQuery3(){ // profileForm is submitted
         var fname = $('#fname').val(); // get username
         var lname = $('#lname').val();
@@ -565,10 +646,8 @@
         var mobileid = $('#mobileid').val();
         var homephone = $('#homephone').val();
         var home_location = $('#home_location').val();
-
      ///   var sqlQuerytoUpdate = "update public.user set lname='"+lname+"' , fname='" + fname+ "' , address='" + address+ "', cellphone='" + cellphone+
      // "', mobileid='" + mobileid+ "', homephone='" + homephone+ "', home_location='" + home_location+ "'where userid ="+userSysId;
-
         if (lname && fname) { // values are not empty
             $.ajax({
                 type: "GET",
