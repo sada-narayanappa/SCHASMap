@@ -78,6 +78,8 @@
                 str = str + "</tbody>";
                 $("#data").html(str);
                 $("#data").tablesorter({
+                    theme: 'blue',
+                    widgets: ["zebra", "filter"],
                     headers: {
                         2: { sorter:'customDate' },
                         3: { sorter:'customDate' }
