@@ -1,4 +1,4 @@
-ts.addParser({
+$.tablesorter.addParser({
     id: "customDate",
     is: function(s) {
         //return false;
