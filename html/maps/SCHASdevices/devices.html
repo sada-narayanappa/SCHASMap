@@ -77,7 +77,13 @@
                 }                
                 str = str + "</tbody>";
                 $("#data").html(str);
-                $("#data").tablesorter(); 
+                $("#data").tablesorter({
+                    headers: {
+                        2: { sorter:'customDate' },
+                        3: { sorter:'customDate' }
+                    }
+                });
+                
             }
             
             function dataQuery(){
