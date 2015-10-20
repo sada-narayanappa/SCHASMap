@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SCHAS Data</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="jquery-latest.js"></script> 
+        <script type="text/javascript" src="jquery.tablesorter.js"></script> 
+        <script type="text/javascript" src="sorttables.js"></script> 
+    </head>
+    <body>
+        <h1 align="center">SCHAS Data</h1>
+        <div style="width: 100%; overflow: hidden;">
+            <div id="dataTable" style="width: 600px; float: left;">
+                <h2 align="center">Users</h2>
+                <table align="center" id="data" class="tablesorter" border="1"> 
+                    <thead> 
+                        <tr> 
+                            <th>Last Name</th> 
+                            <th>First Name</th> 
+                            <th>MobileID</th> 
+                            <th>Active</th> 
+                            <th>username</th> 
+                        </tr> 
+                    </thead> 
+                    <tbody> 
+                        <tr> 
+                            <td>Meyers</td> 
+                            <td>Wade</td> 
+                            <td>a98d0849f9ca66ba</td> 
+                            <td>1</td> 
+                            <td>Wade</td> 
+                        </tr> 
+                        <tr> 
+                            <td>Narayanappa</td> 
+                            <td>Sada</td> 
+                            <td>15c0f0958ea64769</td> 
+                            <td>0</td> 
+                            <td>sada</td> 
+                        </tr>   
+                        <tr> 
+                            <td>Bae</td> 
+                            <td>Wan</td> 
+                            <td>125cahgq2r2ot234</td> 
+                            <td>1</td> 
+                            <td>wan</td> 
+                        </tr> 
+                    </tbody> 
+                </table> 
+            </div>           
+        </div>
+        
+        <script>
+            function populateTable(data){
+                eval(data);
+                var cols = $rs.colnames;
+                var type = $rs.coltypes;
+                var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                
+                mobileIDi = cols.indexOf("mobile_id");
+                fNamei = cols.indexOf("fname");
+                latestUploadi = cols.indexOf("newestupload");
+                latestHeartbeati = cols.indexOf("recentheartbeat");
+                totalUploadsi = cols.indexOf("numentries");
+                
+                
+                str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Latest Heartbeat</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
+                for ( i in data) {
+                    d = data [i];
+                    str = str+"<tr> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei]+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[latestHeartbeati]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
+                }                
+                str = str + "</tbody>";
+                $("#data").html(str);
+                $("#data").tablesorter(); 
+            }
+            
+            function dataQuery(){
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=28",
+                    contentType: "application/text; charset=utf-8",                   
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                        populateTable(data);
+                    } // success
+                }); // ajax
+            }
+        </script>
+        
+    </body>
+</html>
