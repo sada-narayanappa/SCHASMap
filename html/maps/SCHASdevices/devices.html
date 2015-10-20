@@ -83,7 +83,7 @@
             function dataQuery(){
                 $.ajax({
                     type: "GET",
-                    url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=28",
+                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=28",
                     contentType: "application/text; charset=utf-8",                   
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
