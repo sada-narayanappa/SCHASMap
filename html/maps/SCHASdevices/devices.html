@@ -98,7 +98,7 @@
                 str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Latest Heartbeat</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
                 for ( i in data) {
                     d = data [i];
-                    str = str+"<tr onClick=\"moreInformation('"+d[fNamei]+"','"+d[lnamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei]+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[latestHeartbeati]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
+                    str = str+"<tr onClick=\"moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei]+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[latestHeartbeati]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
                 }                
                 str = str + "</tbody>";
                 $("#data").html(str);
