@@ -53,10 +53,29 @@
                         </tr> 
                     </tbody> 
                 </table> 
-            </div>           
+            </div>    
+            <div id="moreInformation" style="width: 600px; float: right;">
+                <h2 id="moreInfoName"></h2>
+                <p id="moreInfoMobileID"></p>
+                <p id="moreInfoUsername"></p>
+                <p id="moreInfoAddress"></p>
+                <p id="moreInfoCell"></p>
+                <p id="moreInfoHome"></p>                
+                <p id="moreInfoHomeLoc"></p>               
+            </div>
         </div>
         
         <script>
+            function moreInformation(fname,lname,mobileID,cname,address,cellphone,homephone,homelocation){
+                $("#moreInfoName").html(fname+" "+lname);
+                $("#moreInfoMobileID").html("MobileID: "+mobileID);
+                $("#moreInfoUsername").html("Username: "+cname);
+                $("#moreInfoAddress").html("Address: "+address);
+                $("#moreInfoCell").html("Cell Phone: "+cellphone);
+                $("#moreInfoHome").html("Home Phone: "+homephone);
+                $("#moreInfoHomeLoc").html("Home Location: "+homelocation);
+            }
+            
             function populateTable(data){
                 eval(data);
                 var cols = $rs.colnames;
@@ -65,6 +84,12 @@
                 
                 mobileIDi = cols.indexOf("mobile_id");
                 fNamei = cols.indexOf("fname");
+                lNamei = cols.indexOf("lname");
+                cNamei = cols.indexOf("cname");
+                addressi = cols.indexOf("address");
+                cellphonei = cols.indexOf("cellphone");
+                homephonei = cols.indexOf("homephone");
+                homelocationi = cols.indexOf("home_location");
                 latestUploadi = cols.indexOf("newestupload");
                 latestHeartbeati = cols.indexOf("recentheartbeat");
                 totalUploadsi = cols.indexOf("numentries");
@@ -73,7 +98,7 @@
                 str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Latest Heartbeat</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
                 for ( i in data) {
                     d = data [i];
-                    str = str+"<tr> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei]+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[latestHeartbeati]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
+                    str = str+"<tr onClick=\"moreInformation('"+d[fNamei]+"','"+d[lnamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei]+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[latestHeartbeati]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
                 }                
                 str = str + "</tbody>";
                 $("#data").html(str);
