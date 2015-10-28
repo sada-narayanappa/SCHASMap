@@ -197,7 +197,7 @@
                             </p>
                         </form>
                         <span id="createAccountMessage" class="createAccountMessage"></span>
-                        <button type="button" class="button positive" onclick="createAccount()">                                        
+                        <button type="button" class="button positive" onclick="checkUsername()">                                        
                                         Create
                         </button>
                         <button type="button" class="button positive" onclick="showloginForm()">                                        
@@ -250,8 +250,9 @@
 
                                     <input type="password" id="newPassword1" name="newPassword1" class="text" size="10" />
                                 </p>
+                                <span id="changePasswordMessage" class="changePasswordMessage"></span>
                                 <p>
-                                    <button type="button" class="button positive" onclick="submitPassword();">
+                                    <button type="button" class="button positive" onclick="checkPassword();">
                                         <img alt="ok" src=
                                                 "http://www.blueprintcss.org/blueprint/plugins/buttons/icons/tick.png" />
                                         Change password
@@ -446,6 +447,69 @@
         }
     }
     
+    function checkPassword(){
+        loggedInUserName = localStorage.getItem('name');
+        var currentPass = $('#currentPassword').val();
+        
+        $.ajax({
+            type: "GET",
+            url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=32",
+            contentType: "application/json; charset=utf-8",
+            dataType: "text",
+            // send username and password as parameters to the python script
+            data: "cname=" + loggedInUserName + "&passwd=" + currentPass ,
+            // script call was *not* successful
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                console.log( XMLHttpRequest.responseText);   
+            },
+            success: function(data){
+                eval(data);
+                //console.log(text);
+                var cols = $rs.colnames;
+                var type = $rs.coltypes;
+                var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                d = data[0];
+                if(d[0]>0){
+                    submitPassword();                    
+                }                
+                else{
+                    $('#changePasswordMessage').text("The current password was incorrect.");
+                }
+            }// success
+        });
+    }
+    
+    function submitPassword(){
+        loggedInUserName = localStorage.getItem('name');
+        var currentPass = $('#currentPassword').val();
+        var newPass = $('#newPassword').val();
+        var newPass1 = $('#newPassword1').val();
+        if(newPass == newPass1){
+            $.ajax({
+                type: "GET",
+                url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=33",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                // send username and password as parameters to the python script
+                data: "username=" + loggedInUserName + "&password=" + newPass,
+                // script call was *not* successful
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                    console.log( XMLHttpRequest.responseText);   
+                },
+                success: function(data){
+                    alert("New Password Set");
+                    showProfile();
+                }// success
+            });
+        }
+        else{
+            $('#changePasswordMessage').text("Your new passwords did not match each other");
+        }
+        
+    }
+    
     function createAccount(){
         var username = $('#createUsername').val();
         var password = $('#createPassword').val();
@@ -481,6 +545,37 @@
             
             $('#createAccountMessage').text("Invalid username, or passwords do not match");
         }
+    } 
+    
+    function checkUsername(){
+        var username = $('#createUsername').val();                     
+        $.ajax({
+            type: "GET",
+            url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=31",
+            contentType: "application/json; charset=utf-8",
+            dataType: "text",
+            // send username and password as parameters to the python script
+            data: "cname=" + username ,
+            // script call was *not* successful
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                console.log( XMLHttpRequest.responseText);   
+            },
+            success: function(data){
+                eval(data);
+                //console.log(text);
+                var cols = $rs.colnames;
+                var type = $rs.coltypes;
+                var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                d = data[0];
+                if(d[0]>0){
+                    $('#createAccountMessage').text("There is already an account under that username.");
+                }                
+                else{
+                    createAccount();
+                }
+            }// success
+        });
     } 
     function runQuery2(){ // loginForm is submitted
         var username = $('#username').val(); // get username
