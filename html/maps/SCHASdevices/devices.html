@@ -19,61 +19,106 @@
         <div style="width: 100%; overflow: hidden;">
             <div id="dataTable" style="width: 600px; float: left;">
                 <h2 align="center">Users</h2>
-                <table align="center" id="data" class="tablesorter" border="1"> 
-                    <thead> 
-                        <tr> 
-                            <th>Last Name</th> 
-                            <th>First Name</th> 
-                            <th>MobileID</th> 
-                            <th>Active</th> 
-                            <th>username</th> 
-                        </tr> 
-                    </thead> 
-                    <tbody> 
-                        <tr> 
-                            <td>Meyers</td> 
-                            <td>Wade</td> 
-                            <td>a98d0849f9ca66ba</td> 
-                            <td>1</td> 
-                            <td>Wade</td> 
-                        </tr> 
-                        <tr> 
-                            <td>Narayanappa</td> 
-                            <td>Sada</td> 
-                            <td>15c0f0958ea64769</td> 
-                            <td>0</td> 
-                            <td>sada</td> 
-                        </tr>   
-                        <tr> 
-                            <td>Bae</td> 
-                            <td>Wan</td> 
-                            <td>125cahgq2r2ot234</td> 
-                            <td>1</td> 
-                            <td>wan</td> 
-                        </tr> 
-                    </tbody> 
-                </table> 
+                <div id="table" style="height: 700px;">
+                    <table align="center" id="data" class="tablesorter" border="1"> 
+                        <thead> 
+                            <tr> 
+                                <th>Last Name</th> 
+                                <th>First Name</th> 
+                                <th>MobileID</th> 
+                                <th>Active</th> 
+                                <th>username</th> 
+                            </tr> 
+                        </thead> 
+                        <tbody> 
+                            <tr> 
+                                <td>Meyers</td> 
+                                <td>Wade</td> 
+                                <td>a98d0849f9ca66ba</td> 
+                                <td>1</td> 
+                                <td>Wade</td> 
+                            </tr> 
+                            <tr> 
+                                <td>Narayanappa</td> 
+                                <td>Sada</td> 
+                                <td>15c0f0958ea64769</td> 
+                                <td>0</td> 
+                                <td>sada</td> 
+                            </tr>   
+                            <tr> 
+                                <td>Bae</td> 
+                                <td>Wan</td> 
+                                <td>125cahgq2r2ot234</td> 
+                                <td>1</td> 
+                                <td>wan</td> 
+                            </tr> 
+                        </tbody> 
+                    </table> 
+                </div>
             </div>    
             <div id="moreInformation" style="width: 600px; float: right;">
-                <h2 id="moreInfoName"></h2>
-                <p id="moreInfoMobileID"></p>
-                <p id="moreInfoUsername"></p>
-                <p id="moreInfoAddress"></p>
-                <p id="moreInfoCell"></p>
-                <p id="moreInfoHome"></p>                
-                <p id="moreInfoHomeLoc"></p>               
+                <form id="profileForm" name="profileForm" method="post" action="">
+                    <fieldset>
+                        <legend>Personal Information</legend>
+                        <p>
+                            <label for="fname">First Name</label>
+                            <input type="text" id="moreInfoFirstName" name="fname" class="text" size="30" />
+                        </p>
+                        <p>
+                            <label for="lname">Last Name</label>
+                            <input type="text" id="moreInfoLastName" name="lname" class="text" size="30" />
+                        </p>
+                        <p>
+                            <label for="lname">Username</label>
+                            <input type="text" id="moreInfoUsername" name="lname" class="text" size="30" />
+                        </p>
+                        <p>
+                            <label for="lname">Password</label>
+                            <input type="text" id="moreInfoPassword" name="lname" class="text" size="30" />
+                        </p>
+                        <p>
+                            <label for="address">Address</label>
+                            <input type="textarea" id="moreInfoAddress" name="address" class="text"  />
+                        </p>
+                        <p>
+                            <label for="cellphone">Cell Phone</label>
+                            <input type="text" id="moreInfoCell" name="cellphone" class="text" size="20" />
+                        </p>
+                        <p>
+                            <label for="mobileid">Mobile id</label>
+                            <input type="text" id="moreInfoMobileID" name="mobileid" class="text" size="20" />
+                        </p>
+                        <p>
+                            <label for="homephone">Home phone</label>
+                            <input type="text" id="moreInfoHome" name="homephone" class="text" size="20" />
+                        </p>
+                        <p>
+                            <label for="home_location">Home location</label>
+                            <input type="text" id="moreInfoHomeLoc" name="home_location" class="text" size="20" />
+                        </p>
+
+
+                        <p>
+                            <button type="button" class="button positive" onclick="">                                
+                                Update
+                            </button>
+                        </p>
+                    </fieldset>
+                </form>                             
             </div>
         </div>
         
         <script>
-            function moreInformation(fname,lname,mobileID,cname,address,cellphone,homephone,homelocation){
-                $("#moreInfoName").html(fname+" "+lname);
-                $("#moreInfoMobileID").html("MobileID: "+mobileID);
-                $("#moreInfoUsername").html("Username: "+cname);
-                $("#moreInfoAddress").html("Address: "+address);
-                $("#moreInfoCell").html("Cell Phone: "+cellphone);
-                $("#moreInfoHome").html("Home Phone: "+homephone);
-                $("#moreInfoHomeLoc").html("Home Location: "+homelocation);
+            function moreInformation(fname,lname,mobileID,cname,address,cellphone,homephone,homelocation,passwd){
+                $("#moreInfoFirstName").val(fname.replace(null,""));
+                $("#moreInfoLastName").val(lname.replace(null,""));
+                $("#moreInfoMobileID").val(mobileID.replace(null,""));
+                $("#moreInfoUsername").val(cname.replace(null,""));
+                $("#moreInfoAddress").val(address.replace(null,""));
+                $("#moreInfoCell").val(cellphone.replace(null,""));
+                $("#moreInfoHome").val(homephone.replace(null,""));
+                $("#moreInfoHomeLoc").val(homelocation.replace(null,""));
+                $("#moreInfoPassword").val(passwd.replace(null,""));
             }
             
             function populateTable(data){
@@ -93,19 +138,19 @@
                 latestUploadi = cols.indexOf("newestupload");
                 latestHeartbeati = cols.indexOf("recentheartbeat");
                 totalUploadsi = cols.indexOf("numentries");
+                passwdi = cols.indexOf("passwd");
                 
                 
-                str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Latest Heartbeat</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
+                str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
                 for ( i in data) {
                     d = data [i];
-                    str = str+"<tr onClick=\"moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei]+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[latestHeartbeati]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
+                    str = str+"<tr onClick=\"moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+d[mobileIDi].replace(null,"")+"</td> "+"<td>"+d[fNamei].replace(null,"")+"</td> "+"<td>"+d[latestUploadi].replace(null,"")+"</td> "+"<td>"+d[totalUploadsi].replace(null,"")+"</td> </tr>";
                 }                
                 str = str + "</tbody>";
                 $("#data").html(str);
                 $("#data").tablesorter({
                     headers: {
-                        2: { sorter:'customDate' },
-                        3: { sorter:'customDate' }
+                        2: { sorter:'customDate' }
                     }
                 });
                 
