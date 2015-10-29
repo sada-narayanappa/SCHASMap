@@ -144,7 +144,7 @@
                 str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
                 for ( i in data) {
                     d = data [i];
-                    str = str+"<tr onClick=\"moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+d[mobileIDi].replace(null,"")+"</td> "+"<td>"+d[fNamei].replace(null,"")+"</td> "+"<td>"+d[latestUploadi].replace(null,"")+"</td> "+"<td>"+d[totalUploadsi].replace(null,"")+"</td> </tr>";
+                    str = str+"<tr onClick=\"moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei].toString().replace(null,"")+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
                 }                
                 str = str + "</tbody>";
                 $("#data").html(str);
