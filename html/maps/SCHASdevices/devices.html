@@ -134,7 +134,7 @@
                             console.log( XMLHttpRequest.responseText);   
                         },
                         success: function(data){
-                            $("#moreInfoUsername").prop('readonly', true);
+                            $("#moreInfoUsername").attr('readonly', true);
                             alert("New Account Created");
                             $('#accountMessage').text("New account created.");
                         }// success
@@ -196,10 +196,10 @@
                 $("#moreInfoPassword").val(passwd.replace(null,""));
                 $('#accountMessage').text("");
                 if(cname == null){                    
-                    $("#moreInfoUsername").prop('readonly', false);
+                    $("#moreInfoUsername").attr('readonly', false);
                 }
                 else{
-                    $("#moreInfoUsername").prop('readonly', true);
+                    $("#moreInfoUsername").attr('readonly', true);
                 }
             }
             
