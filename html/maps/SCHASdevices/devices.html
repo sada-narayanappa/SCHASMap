@@ -116,7 +116,7 @@
                 var lname = $('#moreInfoLastName').val();
                 var address = $('#moreInfoAddress').val();
                 var cellphone = $('#moreInfoCell').val();
-                var mobileid = $('#moreInfoMobileid').val();
+                var mobileid = $('#moreInfoMobileID').val();
                 var homephone = $('#moreInfoHome').val();
                 var home_location = $('#moreInfoHomeLoc').val();
 
@@ -134,9 +134,14 @@
                             console.log( XMLHttpRequest.responseText);   
                         },
                         success: function(data){
-                            $("#moreInfoUsername").attr('readonly', true);
-                            alert("New Account Created");
-                            $('#accountMessage').text("New account created.");
+                            $.ajax({
+                                    url: "http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload"
+                                }).done(function() {
+                                    $("#moreInfoUsername").attr('readonly', true);
+                                    alert("New Account Created");
+                                    $('#accountMessage').text("New account created.");
+                                });
+                            
                         }// success
                     });
                 }
@@ -162,7 +167,7 @@
                 var lname = $('#moreInfoLastName').val();
                 var address = $('#moreInfoAddress').val();
                 var cellphone = $('#moreInfoCell').val();
-                var mobileid = $('#moreInfoMobileid').val();
+                var mobileid = $('#moreInfoMobileID').val();
                 var homephone = $('#moreInfoHome').val();
                 var home_location = $('#moreInfoHomeLoc').val();
                 $.ajax({
@@ -178,8 +183,13 @@
                     }, // error
                     // script call was successful
                     success: function(data){ 
-                        alert("Account updated successfully")
-                        $('#accountMessage').text("Update account "+ username);
+                        $.ajax({
+                                    url: "http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload"
+                                }).done(function() {
+                                    alert("Account updated successfully")
+                                    $('#accountMessage').text("Updated account "+ username);
+                                });
+                        
                     } // success
                 }); // ajax                               
             }
