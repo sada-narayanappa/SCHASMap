@@ -78,7 +78,7 @@
                         </p>
                         <p>
                             <label for="createAddress">Address</label>
-                            <input type="text" id="createAddress" name="createAddress" class="text"  />
+                            <input type="textarea" id="createAddress" name="createAddress" class="text"  />
                         </p>
                         <p>
                             <label for="cellphone">Cell Phone</label>
@@ -134,7 +134,7 @@
                             console.log( XMLHttpRequest.responseText);   
                         },
                         success: function(data){
-                            document.getElementById('moreInfoUsername').readonly = true;
+                            $("#moreInfoUsername").prop('readonly', true);
                             alert("New Account Created");
                             $('#accountMessage').text("New account created.");
                         }// success
@@ -195,11 +195,11 @@
                 $("#moreInfoHomeLoc").val(homelocation.replace(null,""));
                 $("#moreInfoPassword").val(passwd.replace(null,""));
                 $('#accountMessage').text("");
-                if(cname == null){
-                    document.getElementById('moreInfoUsername').readonly = false;                    
+                if(cname == null){                    
+                    $("#moreInfoUsername").prop('readonly', false);
                 }
                 else{
-                    document.getElementById('moreInfoUsername').readonly = true;
+                    $("#moreInfoUsername").prop('readonly', true);
                 }
             }
             
