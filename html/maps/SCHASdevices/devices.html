@@ -78,7 +78,7 @@
                         </p>
                         <p>
                             <label for="createAddress">Address</label>
-                            <input type="textarea" id="createAddress" name="createAddress" class="text"  />
+                            <input type="textarea" id="moreInfoAddress" name="createAddress" class="text"  />
                         </p>
                         <p>
                             <label for="cellphone">Cell Phone</label>
@@ -148,7 +148,7 @@
             
             function update(){
                 
-                if(document.getElementById('moreInfoUsername').readonly){
+                if(document.getElementById('moreInfoUsername').hasAttributes("readonly")){
                     updateAccount();            
                 }else{
                     createAccount();
@@ -196,7 +196,7 @@
                 $("#moreInfoPassword").val(passwd.replace(null,""));
                 $('#accountMessage').text("");
                 if(cname == null){                    
-                    $("#moreInfoUsername").attr('readonly', false);
+                    $("#moreInfoUsername").removeAttr('readonly')
                 }
                 else{
                     $("#moreInfoUsername").attr('readonly', true);
