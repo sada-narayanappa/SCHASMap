@@ -70,15 +70,15 @@
                         </p>
                         <p>
                             <label for="lname">Username</label>
-                            <input type="text" id="moreInfoUsername" name="lname" class="text" size="30" />
+                            <input type="text" id="moreInfoUsername" name="cname" class="text" size="30" readonly/>
                         </p>
                         <p>
                             <label for="lname">Password</label>
-                            <input type="text" id="moreInfoPassword" name="lname" class="text" size="30" />
+                            <input type="text" id="moreInfoPassword" name="password" class="text" size="30" />
                         </p>
                         <p>
-                            <label for="address">Address</label>
-                            <input type="textarea" id="moreInfoAddress" name="address" class="text"  />
+                            <label for="createAddress">Address</label>
+                            <input type="text" id="createAddress" name="createAddress" class="text"  />
                         </p>
                         <p>
                             <label for="cellphone">Cell Phone</label>
@@ -86,7 +86,7 @@
                         </p>
                         <p>
                             <label for="mobileid">Mobile id</label>
-                            <input type="text" id="moreInfoMobileID" name="mobileid" class="text" size="20" />
+                            <input type="text" id="moreInfoMobileID" name="mobileid" class="text" size="20" readonly/>
                         </p>
                         <p>
                             <label for="homephone">Home phone</label>
@@ -95,11 +95,11 @@
                         <p>
                             <label for="home_location">Home location</label>
                             <input type="text" id="moreInfoHomeLoc" name="home_location" class="text" size="20" />
-                        </p>
-
-
+                        </p>                        
+                        <span id="accountMessage"></span>
+                        
                         <p>
-                            <button type="button" class="button positive" onclick="">                                
+                            <button type="button" class="button positive" onclick="update()">                                
                                 Update
                             </button>
                         </p>
@@ -109,6 +109,81 @@
         </div>
         
         <script>
+            function createAccount(){
+                var username = $('#moreInfoUsername').val();
+                var password = $('#moreInfoPassword').val();                
+                var fname = $('#moreInfoFirstName').val();
+                var lname = $('#moreInfoLastName').val();
+                var address = $('#moreInfoAddress').val();
+                var cellphone = $('#moreInfoCell').val();
+                var mobileid = $('#moreInfoMobileid').val();
+                var homephone = $('#moreInfoHome').val();
+                var home_location = $('#moreInfoHomeLoc').val();
+
+                if(username && password){
+                    $.ajax({
+                        type: "GET",
+                        url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=27",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "text",
+                        // send username and password as parameters to the python script
+                        data: "username=" + username + "&password=" + password + "&fname=" + fname+"&lname=" +lname+"&address="+address+"&cellphone="+cellphone+"&mobileid="+mobileid+"&homephone="+homephone+"&home_location="+home_location+"&viewable_mobileid="+mobileid,
+                        // script call was *not* successful
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                            console.log( XMLHttpRequest.responseText);   
+                        },
+                        success: function(data){
+                            document.getElementById('moreInfoUsername').readonly = true;
+                            alert("New Account Created");
+                            $('#accountMessage').text("New account created.");
+                        }// success
+                    });
+                }
+                else{
+
+                    $('#accountMessage').text("Creating an Account requires at least a username and password");
+                }
+            } 
+            
+            function update(){
+                
+                if(document.getElementById('moreInfoUsername').readonly){
+                    updateAccount();            
+                }else{
+                    createAccount();
+                }
+            }
+            
+            function updateAccount(){
+                var username = $('#moreInfoUsername').val();
+                var password = $('#moreInfoPassword').val();                
+                var fname = $('#moreInfoFirstName').val();
+                var lname = $('#moreInfoLastName').val();
+                var address = $('#moreInfoAddress').val();
+                var cellphone = $('#moreInfoCell').val();
+                var mobileid = $('#moreInfoMobileid').val();
+                var homephone = $('#moreInfoHome').val();
+                var home_location = $('#moreInfoHomeLoc').val();
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=34",
+                    contentType: "application/text; charset=utf-8",
+                    dataType: "text",
+                    data: "fname=" + fname + "&lname=" + lname+ "&address=" + address+ "&cellphone=" + cellphone+ "&mobileid=" +
+                    mobileid+ "&homephone=" + homephone+"&home_location=" + home_location+"&cname=" + username+"&passwd="+password,
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                        console.log( XMLHttpRequest.responseText);                        
+                    }, // error
+                    // script call was successful
+                    success: function(data){ 
+                        alert("Account updated successfully")
+                        $('#accountMessage').text("Update account "+ username);
+                    } // success
+                }); // ajax                               
+            }
+            
             function moreInformation(fname,lname,mobileID,cname,address,cellphone,homephone,homelocation,passwd){
                 $("#moreInfoFirstName").val(fname.replace(null,""));
                 $("#moreInfoLastName").val(lname.replace(null,""));
@@ -119,6 +194,13 @@
                 $("#moreInfoHome").val(homephone.replace(null,""));
                 $("#moreInfoHomeLoc").val(homelocation.replace(null,""));
                 $("#moreInfoPassword").val(passwd.replace(null,""));
+                $('#accountMessage').text("");
+                if(cname == null){
+                    document.getElementById('moreInfoUsername').readonly = false;                    
+                }
+                else{
+                    document.getElementById('moreInfoUsername').readonly = true;
+                }
             }
             
             function populateTable(data){
