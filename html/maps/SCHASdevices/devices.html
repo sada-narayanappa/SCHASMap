@@ -111,8 +111,7 @@
                 </form>                             
             </div>
         </div>
-        <div id="activeUsers">
-            <h2 align="center">Active Users</h2>
+        <div id="activeUsers">            
             <div id="activeUsersChart"></div>
         </div>
         
@@ -169,7 +168,7 @@
                         }
                     },
                     tooltip: {
-                        valueSuffix: ' millions'
+                        valueSuffix: 'people'
                     },
                     plotOptions: {
                         bar: {
@@ -193,7 +192,7 @@
                         enabled: false
                     },
                     series: [{
-                        name: 'Date',
+                        name: 'Users',
                         data: data                  
                     }]
                 });
