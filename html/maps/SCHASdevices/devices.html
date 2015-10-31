@@ -118,9 +118,33 @@
         
         <script>
             
+            $(document).ready(function() {
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=29",
+                    contentType: "application/text; charset=utf-8",                   
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                        eval(data);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                        var activeUsersi = cols.indexOf("activeusers");                        
+                        var activeData = []
+                        var activeDates = []
+                        for ( i in data) {
+                            activeData[i] = data[i][activeUsersi];   
+                            activeDates[i] = data[i][0];
+                        }   
+
+                        addChart(activeDates,activeData);
+                    } // success
+                }); // ajax
+            });
             
-            
-            $(function () {
+            function addChart(dates,data){
                 $('#activeUsersChart').highcharts({
                     chart: {
                         type: 'column'
@@ -129,7 +153,7 @@
                         text: 'Active Users'
                     },                    
                     xAxis: {
-                        categories: "Dates Here",
+                        categories: dates,
                         title: {
                             text: null
                         }
@@ -170,32 +194,10 @@
                     },
                     series: [{
                         name: 'Date',
-                        data: (function () {
-                                       $.ajax({
-                                            type: "GET",
-                                            url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=29",
-                                            contentType: "application/text; charset=utf-8",                   
-                                            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                                console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
-                                            }, 
-                                            success: function(data){
-                                                eval(data);
-                                                var cols = $rs.colnames;
-                                                var type = $rs.coltypes;
-                                                var data = $rs.rows || $rs[Object.keys($rs)[0]];
-                                                var activeUsersi = cols.indexOf("activeusers");
-                                                var activeData = []
-                                                for ( i in data) {
-                                                    activeData[i] = data [i][activeUsersi];                                                    
-                                                }   
-                                                
-                                                return activeData;
-                                            } // success
-                                        }); // ajax                                        
-                                }())                  
+                        data: data                  
                     }]
                 });
-            });
+            }
             
             function createAccount(){
                 var username = $('#moreInfoUsername').val();
