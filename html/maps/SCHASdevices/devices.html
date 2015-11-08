@@ -238,7 +238,7 @@
             
             function update(){
                 
-                if(document.getElementById('moreInfoUsername').hasAttributes("readonly")){
+                if($("#moreInfoUsername").attr('readonly')=="readonly"){
                     updateAccount();                                
                 }else{
                     if($('#moreInfoUsername').val()=="" || $('#moreInfoPassword').val()=="")
