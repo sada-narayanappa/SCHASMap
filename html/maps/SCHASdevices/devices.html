@@ -74,7 +74,7 @@
                         </p>
                         <p>
                             <label for="lname">Username</label>
-                            <input type="text" id="moreInfoUsername" name="cname" class="text" size="30" readonly/>
+                            <input type="text" id="moreInfoUsername" name="cname" class="text" size="30"/>
                         </p>
                         <p>
                             <label for="lname">Password</label>
@@ -209,7 +209,7 @@
                 var homephone = $('#moreInfoHome').val();
                 var home_location = $('#moreInfoHomeLoc').val();
 
-                if(username && password){
+                if(username != "" && password != ""){
                     $.ajax({
                         type: "GET",
                         url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=27",
@@ -239,9 +239,15 @@
             function update(){
                 
                 if(document.getElementById('moreInfoUsername').hasAttributes("readonly")){
-                    updateAccount();            
+                    updateAccount();                                
                 }else{
-                    createAccount();
+                    if($('#moreInfoUsername').val()=="" || $('#moreInfoPassword').val()=="")
+                    {
+                        $('#accountMessage').text("Creating an Account requires at least a username and password");
+                    }
+                    else{
+                        createAccount();
+                    }
                 }
             }
             
@@ -286,11 +292,12 @@
                 $("#moreInfoHomeLoc").val(homelocation.replace(null,""));
                 $("#moreInfoPassword").val(passwd.replace(null,""));
                 $('#accountMessage').text("");
-                if(cname == "null"){                    
+                if(cname.replace(null,"") == ""){                    
                     $("#moreInfoUsername").removeAttr('readonly')
                 }
                 else{
                     $("#moreInfoUsername").attr('readonly', true);
+                    
                 }
             }
             
