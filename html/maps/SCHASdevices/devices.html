@@ -108,7 +108,8 @@
                             </button>
                         </p>
                     </fieldset>
-                </form>                             
+                </form> 
+                <div id="uploadsFromUserChart"></div>
             </div>
         </div>
         <div id="activeUsers">            
@@ -143,6 +144,78 @@
                 }); // ajax
             });
             
+            function uploadsChartData(mobileid){
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=30",
+                    contentType: "application/text; charset=utf-8",     
+                    data: "mobile_id=" + mobileid,
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data2){
+                        eval(data2);
+                        var cols2 = $rs.colnames;
+                        var type2 = $rs.coltypes;
+                        var data2 = $rs.rows || $rs[Object.keys($rs)[0]];
+                        var uploadsi = cols.indexOf("uploads");
+                        var datei = cols.indexOf("stored_at");
+                        var uploadData = []
+                        var uploadDates = []
+                        for ( i in data) {
+                            uploadData[i] = data[i][uploadsi];   
+                            uploadDates[i] = data[i][datei];
+                        }   
+
+                        addUploadsChart(uploadDates,uploadData);
+                    } // success
+                }); // ajax
+            }
+            
+            function addUploadsChart(dates,data){
+                $('#uploadsFromUserChart').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Uploads per day'
+                    },                    
+                    xAxis: {
+                        categories: dates,
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Uploads',
+                            align: 'high'
+                        },
+                        labels: {
+                            overflow: 'justify'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: 'uploads'
+                    },
+                    plotOptions: {
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },                    
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Uploads',
+                        data: data                  
+                    }]
+                });         
+            }
+            
             function addChart(dates,data){
                 $('#activeUsersChart').highcharts({
                     chart: {
@@ -176,18 +249,7 @@
                                 enabled: true
                             }
                         }
-                    },
-                    legend: {
-                        layout: 'vertical',
-                        align: 'right',
-                        verticalAlign: 'top',
-                        x: -40,
-                        y: 80,
-                        floating: true,
-                        borderWidth: 1,
-                        backgroundColor: ( '#FFFFFF'),
-                        shadow: true
-                    },
+                    },                    
                     credits: {
                         enabled: false
                     },
@@ -300,6 +362,7 @@
                     
                 }
             }
+                        
             
             function populateTable(data){
                 eval(data);
@@ -318,13 +381,13 @@
                 latestUploadi = cols.indexOf("newestupload");
                 latestHeartbeati = cols.indexOf("recentheartbeat");
                 totalUploadsi = cols.indexOf("numentries");
-                passwdi = cols.indexOf("passwd");
+                passwdi = cols.indexOf("passwd");                                                
                 
                 
                 str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
                 for ( i in data) {
                     d = data [i];
-                    str = str+"<tr onClick=\"moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei].toString().replace(null,"")+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
+                    str = str+"<tr onClick=\"uploadsChartData('"+d[mobileIDi]+"')+; moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei].toString().replace(null,"")+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
                 }                
                 str = str + "</tbody>";
                 $("#data").html(str);
