@@ -153,11 +153,11 @@
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
                     }, 
-                    success: function(data2){
-                        eval(data2);
-                        var cols2 = $rs.colnames;
-                        var type2 = $rs.coltypes;
-                        var data2 = $rs.rows || $rs[Object.keys($rs)[0]];
+                    success: function(data){
+                        eval(data);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
                         var uploadsi = cols.indexOf("uploads");
                         var datei = cols.indexOf("stored_at");
                         var uploadData = []
