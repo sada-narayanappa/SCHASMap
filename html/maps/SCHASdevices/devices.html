@@ -160,19 +160,22 @@
                         var data = $rs.rows || $rs[Object.keys($rs)[0]];
                         var uploadsi = cols.indexOf("uploads");
                         var datei = cols.indexOf("stored_at");
+                        var heartbeatsi = cols.indexOf("heartbeats");
                         var uploadData = []
                         var uploadDates = []
+                        var uploadHeartbeats = []
                         for ( i in data) {
                             uploadData[i] = data[i][uploadsi];   
                             uploadDates[i] = data[i][datei];
+                            uploadHeartbeats[i] = data[i][heartbeatsi];
                         }   
 
-                        addUploadsChart(uploadDates,uploadData);
+                        addUploadsChart(uploadDates,uploadData,uploadHeartbeats);
                     } // success
                 }); // ajax
             }
             
-            function addUploadsChart(dates,data){
+            function addUploadsChart(dates,data,heartbeats){
                 $('#uploadsFromUserChart').highcharts({
                     chart: {
                         type: 'column'
@@ -197,7 +200,7 @@
                         }
                     },
                     tooltip: {
-                        valueSuffix: 'uploads'
+                        valueSuffix: ' uploads'
                     },
                     plotOptions: {
                         bar: {
@@ -210,8 +213,11 @@
                         enabled: false
                     },
                     series: [{
-                        name: 'Uploads',
+                        name: 'Total Uploads',
                         data: data                  
+                    },{
+                        name: 'Heartbeats',
+                        data: heartbeats                
                     }]
                 });         
             }
@@ -241,7 +247,7 @@
                         }
                     },
                     tooltip: {
-                        valueSuffix: 'people'
+                        valueSuffix: ' people'
                     },
                     plotOptions: {
                         bar: {
@@ -291,6 +297,16 @@
 
                         }// success
                     });
+                    $.ajax({
+                        type: "GET",
+                        url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload",
+                        contentType: "application/text; charset=utf-8",                   
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                        }, 
+                        success: function(data){
+                        } // success
+                    }); // ajax
                 }
                 else{
 
@@ -340,7 +356,17 @@
                         $('#accountMessage').text("Updated account "+ username);                        
                         
                     } // success
-                }); // ajax                               
+                }); // ajax  
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload",
+                    contentType: "application/text; charset=utf-8",                   
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                    } // success
+                }); // ajax
             }
             
             function moreInformation(fname,lname,mobileID,cname,address,cellphone,homephone,homelocation,passwd){
