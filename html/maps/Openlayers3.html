@@ -348,7 +348,8 @@
             <hr size="1"/>
             <a style="color: blue;" href="http://www.geospaces.org">Geospaces SCHAS Maps</a> |
             <div id="coords" style="height: 1.5em; display:inline; text-align: right"></div> |
-            <a style="color: blue;" href="http://www.geospaces.org/SCHAS/html/maps/SCHASdevices/devices.html" target="_blank">SCHAS data</a>
+            <a style="color: blue;" href="http://www.geospaces.org/SCHAS/html/maps/SCHASdevices/devices.html" target="_blank">SCHAS data</a> | 
+            <a style="color: blue;" href="http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload" target="_blank">Reset</a>
         </div>
     </form>
 </div>
@@ -404,7 +405,7 @@
             d = data [i];
             if (mobile_id != d[0]) {
                 mobile_id = d[0]
-                str = str + "<hr>" + d[2] + " " + d[3] + "<br>"
+                str = str + "<hr>" +"Name: "+ d[2].replace("undefined","") + " " + d[3].replace("undefined","")+" Username: " +d[4].replace("undefined","")+ " </hr><br>"
                 
             }
             if ( d[1].indexOf("-") < 0) {
