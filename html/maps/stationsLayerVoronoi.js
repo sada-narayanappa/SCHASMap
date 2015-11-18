@@ -119,7 +119,7 @@ stationLayerVoronoi.prototype.AddFeatures = function (data, zoomToBounds){
    if (lyr.getVisibility() && locs.length >0) {
       var b1 = map.calculateBounds();
       if (!b1.contains(bounds)) {
-         map.zoomToExtent(bounds);
+         //map.zoomToExtent(bounds);
       }
    }
    return bounds;
