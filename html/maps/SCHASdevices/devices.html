@@ -177,19 +177,27 @@
             }
             
             function addUploadsChart(dates,data,heartbeats){
+                var data2 = [];
+                for(var i=0;i<dates.length;i++){
+                    data2[i]=[dates[i],data[i]-heartbeats[i]];                    
+                }
+                var heartbeats2 = [];
+                for(var i=0;i<dates.length;i++){
+                    heartbeats2[i]=[dates[i],heartbeats[i]];                    
+                }
                 $('#uploadsFromUserChart').highcharts('StockChart',{
                     chart: {
                         type: 'column'
                     },
                     rangeSelector: {
                         allButtonsEnabled: true,
-                        selected: 1
+                        selected: 0
                     },
                     title: {
                         text: 'Uploads per day'
                     },                    
                     xAxis: {
-                        categories: dates,
+                        //categories: dates,
                         title: {
                             text: null
                         }
@@ -221,16 +229,20 @@
                         enabled: false
                     },
                     series: [{
-                        name: 'Total Uploads',
-                        data: data                  
+                        name: 'Location Uploads',
+                        data: data2                  
                     },{
                         name: 'Heartbeats',
-                        data: heartbeats                
+                        data: heartbeats2             
                     }]
                 });         
             }
             
             function addChart(dates,data){
+                var data2 = [];
+                for(var i=0;i<dates.length;i++){
+                    data2[i]=[dates[i],data[i]];                    
+                }
                 $('#activeUsersChart').highcharts('StockChart',{
                     chart: {
                         type: 'column'
@@ -243,7 +255,7 @@
                         text: 'Active Users'
                     },                    
                     xAxis: {
-                        categories: dates,
+                        //categories: dates,
                         title: {
                             text: null
                         }
@@ -273,7 +285,7 @@
                     },
                     series: [{
                         name: 'Users',
-                        data: data                  
+                        data: data2                 
                     }]
                 });
             }
