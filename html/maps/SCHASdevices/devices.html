@@ -176,7 +176,7 @@
             }
             
             function addUploadsChart(dates,data,heartbeats){
-                $('#uploadsFromUserChart').highcharts({
+                $('#uploadsFromUserChart').highcharts('StockChart',{
                     chart: {
                         type: 'column'
                     },
@@ -230,7 +230,7 @@
             }
             
             function addChart(dates,data){
-                $('#activeUsersChart').highcharts({
+                $('#activeUsersChart').highcharts('StockChart',{
                     chart: {
                         type: 'column'
                     },
