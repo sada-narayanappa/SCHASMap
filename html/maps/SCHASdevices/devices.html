@@ -180,6 +180,10 @@
                     chart: {
                         type: 'column'
                     },
+                    rangeSelector: {
+                        allButtonsEnabled: true,
+                        selected: 1
+                    },
                     title: {
                         text: 'Uploads per day'
                     },                    
@@ -207,6 +211,9 @@
                             dataLabels: {
                                 enabled: true
                             }
+                        },
+                        series: {
+                            stacking: 'normal'
                         }
                     },                    
                     credits: {
@@ -226,6 +233,10 @@
                 $('#activeUsersChart').highcharts({
                     chart: {
                         type: 'column'
+                    },
+                    rangeSelector: {
+                        allButtonsEnabled: true,
+                        selected: 1
                     },
                     title: {
                         text: 'Active Users'
