@@ -179,11 +179,11 @@
             function addUploadsChart(dates,data,heartbeats){
                 var data2 = [];
                 for(var i=0;i<dates.length;i++){
-                    data2[i]=[dates[i],data[i]-heartbeats[i]];                    
+                    data2[i]=[Date(dates[i]),data[i]-heartbeats[i]];                    
                 }
                 var heartbeats2 = [];
                 for(var i=0;i<dates.length;i++){
-                    heartbeats2[i]=[dates[i],heartbeats[i]];                    
+                    heartbeats2[i]=[Date(dates[i]),heartbeats[i]];                    
                 }
                 $('#uploadsFromUserChart').highcharts('StockChart',{
                     chart: {
@@ -242,7 +242,7 @@
             function addChart(dates,data){
                 var data2 = [];
                 for(var i=0;i<dates.length;i++){
-                    data2[i]=[dates[i],data[i]];                    
+                    data2[i]=[Date(dates[i]),data[i]];                    
                 }
                 $('#activeUsersChart').highcharts('StockChart',{
                     chart: {
