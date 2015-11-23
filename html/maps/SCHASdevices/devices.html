@@ -162,28 +162,35 @@
                         var uploadsi = cols.indexOf("uploads");
                         var datei = cols.indexOf("stored_at");
                         var heartbeatsi = cols.indexOf("heartbeats");
+                        var attacksi = cols.indexOf("attacks");
                         var uploadData = []
                         var uploadDates = []
                         var uploadHeartbeats = []
+                        var uploadAttacks = []
                         for ( i in data) {
                             uploadData[i] = data[i][uploadsi];   
                             uploadDates[i] = data[i][datei];
                             uploadHeartbeats[i] = data[i][heartbeatsi];
+                            uploadAttacks[i]=data[i][attacksi]
                         }   
 
-                        addUploadsChart(uploadDates,uploadData,uploadHeartbeats);
+                        addUploadsChart(uploadDates,uploadData,uploadHeartbeats,uploadAttacks);
                     } // success
                 }); // ajax
             }
             
-            function addUploadsChart(dates,data,heartbeats){
+            function addUploadsChart(dates,data,heartbeats,attacks){
                 var data2 = [];
                 for(var i=0;i<dates.length;i++){
-                    data2[i]=[Date.parse(dates[i]),data[i]-heartbeats[i]];                    
+                    data2[i]=[Date.parse(dates[i]),data[i]-heartbeats[i]-attacks[i]];                    
                 }
                 var heartbeats2 = [];
                 for(var i=0;i<dates.length;i++){
                     heartbeats2[i]=[Date.parse(dates[i]),heartbeats[i]];                    
+                }
+                var attacks2 = [];
+                for(var i=0;i<dates.length;i++){
+                    attacks2[i]=[Date.parse(dates[i]),attacks[i]];                    
                 }
                 $('#uploadsFromUserChart').highcharts('StockChart',{
                     chart: {
@@ -235,6 +242,9 @@
                     },{
                         name: 'Heartbeats',
                         data: heartbeats2             
+                    },{
+                        name: 'Attacks',
+                        data: attacks2             
                     }]
                 });         
             }
