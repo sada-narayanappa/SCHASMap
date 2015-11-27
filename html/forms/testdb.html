@@ -7,6 +7,7 @@
     <script type="text/javascript" src="../3p/jquery-ui/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="../3p/jquery-ui/jquery-ui.css">
 
+    <script src="../js/config.prod.js"></script>
     <script type="text/javascript" src="../3p/datatable/media/js/jquery.dataTables.js"></script>
     <link href='../3p/datatable/media/css/jquery.dataTables.css' rel='stylesheet' type='text/css'>
     <link href='../3p/datatable/media/css/jquery.dataTables_themeroller.css' rel='stylesheet' type='text/css'>
@@ -26,7 +27,7 @@
 
 <!--HEAD_END-->
 <H2>TEST DB SERVICES</H2>
-<form id="form" method="GET" action="http://www.geospaces.org/aura/webroot/db.jsp">
+<form id="form" method="GET" action="/aura/webroot/db.jsp">
 <textarea rows="2"  name="q" cols="80" style="wwidth: 99%; ">
     select * from test
 </textarea>
@@ -40,7 +41,7 @@
 
 </form>
     <div id="cform"  class="card"  style="border: 1px solid black; hheight: 300px; width: 650px" >
-        <form id="form1" method="GET" action="http://www.geospaces.org/aura/webroot/db.jsp">
+        <form id="form1" method="GET" action="/aura/webroot/db.jsp">
             <input type="button" Value="button">
         </form>
         <div id=DBRESULTS1">
@@ -80,17 +81,17 @@ function load() {
         $( "#cform" ).draggable();
     });
 
-var URL= "http://www.geospaces.org/aura/webroot/env.jsp";
+var URL= config.WEBS + "/aura/webroot/env.jsp";
 var PROXY = "../cgi-bin/proxy.py?url=";
 //var URL1 = PROXY+"http://weather.yahooapis.com/forecastrss?p=80130"
-URL1 = PROXY+"http://www.geospaces.org/aura/webroot/health.jsp";
+URL1 = PROXY+config.WEBS + "/aura/webroot/health.jsp";
 
 function testCallBack(data) {
     $('#status').val(data);
 }
 
 function submitq() {
-    var URL= "http://www.geospaces.org/aura/webroot/db.jsp"
+    var URL= config.WEBS + "/aura/webroot/db.jsp"
     var PROXY = "../cgi-bin/proxy.py?url=";
     URL1 = PROXY+URL;
     submitForm({URL: URL1, CB: testCallBack});

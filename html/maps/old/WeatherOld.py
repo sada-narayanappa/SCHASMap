@@ -21,7 +21,7 @@ def runSQL(q, h=None):
             q= q.replace("$"+k, str(h.get(k)))
 
     #print "Running: " + q;
-    url = 'http://www.geospaces.org/aura/webroot/db.jsp?q='+q
+    url = 'http://www.smartconnectedhealth.org/aura/webroot/db.jsp?q='+q
     res = requests.get(url).content.strip()
     #print res
     return res;

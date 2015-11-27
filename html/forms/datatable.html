@@ -26,7 +26,7 @@
 
 <!--HEAD_END-->
 <div id="demo" class="cardBox" style="min-width1:800px; ">
-    <form id="form" method="POST" action="http://www.geospaces.org/aura/webroot/db.jsp">
+    <form id="form" method="POST" action= config.WEBS + "/aura/webroot/db.jsp">
         <textarea rows="2"  id ="q" name="q" cols="80" style="wwidth: 99%; ">select * from test
     </textarea>
         <input type="button" Value="GET QUERY" onclick="runQuery($('#q').val(),null,'#qresults1')">

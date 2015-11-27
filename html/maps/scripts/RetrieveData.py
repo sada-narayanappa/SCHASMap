@@ -4,7 +4,7 @@ import urllib, urllib2, json
 def requestData():
     
     #Requesting null weather data and putting it into JSON
-    geourl = 'http://www.geospaces.org/aura/webroot/db.jsp?'
+    geourl = 'http://www.smartconnectedhealth.org/aura/webroot/db.jsp?'
     geoVals = { 'qn' : '10'
                             }
     geoData = urllib.urlencode(geoVals)

@@ -121,7 +121,7 @@ function runQuery(q, cb, divName) {
    console.log($('#q').val())
    q = q || "select city, country, population, latitude, longitude, loc  from worldcities LIMIT 2000";
    setDataFromJSON.results = divName;
-   submitForm({URL:"http://www.geospaces.org/aura/webroot/db.jsp", fdata: {"q": q}, CB: cb || setDataFromJSON })
+   submitForm({URL: config.WEBS + "/aura/webroot/db.jsp", fdata: {"q": q}, CB: cb || setDataFromJSON })
 }
 
 function getText(url, cb, divName) {

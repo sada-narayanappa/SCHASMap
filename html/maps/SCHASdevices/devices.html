@@ -122,7 +122,7 @@
             $(document).ready(function() {
                 $.ajax({
                     type: "GET",
-                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=29",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=29",
                     contentType: "application/text; charset=utf-8",                   
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
@@ -148,7 +148,7 @@
             function uploadsChartData(mobileid){
                 $.ajax({
                     type: "GET",
-                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=30",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=30",
                     contentType: "application/text; charset=utf-8",     
                     data: "mobile_id=" + mobileid,
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -316,7 +316,7 @@
                 if(username != "" && password != ""){
                     $.ajax({
                         type: "GET",
-                        url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=27",
+                        url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=27",
                         contentType: "application/json; charset=utf-8",
                         dataType: "text",
                         // send username and password as parameters to the python script
@@ -335,7 +335,7 @@
                     });
                     $.ajax({
                         type: "GET",
-                        url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload",
+                        url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?cmd=reload",
                         contentType: "application/text; charset=utf-8",                   
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
@@ -377,7 +377,7 @@
                 var home_location = $('#moreInfoHomeLoc').val();
                 $.ajax({
                     type: "GET",
-                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=34",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=34",
                     contentType: "application/text; charset=utf-8",
                     dataType: "text",
                     data: "fname=" + fname + "&lname=" + lname+ "&address=" + address+ "&cellphone=" + cellphone+ "&mobileid=" +
@@ -395,7 +395,7 @@
                 }); // ajax  
                 $.ajax({
                     type: "GET",
-                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?cmd=reload",
                     contentType: "application/text; charset=utf-8",                   
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
@@ -464,7 +464,7 @@
             function dataQuery(){
                 $.ajax({
                     type: "GET",
-                    url: config.PROXY2 + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=28",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=28",
                     contentType: "application/text; charset=utf-8",                   
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)

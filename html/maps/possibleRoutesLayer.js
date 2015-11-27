@@ -201,7 +201,7 @@ possibleRoutesLayer.centerFeatures = function() {
 
 possibleRoutesLayer.prototype.getSourceNodeID = function() {
    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
-   var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+   var DB_URL= config.WEBS + "/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
 
    var url = PROXY + DB_URL + "qn=12&lon="+possstartLon+"&lat="+ possstartLat;
@@ -230,7 +230,7 @@ possibleRoutesLayer.prototype.getSourceNodeID = function() {
 
 possibleRoutesLayer.prototype.getTargetNodeID = function() {
    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
-   var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+   var DB_URL= config.WEBS + "/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
    
 
@@ -440,7 +440,7 @@ possibleRoutesLayer.analyzeRoute = function(){
     
     //get Intersection
     var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
-    var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+    var DB_URL= config.WEBS + "/aura/webroot/db.jsp?api_key=test&";
     var PROXY = "../cgi-bin/proxy.py?url=";
     var numRoutesElement = document.getElementById("numRoutes");
     var numRoutes = numRoutesElement.value;
@@ -540,7 +540,7 @@ possibleRoutesLayer.prototype.CancelButton = function() {
 
 possibleRoutesLayer.prototype.StoreRoutes = function(seq, route, node, edge, routecost, st_asgeojson) {
    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
-   var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+   var DB_URL= config.WEBS + "/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
    
    var url = PROXY + DB_URL + "qn=23&seq="+seq + "&route="+route+"&node="+node+"&edge="+edge+"&rc="+routecost+"&st_asgeojson="+st_asgeojson+"&sourcenode="+posssourceid+"&targetnode="+posstargetid; ;
@@ -574,7 +574,7 @@ possibleRoutesLayer.prototype.LayerUpdate = function() {
    document.getElementById("loading").style.visibility = "visible";
    document.getElementById("computeButton").value = "Cancel";
    var DB_URL= "http://localhost:8080/aura1/future/db.jsp?api_key=test&";
-   var DB_URL= "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&";
+   var DB_URL= config.WEBS + "/aura/webroot/db.jsp?api_key=test&";
    var PROXY = "../cgi-bin/proxy.py?url=";
 
    var e = getMapBoundedBox(true);

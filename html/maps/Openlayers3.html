@@ -346,16 +346,18 @@
             </div>
 
             <hr size="1"/>
-            <a style="color: blue;" href="http://www.geospaces.org">Geospaces SCHAS Maps</a> |
+            <a style="color: blue;" href="/" target="_blank">Map</a> |
             <div id="coords" style="height: 1.5em; display:inline; text-align: right"></div> |
-            <a style="color: blue;" href="http://www.geospaces.org/SCHAS/html/maps/SCHASdevices/devices.html" target="_blank">SCHAS data</a> | 
-            <a style="color: blue;" href="http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload" target="_blank">Reset</a>
+            <a style="color: blue;" href="/SCHAS/html/maps/SCHASdevices/devices.html" target="_blank">SCHAS data</a> |
+            <a style="color: blue;" href="/aura/webroot/db.jsp?cmd=reload" target="_blank">Reset</a>
         </div>
     </form>
 </div>
 
 <script>
     var userSysId;
+    var GEOPROXY=window.location.origin;
+
     function clearAllMapPopups() {
         while( map.popups.length ) {
             map.removePopup(map.popups[0]);
@@ -439,20 +441,20 @@
         //console.log("inside runquery1 and is name from localstorage is "+name); 
         if (typeof loggedInUserName !== 'undefined' && loggedInUserName !== null) {
             if (loggedInUserName == 'admin') {
-                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=9a"
-                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=15"
+                url = config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?qn=9a"
+                url = config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?qn=15"
                 submitForm({URL: url, fdata: {}, CB: setUserSessions})
             }
             else {
                // console.log("not an admin user.. not loaded");
                 loggedInUserMobile_Id = localStorage.getItem('mobile_id');                
-                url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=26&username="+loggedInUserName;
+                url = config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?qn=26&username="+loggedInUserName;
                 submitForm({URL: url, fdata: {}, CB: setUserSessions})
             }
         }
         else {
             //Not logged in, show synthetic route data            
-            url = config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?qn=26&username=Synthetic";
+            url = config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?qn=26&username=Synthetic";
             submitForm({URL: url, fdata: {}, CB: setUserSessions})
             showloginForm();
         }
@@ -464,7 +466,7 @@
         
         $.ajax({
             type: "GET",
-            url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=32",
+            url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=32",
             contentType: "application/json; charset=utf-8",
             dataType: "text",
             // send username and password as parameters to the python script
@@ -499,7 +501,7 @@
         if(newPass == newPass1){
             $.ajax({
                 type: "GET",
-                url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=33",
+                url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=33",
                 contentType: "application/json; charset=utf-8",
                 dataType: "text",
                 // send username and password as parameters to the python script
@@ -536,7 +538,7 @@
         if(username && password && confirmPassword && password == confirmPassword ){
             $.ajax({
                 type: "GET",
-                url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=27",
+                url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=27",
                 contentType: "application/json; charset=utf-8",
                 dataType: "text",
                 // send username and password as parameters to the python script
@@ -562,7 +564,7 @@
         var username = $('#createUsername').val();                     
         $.ajax({
             type: "GET",
-            url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=31",
+            url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=31",
             contentType: "application/json; charset=utf-8",
             dataType: "text",
             // send username and password as parameters to the python script
@@ -594,7 +596,7 @@
         if (username && password) { // values are not empty
             $.ajax({
                 type: "GET",
-                url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=14",
+                url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=14",
                 contentType: "application/json; charset=utf-8",
                 dataType: "text",
                 // send username and password as parameters to the python script
@@ -640,7 +642,7 @@
         console.log("username got from locastorgae is "+username);
         $.ajax({
             type: "GET",
-            url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=17",
+            url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=17",
             contentType: "application/json; charset=utf-8",
             dataType: "text",
             // send username and password as parameters to the python script
@@ -757,7 +759,7 @@
         if (lname && fname) { // values are not empty
             $.ajax({
                 type: "GET",
-                url: config.PROXY + "http://www.geospaces.org/aura/webroot/db.jsp?api_key=test&qn=16",
+                url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=16",
                 contentType: "application/text; charset=utf-8",
                 dataType: "text",
                 data: "fname=" + fname + "&lname=" + lname+ "&address=" + address+ "&cellphone=" + cellphone+ "&mobileid=" +
@@ -781,7 +783,7 @@
                     } // if
                     else { // data recieved
                                 $.ajax({
-                                    url: "http://www.geospaces.org/aura/webroot/db.jsp?cmd=reload"
+                                    url: GEOPROXY + "/aura/webroot/db.jsp?cmd=reload"
                                 }).done(function() {
                                     $('div#profileResult').text("Profile saved");
                                     $('div#profileResult').addClass("success");

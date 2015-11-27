@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import urllib, urllib2
 
-url = 'http://www.geospaces.org/aura/webroot/db.jsp?'
+url = 'http://www.smartconnectedhealth.org/aura/webroot/db.jsp?'
 
 #Function to push the data to the database
 def SaveData(OWeatherData):

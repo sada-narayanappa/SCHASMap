@@ -49,10 +49,10 @@ status
 </form>
 
 <script type="text/javascript">
-var URL= "http://www.geospaces.org/aura/webroot/env.jsp";
+var URL= config.WEBS + "/aura/webroot/env.jsp";
 var PROXY = "../cgi-bin/proxy.py?url=";
 //var URL1 = PROXY+"http://weather.yahooapis.com/forecastrss?p=80130"
-URL1 = PROXY+"http://www.geospaces.org/aura/webroot/health.jsp";
+URL1 = PROXY+config.WEBS + "/aura/webroot/health.jsp";
 
 $('#URL').val(URL)
 $('#PROXY').val(PROXY)
@@ -70,7 +70,7 @@ function testCallBack(data) {
 }
 rl="";
 //var URL1 = PROXY+"http://weather.yahooapis.com/forecastrss?p=80130"
-URL1 = PROXY+"http://www.geospaces.org/aura/webroot/health.jsp";
+URL1 = PROXY+config.WEBS + "/aura/webroot/health.jsp";
 
 function testCallBack(data) {
     var j = JSON.parse(data);
