@@ -102,10 +102,10 @@
             <hr/>
         </div>
         <div id="formcontent">
-            <label for="query">Address/zip :</label>
+            <!-- <label for="query">Address/zip :</label>
             <input type="text" id="query" size=50 name="query" value="Menomonie, WI"/>
 
-            <input type="button" value="Submit"/>
+            <input type="button" value="Submit"/> -->
             <br>
 
             <hr size="1"/>
@@ -416,7 +416,7 @@
                 if(typeof(d[4]) === 'undefined'){
                    d[4] = "" 
                 }
-                str = str + "<hr>" +"Name: "+ d[2] + " " + d[3]+" Username: " +d[4]+ " </hr><br>"
+                str = str + "<hr>" +"Name: "+ d[2].replace(null,"") + " " + d[3].replace(null,"")+" Username: " +d[4].replace(null,"")+ " </hr><br>"
                 
             }
             if ( d[1].indexOf("-") < 0) {
