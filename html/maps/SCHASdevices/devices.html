@@ -19,12 +19,10 @@
         
     
     </head>
-    <body>
-        <h1 align="center">SCHAS Data</h1>
+    <body>        
         <div style="width: 100%; overflow: hidden;">
-            <div id="dataTable" style="width: 600px; float: left;">
-                <h2 align="center">Users</h2>
-                <div id="table" style="height: 600px; overflow:scroll;">
+            <div id="dataTable" style="width: 40%; float: left;">
+                <div id="table" style="height: 400px; overflow:scroll;">
                     <table align="center" id="data" class="tablesorter" border="1"> 
                         <thead> 
                             <tr> 
@@ -60,8 +58,9 @@
                         </tbody> 
                     </table> 
                 </div>
-            </div>    
-            <div id="moreInformation" style="width: 600px; float: right;">
+            </div>
+            <div id="uploadsFromUserChart" style="width: 35%; display: inline-block;"></div>
+            <div id="moreInformation" style="width: 25%; float: right;">
                 <form id="profileForm" name="profileForm" method="post" action="">
                     <fieldset>
                         <legend align="center">Personal Information</legend>
@@ -109,8 +108,7 @@
                             </button>
                         </p>
                     </fieldset>
-                </form> 
-                <div id="uploadsFromUserChart"></div>
+                </form>                 
             </div>
         </div>
         <div id="activeUsers">            
