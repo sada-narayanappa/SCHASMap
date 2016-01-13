@@ -73,11 +73,11 @@
                             <input type="text" id="moreInfoLastName" name="lname" class="text" size="30" />
                         </p>
                         <p>
-                            <label for="lname">Username</label>
-                            <input type="text" id="moreInfoUsername" name="cname" class="text" size="30"/>
+                            <label for="cname" >Username</label>
+                            <input type="text" id="moreInfoUsername" name="cname" class="text" size="30" data-newAccount = "true"/>
                         </p>
                         <p>
-                            <label for="lname">Password</label>
+                            <label for="password">Password</label>
                             <input type="text" id="moreInfoPassword" name="password" class="text" size="30" />
                         </p>
                         <p>
@@ -325,7 +325,8 @@
                             console.log( XMLHttpRequest.responseText);   
                         },
                         success: function(data){
-                            $("#moreInfoUsername").attr('readonly', true);
+                            //$("#moreInfoUsername").attr('readonly', true);
+                            document.getElementById('moreInfoUsername').setAttribute("data-newAccount", "false")
                             alert("New Account Created");
                             $('#accountMessage').text("New account created.");
 
@@ -350,7 +351,7 @@
             
             function update(){
                 
-                if($("#moreInfoUsername").attr('readonly')=="readonly"){
+                if(document.getElementById('moreInfoUsername').getAttribute("data-newAccount") == "false"){
                     updateAccount();                                
                 }else{
                     if($('#moreInfoUsername').val()=="" || $('#moreInfoPassword').val()=="")
@@ -415,10 +416,12 @@
                 $("#moreInfoPassword").val(passwd.replace(null,""));
                 $('#accountMessage').text("");
                 if(cname.replace(null,"") == ""){                    
-                    $("#moreInfoUsername").removeAttr('readonly')
+                    //$("#moreInfoUsername").removeAttr('readonly')
+                    document.getElementById('moreInfoUsername').setAttribute("data-newAccount", "true")
                 }
                 else{
-                    $("#moreInfoUsername").attr('readonly', true);
+                    //$("#moreInfoUsername").attr('readonly', true);
+                    document.getElementById('moreInfoUsername').setAttribute("data-newAccount", "false")
                     
                 }
             }
