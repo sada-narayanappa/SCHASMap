@@ -111,13 +111,40 @@
                 </form>                 
             </div>
         </div>
-        <div id="activeUsers">            
-            <div id="activeUsersChart"></div>
+        <div style="width: 100%; overflow: hidden;">
+            <div id = "textData" style="width: 15%; float: left;">
+                <fieldset>
+                    <legend align="center">Last Month</legend>
+                    <div>
+                        <label style="display: inline-block; width: 50%; text-align: right;">Active Users: </label>
+                        <p style="display: inline-block;">#</p>
+                    </div>
+                    <div>
+                        <label style="display: inline-block; width: 50%; text-align: right;">Activity Data: </label>
+                        <p style="display: inline-block;">#</p>
+                    </div>
+                    <div>
+                        <label style="display: inline-block; width: 50%; text-align: right;">Heartbeats: </label>
+                        <p style="display: inline-block;">#</p>
+                    </div>
+                    <div>
+                        <label style="display: inline-block; width: 50%; text-align: right;">Attacks: </label>
+                        <p style="display: inline-block;">#</p>
+                    </div>
+                </fieldset>
+            </div>
+            <div id="activeUsers" style="width: 50%; display: inline-block;">            
+                <div id="activeUsersChart"></div>
+            </div>
+            <div id="pieChart" style="width: 35%; float: right;">
+                <div id="versionPieChart"></div>
+            </div>
         </div>
         
         <script>
             
             $(document).ready(function() {
+                addVersionPieChart();
                 $.ajax({
                     type: "GET",
                     url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=29",
@@ -142,6 +169,59 @@
                     } // success
                 }); // ajax
             });
+            
+            function addVersionPieChart(){
+                $('#versionPieChart').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'App Versions in Use'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Percentage of Users',
+                        colorByPoint: true,
+                        data: [{
+                            name: 'Version 6',
+                            y: 56.33
+                        }, {
+                            name: 'Version 5',
+                            y: 24.03,
+                        }, {
+                            name: 'Version 4',
+                            y: 10.38
+                        }, {
+                            name: 'Version 3',
+                            y: 4.77
+                        }, {
+                            name: 'Version 2',
+                            y: 0.91
+                        }, {
+                            name: 'Version 1',
+                            y: 0.2
+                        }]
+                    }]
+                });
+            }
             
             function uploadsChartData(mobileid){
                 $.ajax({
