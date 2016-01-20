@@ -117,19 +117,19 @@
                     <legend align="center">Summary</legend>
                     <div>
                         <label style="display: inline-block; width: 50%; text-align: right;">Users: </label>
-                        <p style="display: inline-block;">#</p>
+                        <p id="totalUsersText" style="display: inline-block;">#</p>
                     </div>
                     <div>
                         <label style="display: inline-block; width: 50%; text-align: right;">Active Users: </label>
-                        <p style="display: inline-block;">#</p>
+                        <p id="activeUsersText" style="display: inline-block;">#</p>
                     </div>
                     <div>
                         <label style="display: inline-block; width: 50%; text-align: right;">Churn Count: </label>
-                        <p style="display: inline-block;">#</p>
+                        <p id="churnCountText" style="display: inline-block;">#</p>
                     </div>
                     <div>
                         <label style="display: inline-block; width: 50%; text-align: right;">Battery Usage: </label>
-                        <p style="display: inline-block;">#</p>
+                        <p id="batteryUsageText" style="display: inline-block;">#</p>
                     </div>                   
                 </fieldset>
             </div>
@@ -145,6 +145,7 @@
             
             $(document).ready(function() {
                 addVersionPieChart();
+                getSummaryData();
                 $.ajax({
                     type: "GET",
                     url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=29",
@@ -169,6 +170,35 @@
                     } // success
                 }); // ajax
             });
+            
+            function getSummaryData(){
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=35",
+                    contentType: "application/text; charset=utf-8",                   
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                        eval(data);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                        var numUsersi = cols.indexOf("numusers");                        
+                        var numActiveUsersi = cols.indexOf("numactiveusers"); 
+                        var numUsers = data[0][numUsersi];
+                        var numActiveUsers = data[0][numActiveUsersi];
+                        
+                        addSummaryData(numUsers,numActiveUsers);
+                    } // success
+                }); // ajax
+                
+            }
+            
+            function addSummaryData(numUsers,numActiveUsers){
+                document.getElementById('totalUsersText').innerHTML = numUsers;
+                document.getElementByID('activeUsersText').innerHTML = numActiveUsers;
+            }
             
             function addVersionPieChart(){
                 $('#versionPieChart').highcharts({
