@@ -414,7 +414,7 @@
                 var username = $('#moreInfoUsername').val();                    
                 $.ajax({
                     type: "GET",
-                    url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=31",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=31",
                     contentType: "application/json; charset=utf-8",
                     dataType: "text",
                     // send username and password as parameters to the python script
@@ -446,7 +446,7 @@
                 var username = $('#moreInfoUsername').val();                    
                 $.ajax({
                     type: "GET",
-                    url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=31",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=31",
                     contentType: "application/json; charset=utf-8",
                     dataType: "text",
                     // send username and password as parameters to the python script
