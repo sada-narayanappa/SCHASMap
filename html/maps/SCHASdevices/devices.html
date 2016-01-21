@@ -410,6 +410,70 @@
                 });
             }
             
+            function checkUsername(){
+                var username = $('#moreInfoUsername').val();                    
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=31",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    // send username and password as parameters to the python script
+                    data: "cname=" + username ,
+                    // script call was *not* successful
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                        console.log( XMLHttpRequest.responseText);   
+                    },
+                    success: function(data){
+                        eval(data);
+                        //console.log(text);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                        d = data[0];
+                        if(d[0]>0){
+                            alert("There is already an account under that username.");
+                            $('#accountMessage').text("There is already an account under that username.");
+                        }                
+                        else{
+                            createAccount();
+                        }
+                    }// success
+                });
+            } 
+            
+            function checkUpdatedUsername(){
+                var username = $('#moreInfoUsername').val();                    
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=31",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    // send username and password as parameters to the python script
+                    data: "cname=" + username ,
+                    // script call was *not* successful
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                        console.log( XMLHttpRequest.responseText);   
+                    },
+                    success: function(data){
+                        eval(data);
+                        //console.log(text);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                        d = data[0];
+                        if(d[0]>1){
+                            alert("There is already an account under that username.");
+                            $('#accountMessage').text("There is already an account under that username.");
+                        }                
+                        else{
+                            updateAccount();
+                        }
+                    }// success
+                });
+            }            
+            
             function createAccount(){
                 var username = $('#moreInfoUsername').val();
                 var password = $('#moreInfoPassword').val();                
@@ -454,7 +518,7 @@
                     }); // ajax
                 }
                 else{
-
+                    alert("Creating an Account requires at least a username and password");
                     $('#accountMessage').text("Creating an Account requires at least a username and password");
                 }
             } 
@@ -462,14 +526,15 @@
             function update(){
                 
                 if(document.getElementById('moreInfoUsername').getAttribute("data-newAccount") == "false"){
-                    updateAccount();                                
+                    checkUpdatedUsername();                                
                 }else{
                     if($('#moreInfoUsername').val()=="" || $('#moreInfoPassword').val()=="")
                     {
+                        alert("Creating an Account requires at least a username and password");
                         $('#accountMessage').text("Creating an Account requires at least a username and password");
                     }
                     else{
-                        createAccount();
+                        checkUsername();
                     }
                 }
             }
