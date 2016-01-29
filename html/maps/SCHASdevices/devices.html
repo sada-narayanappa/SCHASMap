@@ -338,19 +338,19 @@
                 
                 var measuredData2 = [];
                 for(var i=0;i<measuredDates.length;i++){
-                    if(measuredDates[i] != null){
+                    if(measuredDates[i] != 'null'){
                         measuredData2[i]=[Date.parse(measuredDates[i]),measuredData[i]-measuredHeartbeats[i]-measuredAttacks[i]];                    
                     }
                 }
                 var measuredHeartbeats2 = [];
                 for(var i=0;i<measuredDates.length;i++){
-                    if(measuredDates[i] != null){
+                    if(measuredDates[i] != 'null'){
                         measuredHeartbeats2[i]=[Date.parse(measuredDates[i]),measuredHeartbeats[i]];                    
                     }
                 }
                 var measuredAttacks2 = [];
                 for(var i=0;i<measuredDates.length;i++){
-                    if(measuredDates[i] != null){
+                    if(measuredDates[i] != 'null'){
                         measuredAttacks2[i]=[Date.parse(measuredDates[i]),measuredAttacks[i]];                    
                     }
                 }
@@ -400,21 +400,6 @@
                     },
                     series: [{
                         name: 'Activity Data',
-                        data: data2,
-                        color: '#000080',
-                        stack: 'stored'
-                    },{
-                        name: 'Heartbeats',
-                        data: heartbeats2,
-                        color: '#000000',
-                        stack: 'stored'
-                    },{
-                        name: 'Attacks',
-                        data: attacks2,
-                        color: '#006400',
-                        stack: 'stored'        
-                    },{
-                        name: 'Activity Data',
                         data: measuredData2,
                         color: '#4169e1',
                         stack: 'measured'
@@ -428,6 +413,21 @@
                         data: measuredAttacks2,
                         color: '#32cd32',
                         stack: 'measured'        
+                    },{
+                        name: 'Activity Data',
+                        data: data2,
+                        color: '#000080',
+                        stack: 'stored'
+                    },{
+                        name: 'Heartbeats',
+                        data: heartbeats2,
+                        color: '#000000',
+                        stack: 'stored'
+                    },{
+                        name: 'Attacks',
+                        data: attacks2,
+                        color: '#006400',
+                        stack: 'stored'        
                     }]
                 });         
             }
