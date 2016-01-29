@@ -320,8 +320,8 @@ function trackAddFeatures(data, lyr, updateBounds) {
       if ( !prevObj ) {
          prevObj = obj;
       }
-      var label = (locs.length > 2) ? lc[2].substring(14,19) : lc[2]
-      var label = (locs.length > 2) ? lc[2].substring(12,17) : lc[2]
+      var label = (locs.length > 2) ? lc[2].substring(13,19) : lc[2]
+      var label = (locs.length > 2) ? lc[2].substring(11,17) : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
       speeds.push(lc[speedi]);

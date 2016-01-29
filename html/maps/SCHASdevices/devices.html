@@ -282,12 +282,47 @@
                             uploadAttacks[i]=data[i][attacksi]
                         }   
 
-                        addUploadsChart(uploadDates,uploadData,uploadHeartbeats,uploadAttacks);
+                        getUploadsMeasuredAt(mobileid, uploadDates,uploadData,uploadHeartbeats,uploadAttacks);
                     } // success
                 }); // ajax
             }
             
-            function addUploadsChart(dates,data,heartbeats,attacks){
+            function getUploadsMeasuredAt(mobileid,uploadDates,uploadData,uploadHeartbeats,uploadAttacks){
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=36",
+                    contentType: "application/text; charset=utf-8",     
+                    data: "mobile_id=" + mobileid,
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                        eval(data);
+                        var measuredCols = $rs.colnames;
+                        var measuredType = $rs.coltypes;
+                        var measuredData = $rs.rows || $rs[Object.keys($rs)[0]];
+                        var measuredUploadsi = cols.indexOf("measureduploads");
+                        var measuredDatei = cols.indexOf("measureddate");
+                        var measuredHeartbeatsi = cols.indexOf("measuredheartbeats");
+                        var measuredAttacksi = cols.indexOf("measuredattacks");
+                        var measuredUploadData = []
+                        var measuredUploadDates = []
+                        var measuredUploadHeartbeats = []
+                        var measuredUploadAttacks = []
+                        for ( i in measuredData) {
+                            measuredUploadData[i] = measuredData[i][measuredUploadsi];   
+                            measuredUploadDates[i] = measuredData[i][measuredDatei];
+                            measuredUploadHeartbeats[i] = measuredData[i][measuredHeartbeatsi];
+                            measuredUploadAttacks[i]=measuredData[i][measuredAttacksi]
+                        }   
+
+                        addUploadsChart(uploadDates,uploadData,uploadHeartbeats,uploadAttacks,measuredUploadDates,measuredUploadData,measuredUploadHeartbeats,measuredUploadAttacks);
+                    } // success
+                }); // ajax
+                
+            }
+            
+            function addUploadsChart(dates,data,heartbeats,attacks,measuredDates, measuredData, measuredHeartbeats, measuredAttacks){
                 var data2 = [];
                 for(var i=0;i<dates.length;i++){
                     data2[i]=[Date.parse(dates[i]),data[i]-heartbeats[i]-attacks[i]];                    
@@ -299,6 +334,25 @@
                 var attacks2 = [];
                 for(var i=0;i<dates.length;i++){
                     attacks2[i]=[Date.parse(dates[i]),attacks[i]];                    
+                }
+                
+                var measuredData2 = [];
+                for(var i=0;i<measuredDates.length;i++){
+                    if(measuredDates[i] != null){
+                        measuredData2[i]=[Date.parse(measuredDates[i]),measuredData[i]-measuredHeartbeats[i]-measuredAttacks[i]];                    
+                    }
+                }
+                var measuredHeartbeats2 = [];
+                for(var i=0;i<measuredDates.length;i++){
+                    if(measuredDates[i] != null){
+                        measuredHeartbeats2[i]=[Date.parse(measuredDates[i]),measuredHeartbeats[i]];                    
+                    }
+                }
+                var measuredAttacks2 = [];
+                for(var i=0;i<measuredDates.length;i++){
+                    if(measuredDates[i] != null){
+                        measuredAttacks2[i]=[Date.parse(measuredDates[i]),measuredAttacks[i]];                    
+                    }
                 }
                 $('#uploadsFromUserChart').highcharts('StockChart',{
                     chart: {
@@ -346,13 +400,34 @@
                     },
                     series: [{
                         name: 'Activity Data',
-                        data: data2                  
+                        data: data2,
+                        color: '#000080',
+                        stack: 'stored'
                     },{
                         name: 'Heartbeats',
-                        data: heartbeats2             
+                        data: heartbeats2,
+                        color: '#000000',
+                        stack: 'stored'
                     },{
                         name: 'Attacks',
-                        data: attacks2             
+                        data: attacks2,
+                        color: '#006400',
+                        stack: 'stored'        
+                    },{
+                        name: 'Activity Data',
+                        data: measuredData2,
+                        color: '#4169e1',
+                        stack: 'measured'
+                    },{
+                        name: 'Heartbeats',
+                        data: measuredHeartbeats2,
+                        color: '#696969',
+                        stack: 'measured'
+                    },{
+                        name: 'Attacks',
+                        data: measuredAttacks2,
+                        color: '#32cd32',
+                        stack: 'measured'        
                     }]
                 });         
             }
