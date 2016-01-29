@@ -296,15 +296,15 @@
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
                     }, 
-                    success: function(data){
-                        eval(data);
+                    success: function(measuredData){
+                        eval(measuredData);
                         var measuredCols = $rs.colnames;
                         var measuredType = $rs.coltypes;
                         var measuredData = $rs.rows || $rs[Object.keys($rs)[0]];
-                        var measuredUploadsi = cols.indexOf("measureduploads");
-                        var measuredDatei = cols.indexOf("measureddate");
-                        var measuredHeartbeatsi = cols.indexOf("measuredheartbeats");
-                        var measuredAttacksi = cols.indexOf("measuredattacks");
+                        var measuredUploadsi = measuredCols.indexOf("measureduploads");
+                        var measuredDatei = measuredCols.indexOf("measureddate");
+                        var measuredHeartbeatsi = measuredCols.indexOf("measuredheartbeats");
+                        var measuredAttacksi = measuredCols.indexOf("measuredattacks");
                         var measuredUploadData = []
                         var measuredUploadDates = []
                         var measuredUploadHeartbeats = []
