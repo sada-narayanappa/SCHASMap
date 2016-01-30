@@ -201,7 +201,7 @@
                 document.getElementById('totalUsersText').innerHTML = numUsers;
                 document.getElementById('activeUsersText').innerHTML = numActiveUsers;
                 var churn  = (100*(numActiveUsers-previousNumActiveUsers))/previousNumActiveUsers;
-                churn = Number.parseFloat(parseFloat(churn.toString()).toFixed(2);
+                churn = Number.parseFloat(churn.toString()).toFixed(2);
                 document.getElementById('churnCountText').innerHTML = churn.toString().concat('%');
             }
             
