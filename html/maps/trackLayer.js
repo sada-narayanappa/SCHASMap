@@ -74,7 +74,7 @@ function AddTrackingLayer(map) {
    selectCtrl.activate();
 
    layer.events.on({
-       'hoverfeature': function (evt) {
+       'featurehighlighted': function (evt) {
          var position = this.events.getMousePosition(e);
          var p = map.getLonLatFromPixel(position);
 
@@ -109,7 +109,7 @@ function AddTrackingLayer(map) {
          feature.popup = popup;
          map.addPopup(popup);
       },
-      'outfeature': function (evt) {
+      'featureunhighlighted': function (evt) {
          var feature = evt.feature;
          //console.log("UNSELECTED: " + feature)
          if ( feature && feature.popup) {
