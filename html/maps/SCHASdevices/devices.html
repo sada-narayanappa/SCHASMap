@@ -702,19 +702,18 @@
                 passwdi = cols.indexOf("passwd");                                                
                 
                 
-                str = "<thead> <tr> <th>Row</th> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
+                str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;                
                 for ( i in data) {
-                    d = data [i];
-                    var row = i+1;
-                    str = str+"<tr onClick=\"uploadsChartData('"+d[mobileIDi]+"'); moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+row+"</td> "+"<td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei].toString().replace(null,"")+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
+                    d = data [i];                   
+                    str = str+"<tr onClick=\"uploadsChartData('"+d[mobileIDi]+"'); moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei].toString().replace(null,"")+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
                 }                
                 str = str + "</tbody>";
                 $("#data").html(str);
                 $("#data").tablesorter({
                     headers: {
-                        3: { sorter:'customDate' } //How the table should sort column # 3
+                        2: { sorter:'customDate' } //How the table should sort column # 2
                     },
-                    sortList: [[3,1]] //Sort by the third column in descending order.
+                    sortList: [[2,1]] //Sort by the 2nd column in descending order.
                 });
 
             }
