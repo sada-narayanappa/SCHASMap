@@ -124,7 +124,7 @@
                         <p id="activeUsersText" style="display: inline-block;">#</p>
                     </div>
                     <div>
-                        <label style="display: inline-block; width: 50%; text-align: right;">Churn Count: </label>
+                        <label style="display: inline-block; width: 50%; text-align: right;">Active User Rate of Change: </label>
                         <p id="churnCountText" style="display: inline-block;">#</p>
                     </div>
                     <div>
@@ -702,18 +702,19 @@
                 passwdi = cols.indexOf("passwd");                                                
                 
                 
-                str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
+                str = "<thead> <tr> <th>Row</th> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Total Uploads</th> </tr> </thead> <tbody>" ;
                 for ( i in data) {
                     d = data [i];
-                    str = str+"<tr onClick=\"uploadsChartData('"+d[mobileIDi]+"'); moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei].toString().replace(null,"")+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
+                    var row = i+1;
+                    str = str+"<tr onClick=\"uploadsChartData('"+d[mobileIDi]+"'); moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+row+"</td> "+"<td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei].toString().replace(null,"")+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[totalUploadsi]+"</td> </tr>";
                 }                
                 str = str + "</tbody>";
                 $("#data").html(str);
                 $("#data").tablesorter({
                     headers: {
-                        2: { sorter:'customDate' }
+                        3: { sorter:'customDate' } //How the table should sort column # 3
                     },
-                    sortList: [[2,1]]
+                    sortList: [[3,1]] //Sort by the third column in descending order.
                 });
 
             }
