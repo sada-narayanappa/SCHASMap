@@ -200,7 +200,7 @@
             function addSummaryData(numUsers,numActiveUsers, previousNumActiveUsers){
                 document.getElementById('totalUsersText').innerHTML = numUsers;
                 document.getElementById('activeUsersText').innerHTML = numActiveUsers;
-                var churn  = (100*(numActiveUsers-previousNumActiveUsers))/previousNumActiveUsers;
+                var churn  = 100+(100*(numActiveUsers-previousNumActiveUsers))/previousNumActiveUsers;
                 churn = Number.parseFloat(churn.toString()).toFixed(2);
                 document.getElementById('churnCountText').innerHTML = churn.toString().concat('%');
             }
