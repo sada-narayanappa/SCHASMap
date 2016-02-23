@@ -89,16 +89,10 @@ function AddTrackingLayer(map) {
          popup.autoSize = true;
          popup.maxSize = new OpenLayers.Size(400, 800);
          popup.fixedRelativePosition = true;
-         popup.onmouseout = function (evt) {
-             var popup = evt.feature;
-             map.removePopup(popup);
-             popup.destroy();
-             popup = null;
-         }
          feature.popup = popup;
          map.addPopup(popup);
-      }//,
-      /**'featureunselected': function (evt) {
+      },
+      'featureunselected': function (evt) {
          var feature = evt.feature;
          //console.log("UNSELECTED: " + feature)
          if ( feature && feature.popup) {
@@ -106,7 +100,7 @@ function AddTrackingLayer(map) {
             feature.popup.destroy();
             feature.popup = null;
          }
-      }*/
+      }
    });
 
    trackLayer.ctrlDragFeature = new OpenLayers.Control.DragFeature(layer);
