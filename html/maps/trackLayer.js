@@ -68,6 +68,7 @@ function AddTrackingLayer(map) {
 
    layer.events.on({
       'featureselected': function (evt) {
+          console.log('click ON');
          var position = this.events.getMousePosition(e);
          var p = map.getLonLatFromPixel(position);
 
@@ -103,6 +104,7 @@ function AddTrackingLayer(map) {
          map.addPopup(popup);
       },
       'featureunselected': function (evt) {
+          console.log('hover OFF');
          var feature = evt.feature;
          //console.log("UNSELECTED: " + feature)
          if ( feature && feature.popup) {
@@ -112,6 +114,7 @@ function AddTrackingLayer(map) {
          }
       },
       'hoverfeature': function (evt) {
+         console.log('hover ON');
          var position = this.events.getMousePosition(e);
          var p = map.getLonLatFromPixel(position);
 
@@ -147,6 +150,7 @@ function AddTrackingLayer(map) {
          map.addPopup(popup);
       },
       'outfeature': function (evt) {
+          console.log('hover OFF');
          var feature = evt.feature;
          //console.log("UNSELECTED: " + feature)
          if ( feature && feature.popup) {
