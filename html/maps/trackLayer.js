@@ -60,10 +60,7 @@ function AddTrackingLayer(map) {
    var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
       clickout:      true,
       hover:         true,
-      clickFeature: function (evt) {var position = this.events.getMousePosition(e);
-                                        var p = map.getLonLatFromPixel(position);
-
-                                        var feature = evt.feature;
+      clickFeature: function (evt) {    var feature = evt.feature;
                                         //console.log("SELECTED: " + feature);
                                         obj = (feature.attributes && feature.attributes.obj) || null;
                                         if ( !obj)
