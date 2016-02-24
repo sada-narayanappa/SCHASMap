@@ -56,13 +56,20 @@ function AddTrackingLayer(map) {
    map.events.register('moveend', map, function() {
       //trackLayerUpdate()
    });
-
-   var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
+   
+   var highlightCtrl = new OpenLayers.Control.SelectFeature(layer, {
       clickout:      true,
       hover:         true,
       autoActivate:  false
    });
+   var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
+      clickout:      true,
+      click:         true,
+      autoActivate:  false
+   });
+   map.addControl(highlightCtrl);
    map.addControl(selectCtrl);
+   highlightCtrl.activate();
    selectCtrl.activate();
 
    layer.events.on({
