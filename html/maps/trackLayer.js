@@ -60,43 +60,6 @@ function AddTrackingLayer(map) {
    var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
       clickout:      true,
       hover:         true,
-      clickFeature: function (evt) {    var feature = evt.feature;
-                                        //console.log("SELECTED: " + feature);
-                                        obj = (feature.attributes && feature.attributes.obj) || null;
-                                        if ( !obj)
-                                           return;
-                                        //var popup = new OpenLayers.Popup.FramedCloud("popup",
-
-                                        //str = (feature.geometry.toShortString) ? feature.geometry.toShortString() :
-                                        var popup = new OpenLayers.Popup("INFO",
-                                                OpenLayers.LonLat.fromString(feature.geometry.getCentroid(true).toShortString()),
-                                                null,
-                                                getPop(obj), // + feature.attributes.Latitude + ", " + feature.attributes.Longitude + "<br>" + "Humidity: " + feature.attributes.Humidity + "<br>" + "Temperature: " + feature.attributes.temp + "<br>" + "Speed: " + feature.attributes.Speed + "<br>" + "Date/Time: " + feature.attributes.DateTime,
-                                                null,
-                                                true,
-                                                null
-                                        );
-                                        popup.autoSize = true;
-                                        popup.maxSize = new OpenLayers.Size(400, 800);
-                                        popup.fixedRelativePosition = true;
-                                        /**popup.events.on({
-                                           'onmouseout': function(popevt){
-                                               console.log('Mouse Out');
-                                               var popfeat = popevt.feature;
-                                               map.removePopup(popfeat);
-                                               popfeat.destroy();
-                                               popfeat = null;
-                                           } 
-                                        }); */
-                                        feature.popup = popup;
-                                        map.addPopup(popup);},
-       clickoutFeature: function (evt) {var feature = evt.feature;
-                                            //console.log("UNSELECTED: " + feature)
-                                            if ( feature && feature.popup) {
-                                               map.removePopup(feature.popup);
-                                               feature.popup.destroy();
-                                               feature.popup = null;
-                                            }},
       autoActivate:  false
    });
    map.addControl(selectCtrl);
