@@ -57,16 +57,17 @@ function AddTrackingLayer(map) {
       //trackLayerUpdate()
    });
 
-   var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
-      highlightOnly:  false,
-      hover:          false
-   });
    var highlightCtrl = new OpenLayers.Control.SelectFeature(layer, {
       highlightOnly:  true,
       hover:          true
    });
-   map.addControl(selectCtrl);
+   var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
+      highlightOnly:  false,
+      hover:          false
+   });   
+   
    map.addControl(highlightCtrl);
+   map.addControl(selectCtrl);
    highlightCtrl.activate();
    selectCtrl.activate();
 
