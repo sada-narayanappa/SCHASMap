@@ -120,10 +120,17 @@ function AddTrackingLayer(map) {
 
    layer.events.on({
       'featureselected': function (evt) {
+          
          var position = this.events.getMousePosition(e);
          var p = map.getLonLatFromPixel(position);
 
          var feature = evt.feature;
+         
+         if (feature.popup) {
+                   map.removePopup(feature.popup);
+                   feature.popup.destroy();
+                   feature.popup = null; 
+         }
          //console.log("SELECTED: " + feature);
          obj = (feature.attributes && feature.attributes.obj) || null;
          if ( !obj)
