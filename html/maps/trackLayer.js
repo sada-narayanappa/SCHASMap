@@ -109,7 +109,8 @@ function AddTrackingLayer(map) {
    });
    var selectCtrl = new OpenLayers.Control.SelectFeature(layer, {
       highlightOnly:  false,
-      hover:          false
+      hover:          false,
+      clickout:       true
    });   
    
    map.addControl(highlightCtrl);
