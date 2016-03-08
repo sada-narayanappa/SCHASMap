@@ -238,7 +238,7 @@
                     if(version[i] != 'null'){
                         versionName = version[i];
                     }else{
-                        versionName = 'Less Than 38';
+                        versionName = 'older than 1.090';
                     }
                     //console.log('version: '+ versionName +' num: '+ numberOfDevices[i]);
                     data2[i]=[versionName,numberOfDevices[i]];                    
@@ -262,7 +262,7 @@
                             cursor: 'pointer',
                             dataLabels: {
                                 enabled: true,
-                                format: 'Ver. <b>{point.name}</b>: {point.percentage:.1f} %',
+                                format: 'Version <b>{point.name}</b>: {point.percentage:.1f} %',
                                 style: {
                                     color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                                 }
