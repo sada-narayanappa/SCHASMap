@@ -240,6 +240,7 @@
                     }else{
                         versionName = '< 38';
                     }
+                    console.log('version: '+ versionName +' num: '+ numberOfDevices[i]);
                     data2[i]=[versionName,numberOfDevices[i]];                    
                 }
                 $('#versionPieChart').highcharts({
@@ -269,7 +270,6 @@
                         }
                     },
                     series: [{
-                        type: 'pie',
                         name: 'Percentage of Users',
                         colorByPoint: true,
                         data: data2
