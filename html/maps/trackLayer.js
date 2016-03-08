@@ -214,7 +214,17 @@ function RemoveThisFeature(id) {
       error: function(xhr, stat, err) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
-   });
+   });//ajax
+   $.ajax({
+        type: "GET",
+        url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?cmd=reload",
+        contentType: "application/text; charset=utf-8",                   
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+        }, 
+        success: function(data){
+        } // success
+    }); // ajax
 }
 
 function LT(t, lon) {
