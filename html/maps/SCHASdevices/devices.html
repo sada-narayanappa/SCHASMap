@@ -238,9 +238,9 @@
                     if(version[i] != 'null'){
                         versionName = version[i];
                     }else{
-                        versionName = '< 38';
+                        versionName = 'Less Than 38';
                     }
-                    console.log('version: '+ versionName +' num: '+ numberOfDevices[i]);
+                    //console.log('version: '+ versionName +' num: '+ numberOfDevices[i]);
                     data2[i]=[versionName,numberOfDevices[i]];                    
                 }
                 $('#versionPieChart').highcharts({
@@ -262,7 +262,7 @@
                             cursor: 'pointer',
                             dataLabels: {
                                 enabled: true,
-                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                format: 'Ver. <b>{point.name}</b>: {point.percentage:.1f} %',
                                 style: {
                                     color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                                 }
