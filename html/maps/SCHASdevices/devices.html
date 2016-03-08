@@ -144,7 +144,7 @@
         <script>
             
             $(document).ready(function() {
-                addVersionPieChart();
+                getVersionPieChartData();
                 getSummaryData();
                 $.ajax({
                     type: "GET",
@@ -205,7 +205,43 @@
                 document.getElementById('churnCountText').innerHTML = churn.toString().concat('%');
             }
             
-            function addVersionPieChart(){
+            function getVersionPieChartData(){
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=37",
+                    contentType: "application/text; charset=utf-8",                   
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                        eval(data);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                        var versioni = cols.indexOf("version");                        
+                        var numberOfDevicesi = cols.indexOf("numberOfDevices");                        
+                        var version = [];
+                        var numberOfDevices = [];                        
+                        for ( i in data) {
+                            version[i] = data[i][versioni];   
+                            numberOfDevices[i] = data[i][numberOfDevicesi];
+                        }   
+                        addVersionPieChart(version,numberOfDevices);
+                    } // success
+                }); // ajax
+            }
+            
+            function addVersionPieChart(version, numberOfDevices){
+                var data2 = [];
+                for(var i=0;i<version.length;i++){
+                    var versionName = '';
+                    if(version[i] != 'null'){
+                        versionName = version[i];
+                    }else{
+                        versionName = '< 38';
+                    }
+                    data2[i]=[versionName,numberOfDevices[i]];                    
+                }
                 $('#versionPieChart').highcharts({
                     chart: {
                         plotBackgroundColor: null,
@@ -235,25 +271,7 @@
                     series: [{
                         name: 'Percentage of Users',
                         colorByPoint: true,
-                        data: [{
-                            name: 'Version 6',
-                            y: 56.33
-                        }, {
-                            name: 'Version 5',
-                            y: 24.03,
-                        }, {
-                            name: 'Version 4',
-                            y: 10.38
-                        }, {
-                            name: 'Version 3',
-                            y: 4.77
-                        }, {
-                            name: 'Version 2',
-                            y: 0.91
-                        }, {
-                            name: 'Version 1',
-                            y: 0.2
-                        }]
+                        data: data2
                     }]
                 });
             }
