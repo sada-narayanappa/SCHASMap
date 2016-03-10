@@ -238,7 +238,7 @@
                     if(version[i] != 'null'){
                         versionName = version[i];
                     }else{
-                        versionName = 'older than 1.090';
+                        versionName = '&lt; 1.090-38';
                     }
                     //console.log('version: '+ versionName +' num: '+ numberOfDevices[i]);
                     data2[i]=[versionName,numberOfDevices[i]];                    
@@ -254,7 +254,7 @@
                         text: 'App Versions in Use'
                     },
                     tooltip: {
-                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> <br> Number of Users: <b>{point.y}</b>'
                     },
                     plotOptions: {
                         pie: {
@@ -262,7 +262,7 @@
                             cursor: 'pointer',
                             dataLabels: {
                                 enabled: true,
-                                format: 'Version <b>{point.name}</b>: {point.percentage:.1f} %',
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                                 style: {
                                     color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                                 }
