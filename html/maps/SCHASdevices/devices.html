@@ -206,6 +206,8 @@
             }
             
             function getVersionPieChartData(){
+                var version = [];
+                var numberOfDevices = []; 
                 $.ajax({
                     type: "GET",
                     url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=37",
@@ -219,30 +221,65 @@
                         var type = $rs.coltypes;
                         var data = $rs.rows || $rs[Object.keys($rs)[0]];
                         var versioni = cols.indexOf("version");                        
-                        var numberOfDevicesi = cols.indexOf("numberOfDevices");                        
-                        var version = [];
-                        var numberOfDevices = [];                        
+                        var numberOfDevicesi = cols.indexOf("numberOfDevices");                                                                       
                         for ( i in data) {
                             version[i] = data[i][versioni];   
                             numberOfDevices[i] = data[i][1];
-                        }   
-                        addVersionPieChart(version,numberOfDevices);
+                        }                           
                     } // success
                 }); // ajax
+                var versiontype = [];
+                var totalbattery = []; 
+                var numentries = [];
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=38",
+                    contentType: "application/text; charset=utf-8",                   
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                        eval(data);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                        var versiontypei = cols.indexOf("versiontype");                        
+                        var totalbatteryi = cols.indexOf("totalbattery"); 
+                        var numentriesi = cols.indexOf("numentries");
+                        for ( i in data) {
+                            versiontype[i] = data[i][versiontypei];   
+                            totalbattery[i] = data[i][totalbatteryi];
+                            numentries[i] = data[i][numentriesi]
+                        }   
+                        
+                    } // success
+                }); // ajax
+                addVersionPieChart(version,numberOfDevices, versiontype, totalbattery, numentries);
             }
             
-            function addVersionPieChart(version, numberOfDevices){
+            function addVersionPieChart(version, numberOfDevices, versiontype, totalbattery, numentries){
                 var data2 = [];
                 for(var i=0;i<version.length;i++){
-                    var versionName = '';
-                    if(version[i] != 'null'){
-                        versionName = version[i];
+                    if(version[i] != 'null'){                        
                     }else{
-                        versionName = '&lt; 1.090-38';
+                        version[i] = '&lt; 1.090-38';
                     }
-                    //console.log('version: '+ versionName +' num: '+ numberOfDevices[i]);
-                    data2[i]=[versionName,numberOfDevices[i]];                    
                 }
+                for(var i=0;i<versiontype.length;i++){                   
+                    if(versiontype[i] != 'null'){                        
+                    }else{
+                        versiontype[i] = '&lt; 1.090-38';
+                    }
+                    var battery = totalbattery[i]/numentries[i];
+                    
+                    
+                    //console.log('version: '+ versionName +' num: '+ numberOfDevices[i]);
+                    data2[i]=[ {name: versiontype[i], y: numberOfDevices[version.indexOf(versiontype[i])], bat: battery}];      
+                }
+                    
+                    
+                              
+                
                 $('#versionPieChart').highcharts({
                     chart: {
                         plotBackgroundColor: null,
@@ -254,7 +291,7 @@
                         text: 'App Versions in Use'
                     },
                     tooltip: {
-                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> <br> Number of Users: <b>{point.y}</b>'
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> <br> Number of Users: <b>{point.y}</b> <br> Battery Usage: <b>{point.bat}</b>'
                     },
                     plotOptions: {
                         pie: {
