@@ -210,6 +210,7 @@
                 var numberOfDevices = []; 
                 $.ajax({
                     type: "GET",
+                    async: false,
                     url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=37",
                     contentType: "application/text; charset=utf-8",                   
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -233,6 +234,7 @@
                 var numentries = [];
                 $.ajax({
                     type: "GET",
+                    async: false,
                     url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=38",
                     contentType: "application/text; charset=utf-8",                   
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -273,7 +275,7 @@
                     var battery = totalbattery[i]/numentries[i];
                     
                     
-                    console.log('version: '+ versiontype[i] +' num: '+ numberOfDevices[version.indexOf(versiontype[i])] + 'bat:'+battery);
+                    //console.log('version: '+ versiontype[i] +' num: '+ numberOfDevices[version.indexOf(versiontype[i])] + 'bat:'+battery);
                     data2[i]= {name: versiontype[i], y: numberOfDevices[version.indexOf(versiontype[i])], bat: battery};      
                 }
                     
