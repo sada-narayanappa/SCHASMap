@@ -273,7 +273,7 @@
                     var battery = totalbattery[i]/numentries[i];
                     
                     
-                    //console.log('version: '+ versionName +' num: '+ numberOfDevices[i]);
+                    console.log('version: '+ versiontype[i] +' num: '+ numberOfDevices[version.indexOf(versiontype[i])] + 'bat:'+battery);
                     data2[i]= {name: versiontype[i], y: numberOfDevices[version.indexOf(versiontype[i])], bat: battery};      
                 }
                     
