@@ -141,9 +141,35 @@
             </div>
         </div>
         
-        <iframe src="https://app.powerbi.com/embed?dashboardId=8251f6e2-720b-4e1d-997e-a7fd0fc568da&tileId=7c18bad3-b99d-4110-a176-fa5272105bd3"></iframe>       
+        <iframe id = "POWERBI"></iframe>       
         
         <script>
+            var embedTileUrl = "https://app.powerbi.com/embed?dashboardId=73ab09f3-0261-4869-b2f3-8f2046062bbe&tileId=186dd571-039c-4ff1-8415-8955a9a62efc";
+            var width = 1000;
+            var height = 600;
+            
+            window.onload = function () {
+                updateEmbedTile();
+            };
+
+            function updateEmbedTile() {
+                if ("" === embedTileUrl)
+                    return;
+                iframe = document.getElementById('POWERBI');
+                iframe.src = embedTileUrl + "&width=" + width + "&height=" + height;
+                iframe.onload = postActionLoadTile;
+            }
+
+            function postActionLoadTile() {
+                if ("" === accessToken)
+                    return;
+                var h = height;
+                var w = width;
+                var m = { action: "loadTile", accessToken: accessToken, height: h, width: w };
+                message = JSON.stringify(m);
+                iframe = document.getElementById('iFrameEmbedTile');
+                iframe.contentWindow.postMessage(message, "*");
+            }
             
             $(document).ready(function() {
                 getVersionPieChartData();
