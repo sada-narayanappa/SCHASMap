@@ -321,7 +321,7 @@
                     <input type="button" value="Compute Route" onclick="routeLayer.instance.LayerUpdate()"/>
                 </div>
                <div id="tabs-3" style="height:440px;overflow-y:auto;">
-                    <p></p>
+                    <input id="invalidCheckbox" type="checkbox" name="Invalid" value="show" style="float:right;" > Show Invalid Points <hr> <br>
                 </div>
                 <div id="tabs-4">
                     <p>Probabilistic Route Analysis</p>
@@ -436,7 +436,7 @@
             }
         }
         str = str + "</form>"
-        $("#tabs-3").html(str);
+        $("#tabs-3").append(str);
     }
     function runQuery1(divName) {
         loggedInUserName = localStorage.getItem('name');
