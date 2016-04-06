@@ -57,7 +57,7 @@
             runQuery1(); // load the information
             ControlPanelToggle(userOptions.controlPanel);
             if(userOptions.myUserID!==null){
-                trackLayerUpdate(userOptions.myUserID, false);
+                trackLayerUpdate(userOptions.myUserID, false,document.getElementById("invalidCheckbox").checked);
             }
             setUserOptions(map);
             var name = localStorage.getItem('name');
