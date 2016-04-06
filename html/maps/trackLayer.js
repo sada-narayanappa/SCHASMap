@@ -207,7 +207,7 @@ function RemoveThisFeature(id) {
          data = data.replace(/(\r\n|\n|\r)/gm, "");
          console.log(data);
          //alert("Deleted: " + data)
-         trackLayerUpdate(CURRENT_PARMS, false)
+         trackLayerUpdate(CURRENT_PARMS, false,document.getElementById("invalidCheckbox").checked)
          //location.reload();
          clearAllMapPopups();
       },
@@ -466,7 +466,7 @@ function addLine(points, obj , lyr, speeds) {
 }
 var CURRENT_PARMS = "";
 
-function trackLayerUpdate(parms,bounds) {
+function trackLayerUpdate(parms,bounds,showInvalid) {
    if ( !trackLayer || !trackLayer.map || !trackLayer.layer.getVisibility() ) {
       return;
    }

@@ -321,7 +321,7 @@
                     <input type="button" value="Compute Route" onclick="routeLayer.instance.LayerUpdate()"/>
                 </div>
                <div id="tabs-3" style="height:440px;overflow-y:auto;">
-                    <input id="invalidCheckbox" type="checkbox" name="Invalid" value="show" style="float:right;" > Show Invalid Points <hr> <br>
+                    <input id="invalidCheckbox" type="checkbox" name="Invalid" value="show"> Show Invalid Points <hr>
                 </div>
                 <div id="tabs-4">
                     <p>Probabilistic Route Analysis</p>
@@ -376,7 +376,7 @@
     function changeTrackLayer(p, updateBounds ) {        
         userOptions.myUserID = p;
         if(userOptions.myUserID!==null){
-            trackLayerUpdate(p, true);
+            trackLayerUpdate(p, true,document.getElementById("invalidCheckbox").checked);
         }
     }
     
