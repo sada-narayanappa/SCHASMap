@@ -371,6 +371,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    map = lyr.map;
    points = [];
    speeds = [];
+   secondDifferences = [];
 
    var locs = $rs["rows"]
    var cols = $rs["colnames"]
@@ -380,6 +381,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    speedi = cols.indexOf("speed");
    record_typei = cols.indexOf("record_type");
    is_validi = cols.indexOf("is_valid");
+   secToNexti = cols.indexOf("sectonext")
 
    //lyr.removeAllFeatures()
    //lyr.destroyFeatures();
@@ -406,6 +408,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
       speeds.push(lc[speedi]);
+      secondDifferences.push(lc[secToNexti]);
       
 
       var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label, i,lc[record_typei],lc[is_validi]);
@@ -418,12 +421,12 @@ function trackAddFeatures(data, lyr, updateBounds) {
       obj.dist = dist;
 
       if (  obj.mobile_id !== prevObj.mobile_id) {
-         addLine(points, prevObj, lyr, speeds);
+         addLine(points, prevObj, lyr, speeds, secondDifferences);
          points = [];
          prevObj = obj;
       }
    }
-   addLine(points, obj, lyr, speeds);
+   addLine(points, obj, lyr, speeds, secondDifferences);
 
    if (lyr.getVisibility() && updateBounds) {
       var b1 = map.calculateBounds();
@@ -433,34 +436,37 @@ function trackAddFeatures(data, lyr, updateBounds) {
    }
 }
 
-function addLine(points, obj , lyr, speeds) {
+function addLine(points, obj , lyr, speeds, secondDifferences) {
    if ( points.length <= 1) {
       return;
    }
-   k=0;
+   var k=0;
    while(k<points.length-1){
-        var pline = new OpenLayers.Geometry.LineString(points.slice(k,k+2));
-        avgSpeed = (speeds[k]+speeds[k+1])/2;
-        var style = {
-           strokeColor: '#0000ff',
-           fillcolor:    "#ffffff",
-           strokeDashstyle: getLineStyle(avgSpeed),
-           strokeColor: getColor(obj.mobile_id),
-           strokeOpacity: 10, //0.9,
-           strokeWidth: 8,
-           graphicZIndex: 0
-        };
+       //Only draw line if the next point is less than 1800 seconds away.
+        if(secondDifferences[k]<1800){
+            var pline = new OpenLayers.Geometry.LineString(points.slice(k,k+2));
+            avgSpeed = (speeds[k]+speeds[k+1])/2;
+            var style = {
+               strokeColor: '#0000ff',
+               fillcolor:    "#ffffff",
+               strokeDashstyle: getLineStyle(avgSpeed),
+               strokeColor: getColor(obj.mobile_id),
+               strokeOpacity: 10, //0.9,
+               strokeWidth: 8,
+               graphicZIndex: 0
+            };
 
-        var lineFeature = new OpenLayers.Feature.Vector(pline, null, style);
+            var lineFeature = new OpenLayers.Feature.Vector(pline, null, style);
 
-        lobj = {};
-        lobj.dist = (DISTANCE/1000/1.6).toFixed(2) + " Miles";
-        lobj.id = -1;
-        lobj.measured_at = obj.measured_at;
-        lobj.mobile_id = obj.mobile_id;
+            lobj = {};
+            lobj.dist = (DISTANCE/1000/1.6).toFixed(2) + " Miles";
+            lobj.id = -1;
+            lobj.measured_at = obj.measured_at;
+            lobj.mobile_id = obj.mobile_id;
 
-        lineFeature.attributes.obj = lobj;
-        lyr.addFeatures([lineFeature]);
+            lineFeature.attributes.obj = lobj;
+            lyr.addFeatures([lineFeature]);
+        }
 
         k=k+1;
         distance(null);
