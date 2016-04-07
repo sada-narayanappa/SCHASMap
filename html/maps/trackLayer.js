@@ -484,22 +484,44 @@ function trackLayerUpdate(parms,bounds,showInvalid) {
    var TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=6&type=js&";
    var url = config.PROXY + TL_URL
 
-   if (parms) {
-      if ( parms.indexOf("session") > 0) {
-         url = url+ parms;         
-      } else {
-         TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=6a&type=js&";
-         url = config.PROXY + TL_URL
-         url = url+ parms;
-      }
-      CURRENT_PARMS = parms;
-   } else if ( $.urlAllParams()) {
-      url = url+ $.urlAllParams();     
-   } else {
-       return;
-      //url = url+ CURRENT_PARMS;
-      //console.log(CURRENT_PARMS);
-   }
+   if(showInvalid){
+       if (parms) {
+           if ( parms.indexOf("session") > 0) {
+              //url = url+ parms;         
+              TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=6c&type=js&";
+              url = config.PROXY + TL_URL
+              url = url+ parms;
+           } else {
+              TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=6b&type=js&";
+              url = config.PROXY + TL_URL
+              url = url+ parms;
+           }
+           CURRENT_PARMS = parms;
+        } else if ( $.urlAllParams()) {
+           url = url+ $.urlAllParams();     
+        } else {
+            return;
+           //url = url+ CURRENT_PARMS;
+           //console.log(CURRENT_PARMS);
+        }
+    } else{
+        if (parms) {
+           if ( parms.indexOf("session") > 0) {
+              url = url+ parms;         
+           } else {
+              TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=6a&type=js&";
+              url = config.PROXY + TL_URL
+              url = url+ parms;
+           }
+           CURRENT_PARMS = parms;
+        } else if ( $.urlAllParams()) {
+           url = url+ $.urlAllParams();     
+        } else {
+            return;
+           //url = url+ CURRENT_PARMS;
+           //console.log(CURRENT_PARMS);
+        }
+    }
 
 
    //console.log( url)
