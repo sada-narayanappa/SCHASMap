@@ -447,8 +447,8 @@ function addLine(points, obj , lyr, speeds, timesAtGmt) {
        var date1 = Date.parse(timesAtGmt[k].toString().split('.')[0].replace(/-/g, '/'));
        var date2 = Date.parse(timesAtGmt[k+1].toString().split('.')[0].replace(/-/g, '/'));
        
-       secondDifferences = date2/1000 - date1/1000;
-       console.log('DEBUG: secondDifference: ' + secondDifferences)
+       secondDifferences =  date1/1000 - date2/1000;
+       //console.log('DEBUG: secondDifference: ' + secondDifferences)
        
        //Only draw line if the next point is less than 1800 seconds away.
         if(secondDifferences<1800){
