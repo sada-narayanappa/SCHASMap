@@ -371,7 +371,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    map = lyr.map;
    points = [];
    speeds = [];
-   secondDifferences = [];
+   timesAtGmt = [];
 
    var locs = $rs["rows"]
    var cols = $rs["colnames"]
@@ -381,7 +381,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    speedi = cols.indexOf("speed");
    record_typei = cols.indexOf("record_type");
    is_validi = cols.indexOf("is_valid");
-   secToNexti = cols.indexOf("sectonext")
+   msti = cols.indexOf("mst")
 
    //lyr.removeAllFeatures()
    //lyr.destroyFeatures();
@@ -408,7 +408,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
       speeds.push(lc[speedi]);
-      secondDifferences.push(lc[secToNexti]);
+      timesAtGmt.push(lc[msti]);
       
 
       var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label, i,lc[record_typei],lc[is_validi]);
@@ -421,12 +421,12 @@ function trackAddFeatures(data, lyr, updateBounds) {
       obj.dist = dist;
 
       if (  obj.mobile_id !== prevObj.mobile_id) {
-         addLine(points, prevObj, lyr, speeds, secondDifferences);
+         addLine(points, prevObj, lyr, speeds, timesAtGmt);
          points = [];
          prevObj = obj;
       }
    }
-   addLine(points, obj, lyr, speeds, secondDifferences);
+   addLine(points, obj, lyr, speeds, timesAtGmt);
 
    if (lyr.getVisibility() && updateBounds) {
       var b1 = map.calculateBounds();
@@ -436,14 +436,22 @@ function trackAddFeatures(data, lyr, updateBounds) {
    }
 }
 
-function addLine(points, obj , lyr, speeds, secondDifferences) {
+function addLine(points, obj , lyr, speeds, timesAtGmt) {
    if ( points.length <= 1) {
       return;
    }
    var k=0;
    while(k<points.length-1){
+       
+       var secondDifferences = 0;
+       var date1 = new Date(timesAtGmt[k]);
+       var date2 = new Date(timesAtGmt[k+1]);
+       
+       secondDifferences = date2.getTime()/1000 - date1.getTime()/1000;
+       console.log('DEBUG: secondDifference: ' + secondDifferences)
+       
        //Only draw line if the next point is less than 1800 seconds away.
-        if(secondDifferences[k]<1800){
+        if(secondDifferences<1800){
             var pline = new OpenLayers.Geometry.LineString(points.slice(k,k+2));
             avgSpeed = (speeds[k]+speeds[k+1])/2;
             var style = {
