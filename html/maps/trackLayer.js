@@ -444,8 +444,8 @@ function addLine(points, obj , lyr, speeds, timesAtGmt) {
    while(k<points.length-1){
        
        var secondDifferences = 0;
-       var date1 = Date.parse(timesAtGmt[k].toString());
-       var date2 = Date.parse(timesAtGmt[k+1].toString());
+       var date1 = Date.parse(timesAtGmt[k].toString().replace(/-/g, '/'));
+       var date2 = Date.parse(timesAtGmt[k+1].toString().replace(/-/g, '/'));
        
        secondDifferences = date2/1000 - date1/1000;
        console.log('DEBUG: secondDifference: ' + secondDifferences)
