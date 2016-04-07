@@ -305,7 +305,7 @@ function getExternalGraphic(record_type){
     }
 }
 
-function trackAddPoint(lon, lat, layer, obj, label, ii, record_type ) {
+function trackAddPoint(lon, lat, layer, obj, label, ii, record_type, is_valid ) {
    if (layer.map.zoom < 10) {
       label = "";
    }
@@ -321,10 +321,11 @@ function trackAddPoint(lon, lat, layer, obj, label, ii, record_type ) {
       label: label,
       obj:  obj,
       mobile_id:  obj.mobile_id,
-      fillcolor:  "#" + obj.mobile_id.substring(0,2) + "0000",
-      fillcolor:  "#FFa500",
-      fillcolor: (ii <=0 ) ? "transparent" : getColor(obj.mobile_id),
-      fillcolor: (ii <=0 ) ? "white" : "white",
+      //fillcolor:  "#" + obj.mobile_id.substring(0,2) + "0000",
+      //fillcolor:  "#FFa500",
+      //fillcolor: (ii <=0 ) ? "transparent" : getColor(obj.mobile_id),
+      //fillcolor: (ii <=0 ) ? "white" : "white",
+      fillcolor: (is_valid == 1 ) ? "white" : "yellow",
       strokeWidth: (ii <=0 ) ? 5 : 2,
       externalGraphic: getExternalGraphic(record_type),
       graphicHeight: 20,
@@ -378,6 +379,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    loni = cols.indexOf("lon");
    speedi = cols.indexOf("speed");
    record_typei = cols.indexOf("record_type");
+   is_validi = cols.indexOf("is_valid");
 
    //lyr.removeAllFeatures()
    //lyr.destroyFeatures();
@@ -406,7 +408,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
       speeds.push(lc[speedi]);
       
 
-      var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label, i,lc[record_typei]);
+      var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label, i,lc[record_typei],lc[is_validi]);
       if (!bounds) {
          bounds = feat.geometry.getBounds();
       } else {
