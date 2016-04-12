@@ -224,7 +224,8 @@ function RemoveThisFeature(id, measured_at, mobile_id) {
         }, 
         success: function(data){
             trackRemoveFeatureByMobIDAndMeasuredAt(mobile_id, measured_at);
-            trackLayerUpdate("'mobile_id="+ mobile_id + "&measured_at=" + measured_at + "'", true, document.getElementById("invalidCheckbox").checked);
+            var parstring = "mobile_id="+ mobile_id + "&measured_at=" + measured_at;
+            trackLayerUpdate(parstring, true, document.getElementById("invalidCheckbox").checked);
         } // success
     }); // ajax
 }
