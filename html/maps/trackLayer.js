@@ -185,7 +185,7 @@ function setTrackLayerVisibility(bool){
     trackLayer.layer.setVisibility(bool);
 }
 
-function RemoveThisFeature(id) {
+function RemoveThisFeature(id, measured_at, mobile_id) {
    console.log("Will remove feature: " + id);
 
    var TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=8";
@@ -223,6 +223,8 @@ function RemoveThisFeature(id) {
             console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
         }, 
         success: function(data){
+            trackRemoveFeatureByMobIDAndMeasuredAt(mobile_id, measured_at);
+            trackLayerUpdate("'mobile_id="+ mobile_id + "&measured_at=" + measured_at + "'", true, document.getElementById("invalidCheckbox").checked);
         } // success
     }); // ajax
 }
@@ -260,7 +262,7 @@ function getPop(o) {
          "<tr><td>Humidity    </td><td>" + o.humidity             + "</td></tr>" +
          "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
          "</table>" +
-         "<input type=button value='Remove this' onclick=RemoveThisFeature("+ o.id +")><br>" +
+         "<input type=button value='Remove this' onclick=RemoveThisFeature("+ o.id +","+o.measured_at+","+o.mobile_id+")><br>" +
          "<input type=button value='ActivateDrag' onclick=console.log('ok')><br>" +
          "</div>"
    return str;
