@@ -264,7 +264,7 @@ function getPop(o) {
          "<tr><td>Humidity    </td><td>" + o.humidity             + "</td></tr>" +
          "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
          "</table>" +
-         "<input type=button value='Remove this' onclick=RemoveThisFeature( "+ o.id +",\'"+o.measured_at+"\',"+o.mobile_id+"\' ); console.log("+ o.id +",\'"+o.measured_at+"\',"+o.mobile_id+"\')><br>" +         
+         "<input type=button value='Remove this' onclick=RemoveThisFeature( "+ o.id +","+o.measured_at+","+o.mobile_id+" )><br>" +         
          "<input type=button value='ActivateDrag' onclick=console.log('ok')><br>" +
          "</div>"
 
