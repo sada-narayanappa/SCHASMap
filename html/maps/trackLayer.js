@@ -218,7 +218,7 @@ function RemoveThisFeature(id, measured_at, mobile_id) {
    });//ajax
    $.ajax({
         type: "GET",
-        url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?cmd=reload",
+        url: config.PROXY + config.WEBS + "/aura/webroot/db.jsp?cmd=reload",
         contentType: "application/text; charset=utf-8",                   
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
