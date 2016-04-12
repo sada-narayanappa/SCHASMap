@@ -186,6 +186,7 @@ function setTrackLayerVisibility(bool){
 }
 
 function RemoveThisFeature(id, measured_at, mobile_id) {
+//function RemoveThisFeature(id) {
    console.log("Will remove feature: " + id);
 
    var TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=8";
@@ -263,10 +264,12 @@ function getPop(o) {
          "<tr><td>Humidity    </td><td>" + o.humidity             + "</td></tr>" +
          "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
          "</table>" +
-         "<input type=button value='Remove this' onclick=RemoveThisFeature( "+ o.id +","+o.measured_at+","+o.mobile_id+" )><br>" +
+         "<input type=button value='Remove this' onclick=RemoveThisFeature( "+ o.id +",\'"+o.measured_at+"\',"+o.mobile_id+"\' ); console.log("+ o.id +",\'"+o.measured_at+"\',"+o.mobile_id+"\')><br>" +         
          "<input type=button value='ActivateDrag' onclick=console.log('ok')><br>" +
          "</div>"
-   return str;
+
+         //"<input type=button value='Remove this' onclick=RemoveThisFeature( "+ o.id +","+o.measured_at+","+o.mobile_id+" )><br>" +
+   return str;  
 }
 colors = " blue, fuchsia, green, #800000, #99CCFF , maroon, navy, olive, orange,purple, red, #7ACC29, purple, #660033"
 colors = colors.split(",");
