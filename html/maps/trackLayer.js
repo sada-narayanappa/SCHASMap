@@ -410,7 +410,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
          prevObj = obj;
       }
       var label = (locs.length > 2) ? lc[2].substring(13,19) : lc[2]
-      var label = (locs.length > 2) ? lc[2].substring(11,17) : lc[2]
+      var label = (locs.length > 2) ? lc[2].split(" ")[1].split(":")[0] + ":" + lc[2].split(" ")[1].split(":")[1] : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
       speeds.push(lc[speedi]);
