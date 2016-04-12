@@ -207,7 +207,7 @@ function RemoveThisFeature(id, measured_at, mobile_id) {
          data = data.replace(/(\r\n|\n|\r)/gm, "");
          console.log(data);
          //alert("Deleted: " + data)
-         trackLayerUpdate(CURRENT_PARMS, false,document.getElementById("invalidCheckbox").checked)
+         //trackLayerUpdate(CURRENT_PARMS, false,document.getElementById("invalidCheckbox").checked)
          //location.reload();
          clearAllMapPopups();
       },
@@ -263,7 +263,7 @@ function getPop(o) {
          "<tr><td>Humidity    </td><td>" + o.humidity             + "</td></tr>" +
          "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
          "</table>" +
-         "<input type=button value='Remove this' onclick=RemoveThisFeature("+ o.id +","+o.measured_at+","+o.mobile_id+")><br>" +
+         "<input type=button value='Remove this' onclick=RemoveThisFeature( "+ o.id +","+o.measured_at+","+o.mobile_id+" )><br>" +
          "<input type=button value='ActivateDrag' onclick=console.log('ok')><br>" +
          "</div>"
    return str;
