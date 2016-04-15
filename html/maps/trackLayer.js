@@ -247,7 +247,7 @@ function LT(t, lon) {
 
 function getPop(o) {   
    obj = o;
-   var localDate = Date.parse(o.measured_at.toString().split('.')[0].replace(/-/g, '/'));
+   var localDate = new Date(o.measured_at.toString().split('.')[0].replace(/-/g, '/'));
    localDate.setHours(localDate.getHours() + o.gmtOffset)
    var bck = (o.id > 0) ? "#9FDAEE" : "lightgreen"
    str = "<div style='background-color: " + bck + " '>" +
