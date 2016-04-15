@@ -245,8 +245,10 @@ function LT(t, lon) {
    return dt.toISOString().replace("T"," ").substr(0,20);
 }
 
-function getPop(o) {
+function getPop(o) {   
    obj = o;
+   var localDate = Date.parse(o.measured_at.toString().split('.')[0].replace(/-/g, '/'));
+   localDate.setHours(localDate.getHours() + o.gmtOffset)
    var bck = (o.id > 0) ? "#9FDAEE" : "lightgreen"
    str = "<div style='background-color: " + bck + " '>" +
          "<table>" +
@@ -257,7 +259,7 @@ function getPop(o) {
          "<tr><td>Lat:        </td><td>" + o.lat                  + "</td></tr>" +
          "<tr><td>AT GMT:     </td><td>" + o.measured_at          + "</td></tr>" +
          "<tr><td>AT MST:     </td><td>" + o.mst                  + "</td></tr>" +
-         "<tr><td>AT LOCAL:   </td><td>" + LT(o.measured_at,o.lon)+ "</td></tr>" +
+         "<tr><td>AT LOCAL:   </td><td>" + localDate.toString().split("GMT")[0] + "</td></tr>" +
        //modified by jihadaj on 16 March 2015
          "<tr><td>SPEED     </td><td>" + Math.round(((o.speed)*2.24) * 100) / 100  + "Mph" + "</td></tr>" +
          "<tr><td>Temperature </td><td>" + o.temperature_min      + "</td></tr>" +
@@ -419,7 +421,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    var startLat = locs[0][lati];
    
    var gmtOffset = getGMTOffset(startLon,startLat);
-   console.log("GMTOffset: "+gmtOffset)
+   //console.log("GMTOffset: "+gmtOffset)
    //locs[locs.length] = locs[0];
    //console.log(" : " + locs.length)
    var bounds;
@@ -451,6 +453,8 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var dist = distance(feat);
       obj.dist = dist;
       distances.push(dist);
+      
+      obj.gmtOffset = gmtOffset;
 
       if (  obj.mobile_id !== prevObj.mobile_id) {
          addLine(points, prevObj, lyr, speeds, timesAtGmt, distances);
