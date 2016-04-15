@@ -381,6 +381,7 @@ function getGMTOffset(lon,lat){
             console.log("GeoNames getGMTOffset Error: " + XMLHttpRequest+ textStatus+ errorThrown)
         }, 
         success: function(data){
+            console.log("GMTOffset data: "+ data.toString())
             var geoNames = JSON.parse("'" + data.toString()+"'");
             return geoNames.gmtOffset;
         } // success
