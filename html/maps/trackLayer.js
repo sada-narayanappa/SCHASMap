@@ -372,15 +372,21 @@ function trackRemoveFeatureByMobIDAndMeasuredAt(mobileID, measured_at){
 }
 
 function getGMTOffset(lon,lat){
-       return $.ajax({
+    var gmtOffset = 0;
+    $.ajax({
         type: "GET",
         url: config.PROXY + "http://api.geonames.org/timezoneJSON?lat="+lat+"&lng="+lon+"&username=schas",
         contentType: "application/text; charset=utf-8",  
         async: false,
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             console.log("GeoNames getGMTOffset Error: " + XMLHttpRequest+ textStatus+ errorThrown)
+        },
+        success: function(data){
+            gmtOffset = data.gmtOffset;
         }
     }); // ajax
+    return gmtOffset;
+    
 }
 
 function trackAddFeatures(data, lyr, updateBounds) {
