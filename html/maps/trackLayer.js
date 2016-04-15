@@ -371,6 +371,22 @@ function trackRemoveFeatureByMobIDAndMeasuredAt(mobileID, measured_at){
     }
 }
 
+function getGMTOffset(lon,lat){
+       $.ajax({
+        type: "GET",
+        url: config.PROXY + "http://api.geonames.org/timezoneJSON?lat="+lat+"&lng="+lon+"&username=schas",
+        contentType: "application/text; charset=utf-8",  
+        async: false,
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log("GeoNames getGMTOffset Error: " + XMLHttpRequest+ textStatus+ errorThrown)
+        }, 
+        success: function(data){
+            var geoNames = JSON.parse(data);
+            return geoNames.gmtOffset;
+        } // success
+    }); // ajax
+}
+
 function trackAddFeatures(data, lyr, updateBounds) {
    distance(null);
    eval(data);
@@ -396,6 +412,12 @@ function trackAddFeatures(data, lyr, updateBounds) {
    if (locs.length == 0 || lati < 0 || loni < 0) {
       return;
    }
+   
+   var startLon = locs[0][loni];
+   var startLat = locs[0][lati];
+   
+   var gmtOffset = getGMTOffset(startLon,startLat);
+   console.log("GMTOffset: "+gmtOffset)
    //locs[locs.length] = locs[0];
    //console.log(" : " + locs.length)
    var bounds;
