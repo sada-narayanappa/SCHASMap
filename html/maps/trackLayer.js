@@ -412,8 +412,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    var startLon = locs[0][loni];
    var startLat = locs[0][lati];
    
-   var geoName = getGMTOffset(startLon,startLat);
-   var gmtOffset = geoName.gmtOffset;
+   var gmtOffset = getGMTOffset(startLon,startLat);
    console.log("GMTOffset: "+gmtOffset)
    //locs[locs.length] = locs[0];
    //console.log(" : " + locs.length)
