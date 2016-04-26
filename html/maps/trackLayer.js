@@ -364,6 +364,15 @@ function distance(f) {
    return dist;
 }
 
+function trackRemoveFeatureByIDs(ids){    
+    for(var f=0;f<trackLayer.layer.features.length;f++) {
+        if(ids.indexOf(trackLayer.layer.features[f].attributes.obj.id) >= 0) {
+            trackLayer.layer.removeFeatures(trackLayer.layer.features[f]);
+            f = f-1;
+        }
+    }
+}
+
 function trackRemoveFeatureByMobIDAndMeasuredAt(mobileID, measured_at){    
     for(var f=0;f<trackLayer.layer.features.length;f++) {
         if(trackLayer.layer.features[f].attributes.obj.mobile_id == mobileID.toString() && trackLayer.layer.features[f].attributes.obj.measured_at.substring(0,10) == measured_at.toString()) {
@@ -403,12 +412,12 @@ function trackAddFeatures(data, lyr, updateBounds) {
    var locs = $rs["rows"]
    var cols = $rs["colnames"]
 
-   lati = cols.indexOf("lat");
-   loni = cols.indexOf("lon");
-   speedi = cols.indexOf("speed");
-   record_typei = cols.indexOf("record_type");
-   is_validi = cols.indexOf("is_valid");
-   msti = cols.indexOf("mst")
+   var lati = cols.indexOf("lat");
+   var loni = cols.indexOf("lon");
+   var speedi = cols.indexOf("speed");
+   var record_typei = cols.indexOf("record_type");
+   var is_validi = cols.indexOf("is_valid");
+   var msti = cols.indexOf("mst")
 
    //lyr.removeAllFeatures()
    //lyr.destroyFeatures();
