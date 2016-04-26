@@ -436,13 +436,18 @@ function trackAddFeatures(data, lyr, updateBounds) {
       if ( !prevObj ) {
          prevObj = obj;
       }
-      var label = (locs.length > 2) ? lc[2].substring(13,19) : lc[2]
-      var label = (locs.length > 2) ? lc[2].split(" ")[1].split(":")[0] + ":" + lc[2].split(" ")[1].split(":")[1] : lc[2]
+      
+      var localDate = new Date(obj.measured_at.toString().split('.')[0].replace(/-/g, '/'));
+      localDate.setHours(localDate.getHours() + gmtOffset)
+      
+      var label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
+      //var label = (locs.length > 2) ? lc[2].split(" ")[1].split(":")[0] + ":" + lc[2].split(" ")[1].split(":")[1] : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
       speeds.push(lc[speedi]);
       timesAtGmt.push(lc[msti]);
       
+      obj.gmtOffset = gmtOffset;
 
       var feat = trackAddPoint(lc[loni], lc[lati], lyr, obj, label, i,lc[record_typei],lc[is_validi]);
       if (!bounds) {
@@ -454,7 +459,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
       obj.dist = dist;
       distances.push(dist);
       
-      obj.gmtOffset = gmtOffset;
+      
 
       if (  obj.mobile_id !== prevObj.mobile_id) {
          addLine(points, prevObj, lyr, speeds, timesAtGmt, distances);
