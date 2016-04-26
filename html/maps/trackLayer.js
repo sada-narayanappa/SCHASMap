@@ -229,6 +229,9 @@ function RemoveThisFeature(id, measured_at, mobile_id) {
             //trackLayerUpdate(parstring, true, document.getElementById("invalidCheckbox").checked);
         } // success
     }); // ajax
+    if(!document.getElementById("invalidCheckbox").checked){
+        trackRemoveFeatureByID(id);
+    }
 }
 
 function LT(t, lon) {
@@ -364,11 +367,12 @@ function distance(f) {
    return dist;
 }
 
-function trackRemoveFeatureByIDs(ids){    
+function trackRemoveFeatureByID(id){    
     for(var f=0;f<trackLayer.layer.features.length;f++) {
-        if(ids.indexOf(trackLayer.layer.features[f].attributes.obj.id) >= 0) {
+        if(id == trackLayer.layer.features[f].attributes.obj.id) {
             trackLayer.layer.removeFeatures(trackLayer.layer.features[f]);
             f = f-1;
+            break;
         }
     }
 }
