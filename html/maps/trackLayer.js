@@ -369,10 +369,9 @@ function distance(f) {
 
 function trackRemoveFeatureByID(id){    
     for(var f=0;f<trackLayer.layer.features.length;f++) {
-        if(id == trackLayer.layer.features[f].attributes.obj.id) {
+        if(id == trackLayer.layer.features[f].attributes.obj.id || id == trackLayer.layer.features[f].attributes.obj.fid || id == trackLayer.layer.features[f].attributes.obj.bid) {
             trackLayer.layer.removeFeatures(trackLayer.layer.features[f]);
-            f = f-1;
-            break;
+            f = f-1;            
         }
     }
 }
@@ -408,10 +407,11 @@ function trackAddFeatures(data, lyr, updateBounds) {
    distance(null);
    eval(data);
    map = lyr.map;
-   points = [];
-   speeds = [];
-   timesAtGmt = [];
-   distances = [];
+   var points = [];
+   var speeds = [];
+   var timesAtGmt = [];
+   var distances = [];
+   var pids = []
 
    var locs = $rs["rows"]
    var cols = $rs["colnames"]
@@ -422,6 +422,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    var record_typei = cols.indexOf("record_type");
    var is_validi = cols.indexOf("is_valid");
    var msti = cols.indexOf("mst")
+   var idi = cols.indexOf("id")
 
    //lyr.removeAllFeatures()
    //lyr.destroyFeatures();
@@ -459,6 +460,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
       points.push(point);
       speeds.push(lc[speedi]);
       timesAtGmt.push(lc[msti]);
+      pids.push(lc[idi]);
       
       obj.gmtOffset = gmtOffset;
 
@@ -475,12 +477,12 @@ function trackAddFeatures(data, lyr, updateBounds) {
       
 
       if (  obj.mobile_id !== prevObj.mobile_id) {
-         addLine(points, prevObj, lyr, speeds, timesAtGmt, distances);
+         addLine(points, prevObj, lyr, speeds, timesAtGmt, distances, pids);
          points = [];
          prevObj = obj;
       }
    }
-   addLine(points, obj, lyr, speeds, timesAtGmt, distances);
+   addLine(points, obj, lyr, speeds, timesAtGmt, distances, pids);
 
    if (lyr.getVisibility() && updateBounds) {
       var b1 = map.calculateBounds();
@@ -490,7 +492,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    }
 }
 
-function addLine(points, obj , lyr, speeds, timesAtGmt, distances) {
+function addLine(points, obj , lyr, speeds, timesAtGmt, distances, pids) {
    if ( points.length <= 1) {
       return;
    }
@@ -525,6 +527,8 @@ function addLine(points, obj , lyr, speeds, timesAtGmt, distances) {
             lobj = {};
             lobj.dist = (DISTANCE/1000/1.6).toFixed(2) + " Miles";
             lobj.id = -1;
+            lobj.fid = pids[k+1];
+            lobj.bid = pids[k];
             lobj.measured_at = obj.measured_at;
             lobj.mobile_id = obj.mobile_id;
 
