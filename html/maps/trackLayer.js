@@ -308,7 +308,7 @@ function getExternalGraphic(record_type){
       return "./mediumAttack.png";
     } if(record_type=="SEVERE_ATTACK"){
       return "./severeAttack.png";
-    } if(record_type=="INHALER"){
+    } if(record_type=="INHALER" || record_type=="peakflow"){
       return "./inhaler.png";
     }
     else{
