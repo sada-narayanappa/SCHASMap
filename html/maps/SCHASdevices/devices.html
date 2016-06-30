@@ -63,11 +63,11 @@
                 <div id="centeredmenu" style="border-bottom:4px solid #000; overflow:hidden; position:relative;">
                     <ul style="margin:0; padding:0; text-align:center;">
                         <li style="display: inline;"><a href="#" onclick="userTabs('uploadsFromUserChart')" style="margin:0 0 0 1px; padding:3px 10px; background:#ddd; color:#000; text-decoration:none; line-height:1.3em;">Uploads</a></li>
-                        <li style="display: inline;"><a href="#" onclick="userTabs('uploadsFromUserChart')" style="margin:0 0 0 1px; padding:3px 10px; background:#ddd; color:#000; text-decoration:none; line-height:1.3em;">Peakflow</a></li>
+                        <li style="display: inline;"><a href="#" onclick="userTabs('peakflowUserChart')" style="margin:0 0 0 1px; padding:3px 10px; background:#ddd; color:#000; text-decoration:none; line-height:1.3em;">Peakflow</a></li>
                     </ul>
-                    <div id="uploadsFromUserChart" style="display:none"></div>
-                    <div id="peakflowUserChart" style="display:none"></div>
-                </div>                
+                </div>   
+                <div id="uploadsFromUserChart" style="display:inline"></div>
+                <div id="peakflowUserChart" style="display:none"></div>
             </div>
             <div id="moreInformation" style="width: 25%; float: right;">
                 <form id="profileForm" name="profileForm" method="post" action="">
@@ -832,7 +832,89 @@
             }
             
             function peakflowChartData(mobid){
-                
+                $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=41&mobile_id="+mobid,
+                    contentType: "application/text; charset=utf-8",                   
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                        eval(data);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                        var measuredati = cols.indexOf("measuredate");                        
+                        var pefi = cols.indexOf("pef");
+                        var fevi = cols.indexOf("fev");
+                        
+                        var measuredat = [];
+                        var pef = [];
+                        var fev = [];
+                        
+                        for ( i in data) {
+                            measuredat[i] = data[i][measuredati];
+                            pef[i] = data[i][pefi];
+                            fev[i] = data[i][fevi];
+                        }
+                        
+                        addPeakFlowData(measuredat,pef,fev);
+                    } // success
+                }); // ajax
+            }
+            
+            function addPeakFlowData(measuredat,pef,fev){
+                var pefdata = [];
+                for(var i=0;i<measuredat.length;i++){
+                    pefdata[i]=[Date.parse(measuredat[i]),pef[i]];                    
+                }
+                var fevdata = [];
+                for(var i=0;i<measuredat.length;i++){
+                    fevdata[i]=[Date.parse(measuredat[i]),fev[i]];                    
+                }
+                $('#peakflowUserChart').highcharts('StockChart',{
+                    rangeSelector: {
+                        allButtonsEnabled: true,
+                        selected: 0
+                    },
+                    title: {
+                        text: 'Peakflow'
+                    },                    
+                    xAxis: {
+                        //categories: dates,
+                        type: 'datetime',
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Uploads',
+                            align: 'high'
+                        },
+                        labels: {
+                            overflow: 'justify'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' uploads'
+                    },
+                    plotOptions: {
+                    },                    
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'PEF',
+                        data: pefdata,
+                        color: '#4169e1'                        
+                    },{
+                        name: 'FEV',
+                        data: fevdata,
+                        color: '#696969'                        
+                    }]
+                });
             }
             
             function dataQuery(){
