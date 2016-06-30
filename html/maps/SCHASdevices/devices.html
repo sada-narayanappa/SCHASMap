@@ -59,7 +59,16 @@
                     </table> 
                 </div>
             </div>
-            <div id="uploadsFromUserChart" style="width: 35%; display: inline-block;"></div>
+            <div style="width: 35%; display: inline-block;">
+                <div id="centeredmenu" style="border-bottom:4px solid #000; overflow:hidden; position:relative;">
+                    <ul style="margin:0; padding:0; text-align:center;">
+                        <li style="display: inline;"><a href="#" onclick="userTabs('uploadsFromUserChart')" style="margin:0 0 0 1px; padding:3px 10px; background:#ddd; color:#000; text-decoration:none; line-height:1.3em;">Uploads</a></li>
+                        <li style="display: inline;"><a href="#" onclick="userTabs('uploadsFromUserChart')" style="margin:0 0 0 1px; padding:3px 10px; background:#ddd; color:#000; text-decoration:none; line-height:1.3em;">Peakflow</a></li>
+                    </ul>
+                    <div id="uploadsFromUserChart" style="display:none"></div>
+                    <div id="peakflowUserChart" style="display:none"></div>
+                </div>                
+            </div>
             <div id="moreInformation" style="width: 25%; float: right;">
                 <form id="profileForm" name="profileForm" method="post" action="">
                     <fieldset>
@@ -141,7 +150,7 @@
             </div>
         </div>
         
-        <iframe id = "POWERBI"></iframe>       
+        <!-- <iframe id = "POWERBI"></iframe>       -->
         
         <script>
             /** POWER BI EMBEDDING **/
@@ -200,6 +209,20 @@
                     } // success
                 }); // ajax
             });
+            
+            function userTabs(displayTab){
+                if (typeof activeTab == 'undefined') {
+                    activeTab = 'uploadsFromUserChart'
+                }                                
+                
+                var deactivateTab = document.getElementById(activeTab);
+                deactivateTab.style.display="none"
+                
+                var tab = document.getElementById(displayTab);
+                tab.style.display="inline" 
+                
+                activeTab = displayTab
+            }
             
             function getSummaryData(){
                 $.ajax({
@@ -795,7 +818,7 @@
                 str = "<thead> <tr> <th>Mobile ID</th> <th>First Name</th> <th>Latest Upload</th> <th>Total Uploads</th> <th>Device Version</th> </tr> </thead> <tbody>" ;                
                 for ( i in data) {
                     d = data [i];                   
-                    str = str+"<tr onClick=\"uploadsChartData('"+d[mobileIDi]+"'); moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei].toString().replace(null,"")+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[totalUploadsi]+"</td>"+"<td>"+d[deviceversioni].replace(null,"< 1.090-38")+"</td> </tr>";
+                    str = str+"<tr onClick=\"uploadsChartData('"+d[mobileIDi]+"'); peakflowChartData('"+d[mobileIDi]+"'); moreInformation('"+d[fNamei]+"','"+d[lNamei]+"','"+d[mobileIDi]+"','"+d[cNamei]+"','"+d[addressi]+"','"+d[cellphonei]+"','"+d[homephonei]+"','"+d[homelocationi]+"','"+d[passwdi]+"');\"> <td>"+d[mobileIDi]+"</td> "+"<td>"+d[fNamei].toString().replace(null,"")+"</td> "+"<td>"+d[latestUploadi]+"</td> "+"<td>"+d[totalUploadsi]+"</td>"+"<td>"+d[deviceversioni].replace(null,"< 1.090-38")+"</td> </tr>";
                 }                
                 str = str + "</tbody>";
                 $("#data").html(str);
@@ -806,6 +829,10 @@
                     sortList: [[2,1]] //Sort by the 2nd column in descending order.
                 });
 
+            }
+            
+            function peakflowChartData(mobid){
+                
             }
             
             function dataQuery(){
