@@ -866,11 +866,11 @@
             function addPeakFlowData(measuredat,pef,fev){
                 var pefdata = [];
                 for(var i=0;i<measuredat.length;i++){
-                    pefdata[i]=[Date.parse(measuredat[i]),pef[i]];                    
+                    pefdata[i]=[Date.parse(measuredat[i]),Number(pef[i].replace(null,"0"))];                    
                 }
                 var fevdata = [];
                 for(var i=0;i<measuredat.length;i++){
-                    fevdata[i]=[Date.parse(measuredat[i]),fev[i]];                    
+                    fevdata[i]=[Date.parse(measuredat[i]),Number(fev[i].replace(null,"0"))];                    
                 }
                 $('#peakflowUserChart').highcharts('StockChart',{
                     rangeSelector: {
