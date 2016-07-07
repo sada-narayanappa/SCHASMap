@@ -918,12 +918,20 @@
                     },
                     series: [{
                         name: 'PEF',
+                        yAxis: 1,
                         data: pefdata,
-                        color: '#4169e1'                        
+                        color: '#4169e1',
+                        tooltip: {
+                            valueSuffix: ' L/min'
+                        }
                     },{
                         name: 'FEV',
+                        yAxis: 2,
                         data: fevdata,
-                        color: '#696969'                        
+                        color: '#696969',
+                        tooltip: {
+                            valueSuffix: ' L'
+                        }
                     }]
                 });
             }
