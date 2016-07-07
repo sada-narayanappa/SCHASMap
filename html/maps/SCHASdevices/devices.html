@@ -887,18 +887,29 @@
                             text: null
                         }
                     },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Uploads',
-                            align: 'high'
-                        },
-                        labels: {
-                            overflow: 'justify'
+                    yAxis: [
+                        { // Primary yAxis
+                            labels: {
+                                format: '{value} L/min',
+                                overflow: 'justify'
+                            },
+                            title: {
+                                text: 'PEF',                       
+                            },
+                            opposite: true
+
+                        }, { // Secondary yAxis                            
+                            title: {
+                                text: 'FEV'
+                            },
+                            labels: {
+                                format: '{value} L'
+                            }
+
                         }
-                    },
+                    ],
                     tooltip: {
-                        valueSuffix: ' uploads'
+                        shared: true
                     },
                     plotOptions: {
                     },                    
