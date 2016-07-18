@@ -438,8 +438,8 @@
         }
         str = str + "</form>"
         //$("#tabs-3").append(str);
-        $("#sessiontracks").innerHTML = "";
-        $("#sessiontracks").innerHTML = str;
+        $("#sessiontracks").html("");;
+        $("#sessiontracks").html(str);
     }
     function runQuery1(divName) {
         loggedInUserName = localStorage.getItem('name');
