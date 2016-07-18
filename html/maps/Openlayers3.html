@@ -322,6 +322,7 @@
                 </div>
                <div id="tabs-3" style="height:440px;overflow-y:auto;">
                     <input id="invalidCheckbox" type="checkbox" name="Invalid" value="show"> Show Invalid Points <hr>
+                    <div id="sessiontracks"> </div>
                 </div>
                 <div id="tabs-4">
                     <p>Probabilistic Route Analysis</p>
@@ -436,7 +437,9 @@
             }
         }
         str = str + "</form>"
-        $("#tabs-3").append(str);
+        //$("#tabs-3").append(str);
+        $("#sessiontracks").innerHTML = "";
+        $("#sessiontracks").innerHTML(str);
     }
     function runQuery1(divName) {
         loggedInUserName = localStorage.getItem('name');
