@@ -185,6 +185,42 @@ function setTrackLayerVisibility(bool){
     trackLayer.layer.setVisibility(bool);
 }
 
+function MarkValid(id, measured_at, mobile_id) {
+    //Function to manualy mark points as valid points.
+    var TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=42";
+    var url = config.PROXY + TL_URL
+    url = url+ "&pid="+id;
+    
+
+    $.ajax({
+       type: "GET",
+       url:  url,
+       timeout: 2000,
+       data: 	{},
+       contentType: "",
+       dataType: "text",
+       processdata: true,
+       cache: false,
+       success: function (data) {         
+          clearAllMapPopups();
+       },
+       error: function(xhr, stat, err) {
+          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
+       }
+    });//ajax
+    $.ajax({
+         type: "GET",
+         url: config.PROXY + config.WEBS + "/aura/webroot/db.jsp?cmd=reload",
+         contentType: "application/text; charset=utf-8",                   
+         error: function(XMLHttpRequest, textStatus, errorThrown) {
+             console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+         }, 
+         success: function(data){
+
+         } // success
+     }); // ajax
+}
+
 function RemoveThisFeature(id, measured_at, mobile_id) {
 //function RemoveThisFeature(id) {
    console.log("Will remove feature: " + id);
@@ -270,7 +306,7 @@ function getPop(o) {
          "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
          "</table>" +
          "<input type=button value='Remove this' onclick=\"RemoveThisFeature(\'"+ o.id +"\',\'"+o.measured_at+"\',\'"+o.mobile_id+"\')\" ><br>" +         
-         "<input type=button value='ActivateDrag' onclick=console.log('ok')><br>" +
+         "<input type=button value='Mark Valid' onclick=\"MarkValid(\'"+ o.id +"\',\'"+o.measured_at+"\',\'"+o.mobile_id+"\')\" ><br>" +
          "</div>"
 
          //"<input type=button value='Remove this' onclick=RemoveThisFeature( "+ o.id +","+o.measured_at+","+o.mobile_id+" )><br>" +
