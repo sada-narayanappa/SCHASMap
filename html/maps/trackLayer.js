@@ -252,6 +252,27 @@ function RemoveThisFeature(id, measured_at, mobile_id) {
          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
       }
    });//ajax
+    var TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=43";
+    var url = config.PROXY + TL_URL
+    url = url+ "&pid="+id;
+    
+
+    $.ajax({
+       type: "GET",
+       url:  url,
+       timeout: 2000,
+       data: 	{},
+       contentType: "",
+       dataType: "text",
+       processdata: true,
+       cache: false,
+       success: function (data) {         
+          clearAllMapPopups();
+       },
+       error: function(xhr, stat, err) {
+          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
+       }
+    });//ajax
    $.ajax({
         type: "GET",
         url: config.PROXY + config.WEBS + "/aura/webroot/db.jsp?cmd=reload",
@@ -304,8 +325,10 @@ function getPop(o) {
          "<tr><td>Temperature </td><td>" + o.temperature_min      + "</td></tr>" +
          "<tr><td>Humidity    </td><td>" + o.humidity             + "</td></tr>" +
          "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
+         "<tr><td>Marked Validity:    </td><td>" + o.markedvalidity  + "m"          + "</td></tr>" +
+         "<tr><td>Predicted Validity:     </td><td>" + o.predictedvalidty  + "m"          + "</td></tr>" +
          "</table>" +
-         "<input type=button value='Remove this' onclick=\"RemoveThisFeature(\'"+ o.id +"\',\'"+o.measured_at+"\',\'"+o.mobile_id+"\')\" ><br>" +         
+         "<input type=button value='Mark Invalid' onclick=\"RemoveThisFeature(\'"+ o.id +"\',\'"+o.measured_at+"\',\'"+o.mobile_id+"\')\" ><br>" +         
          "<input type=button value='Mark Valid' onclick=\"MarkValid(\'"+ o.id +"\',\'"+o.measured_at+"\',\'"+o.mobile_id+"\')\" ><br>" +
          "</div>"
 
