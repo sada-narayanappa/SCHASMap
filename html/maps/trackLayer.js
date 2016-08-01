@@ -325,8 +325,8 @@ function getPop(o) {
          "<tr><td>Temperature </td><td>" + o.temperature_min      + "</td></tr>" +
          "<tr><td>Humidity    </td><td>" + o.humidity             + "</td></tr>" +
          "<tr><td>Distance    </td><td>" + o.dist  + "m"          + "</td></tr>" +
-         "<tr><td>Marked Validity:    </td><td>" + o.markedvalidity  + "m"          + "</td></tr>" +
-         "<tr><td>Predicted Validity:     </td><td>" + o.predictedvalidty  + "m"          + "</td></tr>" +
+         "<tr><td>Marked Validity:    </td><td>" + o.markedvalidity            + "</td></tr>" +
+         "<tr><td>Predicted Validity:     </td><td>" + o.predictedvalidity           + "</td></tr>" +
          "</table>" +
          "<input type=button value='Mark Invalid' onclick=\"RemoveThisFeature(\'"+ o.id +"\',\'"+o.measured_at+"\',\'"+o.mobile_id+"\')\" ><br>" +         
          "<input type=button value='Mark Valid' onclick=\"MarkValid(\'"+ o.id +"\',\'"+o.measured_at+"\',\'"+o.mobile_id+"\')\" ><br>" +
