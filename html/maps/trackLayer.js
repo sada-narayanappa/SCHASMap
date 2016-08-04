@@ -7,7 +7,7 @@ trackLayer = {
 
 STYLEsm = new OpenLayers.StyleMap({
    'default': {
-      strokeColor: "#000000",
+      strokeColor: "${strokecolor}",
       fillColor:  "${fillcolor}",
       strokeWidth: "${strokeWidth}",
       pointRadius: 5,
@@ -385,18 +385,30 @@ function trackAddPoint(lon, lat, layer, obj, label, ii, record_type, is_valid ) 
    var point = xPoint(lon, lat);
    
    var pointFeature = new OpenLayers.Feature.Vector(point);
-
+   
+   var stkcolor = "black";
+   if(obj.predictedvalidity == "1"){
+        stkcolor= "green";
+   }else if (obj.predictedvalidity == "2"){
+       stkcolor= "yellow";
+   }
+   
+   var fcolor = "white";
+   if(obj.markedvalidity == "1"){
+        fcolor= "green";
+   }else if (obj.markedvalidity == "2"){
+       fcolor= "yellow";
+   }
 
    pointFeature.attributes = {
       label: label,
       obj:  obj,
       mobile_id:  obj.mobile_id,
-      //fillcolor:  "#" + obj.mobile_id.substring(0,2) + "0000",
-      //fillcolor:  "#FFa500",
       //fillcolor: (ii <=0 ) ? "transparent" : getColor(obj.mobile_id),
       //fillcolor: (ii <=0 ) ? "white" : "white",
-      fillcolor: (is_valid == 1 ) ? "white" : "yellow",
+      fillcolor: fcolor,
       strokeWidth: (ii <=0 ) ? 5 : 2,
+      strokecolor: stkcolor,
       externalGraphic: getExternalGraphic(record_type),
       graphicHeight: 20,
       graphicWidth: 20,
