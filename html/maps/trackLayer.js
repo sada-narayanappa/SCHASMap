@@ -203,6 +203,7 @@ function MarkValid(id, measured_at, mobile_id) {
        cache: false,
        success: function (data) {         
           clearAllMapPopups();
+          trackMarkValidByID(id)
        },
        error: function(xhr, stat, err) {
           console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
@@ -288,6 +289,8 @@ function RemoveThisFeature(id, measured_at, mobile_id) {
     }); // ajax
     if(!document.getElementById("invalidCheckbox").checked){
         trackRemoveFeatureByID(id);
+    }else {
+        trackMarkInvalidByID(id);
     }
 }
 
@@ -443,6 +446,28 @@ function trackRemoveFeatureByID(id){
         if(id == trackLayer.layer.features[f].attributes.obj.id || id == trackLayer.layer.features[f].attributes.obj.fid || id == trackLayer.layer.features[f].attributes.obj.bid) {
             trackLayer.layer.removeFeatures(trackLayer.layer.features[f]);
             f = f-1;            
+        }
+    }
+}
+
+function trackMarkValidByID(id){    
+    for(var f=0;f<trackLayer.layer.features.length;f++) {
+        if(id == trackLayer.layer.features[f].attributes.obj.id) {
+            trackLayer.layer.features[f].attributes.fillcolor = "green";
+            trackLayer.layer.features[f].attributes.markedvalidity = "1";
+            trackLayer.layer.drawFeature(trackLayer.layer.features[f]);
+             break;
+        }
+    }
+}
+
+function trackMarkInvalidByID(id){    
+    for(var f=0;f<trackLayer.layer.features.length;f++) {
+        if(id == trackLayer.layer.features[f].attributes.obj.id) {
+            trackLayer.layer.features[f].attributes.fillcolor = "yellow";
+            trackLayer.layer.features[f].attributes.markedvalidity = "2";
+            trackLayer.layer.drawFeature(trackLayer.layer.features[f]);
+             break;
         }
     }
 }
