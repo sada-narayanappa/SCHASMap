@@ -209,6 +209,29 @@ function MarkValid(id, measured_at, mobile_id) {
           console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
        }
     });//ajax
+    
+    var TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=44";
+    var url = config.PROXY + TL_URL
+    url = url+ "&pid="+id;
+
+    $.ajax({
+       type: "GET",
+       url:  url,
+       timeout: 2000,
+       data: 	{},
+       contentType: "",
+       dataType: "text",
+       processdata: true,
+       cache: false,
+       success: function (data) {         
+          clearAllMapPopups();
+          trackMarkValidByID(id)
+       },
+       error: function(xhr, stat, err) {
+          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
+       }
+    });//ajax
+    
     $.ajax({
          type: "GET",
          url: config.PROXY + config.WEBS + "/aura/webroot/db.jsp?cmd=reload",
