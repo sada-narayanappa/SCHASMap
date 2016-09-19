@@ -932,7 +932,7 @@
                 }
                 var inhalerdata = [];
                 for(var i=0;i<inhalermeasuredat.length;i++){
-                    inhalerdata[i]=[Date.parse(inhalermeasuredat[i]),Number(numinhaler[i].replace(null,"0"))];                    
+                    inhalerdata[i]=[Date.parse(inhalermeasuredat[i]),Number(numinhaler[i])];                    
                 }
                 $('#peakflowUserChart').highcharts('StockChart',{
                     rangeSelector: {
