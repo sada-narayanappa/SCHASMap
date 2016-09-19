@@ -886,12 +886,42 @@
                             fev[i] = data[i][fevi];
                         }
                         
-                        addPeakFlowData(measuredat,pef,fev);
+                        getPeakFlowChartInhalerData(mobid,measuredat,pef,fev);
                     } // success
                 }); // ajax
             }
             
-            function addPeakFlowData(measuredat,pef,fev){
+            function getPeakFlowChartInhalerData(mobid,measuredat,pef,fev){
+                    $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=45&mobile_id="+mobid,
+                    contentType: "application/text; charset=utf-8",                   
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                        eval(data);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                        var measuredati = cols.indexOf("measuredate");                        
+                        var numinhaleri = cols.indexOf("numinhaler");                        
+                        
+                        var inhalermeasuredat = [];
+                        var numinhaler = [];
+                        
+                        for ( i in data) {
+                            inhalermeasuredat[i] = data[i][measuredati];
+                            numinhaler[i] = data[i][numinhaleri];
+
+                        }
+                        
+                        addPeakFlowData(measuredat, pef,fev, inhalermeasuredat,numinhaler);
+                    } // success
+                }); // ajax
+            }
+            
+            function addPeakFlowData(measuredat,pef,fev,inhalermeasuredat,numinhaler){
                 var pefdata = [];
                 for(var i=0;i<measuredat.length;i++){
                     pefdata[i]=[Date.parse(measuredat[i]),Number(pef[i].replace(null,"0"))];                    
@@ -899,6 +929,10 @@
                 var fevdata = [];
                 for(var i=0;i<measuredat.length;i++){
                     fevdata[i]=[Date.parse(measuredat[i]),Number(fev[i].replace(null,"0"))];                    
+                }
+                var inhalerdata = [];
+                for(var i=0;i<inhalermeasuredat.length;i++){
+                    inhalerdata[i]=[Date.parse(inhalermeasuredat[i]),Number(numinhaler[i].replace(null,"0"))];                    
                 }
                 $('#peakflowUserChart').highcharts('StockChart',{
                     rangeSelector: {
@@ -934,6 +968,13 @@
                             },
                             opposite: true
 
+                        }, { // tirtiary yAxis                            
+                            title: {
+                                text: null
+                            },
+                            labels: {
+                                enabled: false
+                            },                            
                         }
                     ],
                     tooltip: {
@@ -958,6 +999,15 @@
                         color: '#696969',
                         tooltip: {
                             valueSuffix: ' L'
+                        }
+                    },{
+                        name: 'Inhaler',
+                        yAxis: 2,
+                        data: inhalerdata,
+                        type:'column',
+                        color: '#00ff00',
+                        tooltip: {
+                            valueSuffix: ' use(s)'
                         }
                     }]
                 });
