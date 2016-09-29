@@ -986,6 +986,15 @@
                         enabled: false
                     },
                     series: [{
+                        name: 'Inhaler',
+                        yAxis: 2,
+                        data: inhalerdata,
+                        type:'column',
+                        color: '#00ff00',
+                        tooltip: {
+                            valueSuffix: ' use(s)'
+                        }
+                    },{
                         name: 'PEF',
                         data: pefdata,
                         color: '#4169e1',
@@ -999,15 +1008,6 @@
                         color: '#696969',
                         tooltip: {
                             valueSuffix: ' L'
-                        }
-                    },{
-                        name: 'Inhaler',
-                        yAxis: 2,
-                        data: inhalerdata,
-                        type:'column',
-                        color: '#00ff00',
-                        tooltip: {
-                            valueSuffix: ' use(s)'
                         }
                     }]
                 });
