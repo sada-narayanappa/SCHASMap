@@ -627,8 +627,8 @@ function addLine(points, obj , lyr, speeds, timesAtGmt, distances, pids) {
        var distanceDifferences = 0;
        distanceDifferences = distances[k+1];
        
-       //Only draw line if the next point is less than 1800 seconds away.
-        if(secondDifferences<1800 && distanceDifferences > 100){
+       //Only draw line if the next point is less than 1800 seconds away. And the distance is more than 100 meters but less than 5 miles (8074 meters)
+        if(secondDifferences<1800 && distanceDifferences > 100 && distanceDifferences < 8047){
             var pline = new OpenLayers.Geometry.LineString(points.slice(k,k+2));
             avgSpeed = (speeds[k]+speeds[k+1])/2;
             var style = {
