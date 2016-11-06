@@ -575,7 +575,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
       
       //only create a label if the distance from the previous point is > 1 mile away
       var label ="";
-      if(i > 0 ){   
+      if(i > 0 && i < locs.length-1){   
           //if distance from previous point is more than a mile. Create a label
           if(distances[i-1]>1609){
               label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
