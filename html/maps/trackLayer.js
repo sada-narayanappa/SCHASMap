@@ -573,17 +573,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var localDate = new Date(obj.measured_at.toString().split('.')[0].replace(/-/g, '/'));
       localDate.setHours(localDate.getHours() + gmtOffset)
       
-      //only create a label if the distance from the previous point is > 1 mile away
-      var label ="";
-      if(i > 0 && i < locs.length-1){   
-          //if distance from previous point is more than a mile. Create a label
-          if(distances[i]>1609){
-              label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
-          }          
-      }else{
-          //first point always has a label
-          label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
-      }
+      var label="";
       
       //var label = (locs.length > 2) ? lc[2].split(" ")[1].split(":")[0] + ":" + lc[2].split(" ")[1].split(":")[1] : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
@@ -603,6 +593,18 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var dist = distance(feat);
       obj.dist = dist;
       distances.push(dist);
+      
+      //only create a label if the distance from the previous point is > 1 mile away
+      if(i > 0 && i < locs.length-1){   
+          //if distance from previous point is more than a mile (1609 meters). Create a label.
+          if(distances[i]>1609){
+              feat.attributes.label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
+          }          
+      }else{
+          //first point always has a label
+          feat.attributes.label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
+      }
+      
       
       
 
@@ -655,7 +657,7 @@ function addLine(points, obj , lyr, speeds, timesAtGmt, distances, pids) {
             var lineFeature = new OpenLayers.Feature.Vector(pline, null, style);
 
             lobj = {};
-            lobj.dist = (DISTANCE/1000/1.6).toFixed(2) + " Miles";
+            lobj.dist = (distanceDifferences*0.000621371).toFixed(2) + " Miles";
             lobj.id = -1;
             lobj.fid = pids[k+1];
             lobj.bid = pids[k];
