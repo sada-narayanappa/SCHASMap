@@ -573,7 +573,18 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var localDate = new Date(obj.measured_at.toString().split('.')[0].replace(/-/g, '/'));
       localDate.setHours(localDate.getHours() + gmtOffset)
       
-      var label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
+      //only create a label if the distance from the previous point is > 1 mile away
+      var label ="";
+      if(i > 0 ){   
+          //if distance from previous point is more than a mile. Create a label
+          if(distances[i-1]>1609){
+              label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
+          }          
+      }else{
+          //first point always has a label
+          label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
+      }
+      
       //var label = (locs.length > 2) ? lc[2].split(" ")[1].split(":")[0] + ":" + lc[2].split(" ")[1].split(":")[1] : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
