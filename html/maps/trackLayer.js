@@ -594,7 +594,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var dist = distance(feat);
       obj.dist = dist;
       distances.push(dist);
-      cumulativeDistance = cumulativeDistance+distances[i];
+      cumulativeDistance = cumulativeDistance+(distances[i] || 0);
       //only create a label if the distance from the previous point is > 1 mile away
       if(i > 0 && i < locs.length-1){   
           //if distance from previous point is more than a mile (1609 meters). Create a label.
