@@ -420,7 +420,7 @@
                 if(typeof(d[4]) === 'undefined'){
                    d[4] = "" 
                 }
-                str = str + "<hr>" +"Name: "+ d[2].replace(null,"") + " " + d[3].replace(null,"")+" Username: " +d[4].replace(null,"")+ " </hr><button id=\"button"+d[0]+"\" type=\"button\" onclick=\"moreTracks("+d[0]+",0)\">See More</button><br>";
+                str = str + "<hr>" +"Name: "+ d[2].replace(null,"") + " " + d[3].replace(null,"")+" Username: " +d[4].replace(null,"")+ " </hr><button id=\"button"+d[0]+"\" type=\"button\" onclick=\"moreTracks('"+d[0]+"','0')\">See More</button><br>";
                 
             }
             if ( d[1].indexOf("-") < 0) {
@@ -471,7 +471,7 @@
                         str = str+a;
                     }
                     $('#'+mobile_id).append(str);
-                    var nextRow = startRow+5;
+                    var nextRow = parseInt(startRow)+5;
                     document.getElementById("button"+mobile_id).onclick = "moreTracks("+mobile_id+","+nextRow+")";
                 }// success
         });
