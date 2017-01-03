@@ -459,6 +459,7 @@
                     console.log( XMLHttpRequest.responseText);   
                 },
                 success: function(data){
+                    eval(data);
                     var cols = $rs.colnames;
                     var type = $rs.coltypes;
                     var dat = $rs.rows || $rs[Object.keys($rs)[0]];
