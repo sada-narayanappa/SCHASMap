@@ -423,11 +423,11 @@
                 str = str + "<hr>" +"Name: "+ d[2].replace(null,"") + " " + d[3].replace(null,"")+" Username: " +d[4].replace(null,"")+ " </hr><button id=\"button"+d[0]+"\" type=\"button\" onclick=\"moreTracks('"+d[0]+"','0')\">See More</button><br>";
                 
             }
-            if ( d[1].indexOf("-") < 0) {
-                p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'"; // containst mobile_id and session num
-            } else {
-                p = "'mobile_id="+ d[0] + "&measured_at=" + d[1] + "'"; // containst mobile_id and session num
-            }
+            //if ( d[1].indexOf("-") < 0) {
+            //    p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'"; // containst mobile_id and session num
+            //} else {
+            //    p = "'mobile_id="+ d[0] + "&measured_at=" + d[1] + "'"; // containst mobile_id and session num
+            //}
             //s = "changeTrackLayer(" + p + ")";
             
             //a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true); stationLayerVoronoi.prototype.LayerUpdateNearestWeather('"+d[1]+"'); " + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+d[0]+"\',\'"+ d[1]+"\');}\" name=\"Session\" value=\"false\">" + d[0] + "," + d[1] + "<br/></label>\n";
@@ -465,10 +465,10 @@
                     var dat = $rs.rows || $rs[Object.keys($rs)[0]];
                     var str = "";
                     for(i in dat){
-                        var row  = dat[i];
-                        s = "changeTrackLayer(" + p + ")";
-                        p = "'mobile_id="+ mobile_id + "&measured_at=" + row[0] + "'"; // containst mobile_id and session num
-                        a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true); stationLayerVoronoi.prototype.LayerUpdateNearestWeather('"+row[0]+"'); " + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+mobile_id+"\',\'"+ row[0]+"\');}\" name=\"Session\" value=\"false\">" + mobile_id + "," + row[0] + "<br/></label>\n";
+                        var row  = dat[i];                        
+                        var p = "'mobile_id="+ mobile_id + "&measured_at=" + row[0] + "'"; // containst mobile_id and session num
+                        var s = "changeTrackLayer(" + p + ")";
+                        var a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true); stationLayerVoronoi.prototype.LayerUpdateNearestWeather('"+row[0]+"'); " + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+mobile_id+"\',\'"+ row[0]+"\');}\" name=\"Session\" value=\"false\">" + mobile_id + "," + row[0] + "<br/></label>\n";
                         str = str+a;
                     }
                     $('#'+mobile_id).append(str);
