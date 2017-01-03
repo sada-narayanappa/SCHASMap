@@ -472,8 +472,8 @@
                         str = str+a;
                     }
                     $('#'+mobile_id).append(str);
-                    var nextRow = parseInt(startRow)+5;
-                    document.getElementById("button"+mobile_id).onclick = "moreTracks("+mobile_id+","+nextRow+")";
+                    var nextRow = parseInt(startRow)+5;                    
+                    document.getElementById("button"+mobile_id).setAttribute("onClick","moreTracks("+mobile_id+","+nextRow+")");
                 }// success
         });
     }
