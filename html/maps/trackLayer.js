@@ -209,6 +209,29 @@ function MarkValid(id, measured_at, mobile_id) {
           console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
        }
     });//ajax
+    
+    var TL_URL= config.WEBS + "/aura/webroot/db.jsp?qn=44";
+    var url = config.PROXY + TL_URL
+    url = url+ "&pid="+id;
+
+    $.ajax({
+       type: "GET",
+       url:  url,
+       timeout: 2000,
+       data: 	{},
+       contentType: "",
+       dataType: "text",
+       processdata: true,
+       cache: false,
+       success: function (data) {         
+          clearAllMapPopups();
+          trackMarkValidByID(id)
+       },
+       error: function(xhr, stat, err) {
+          console.log(" ERR:  " + xhr + ": " + stat + " " + err + " ]" + xhr.responseText)
+       }
+    });//ajax
+    
     $.ajax({
          type: "GET",
          url: config.PROXY + config.WEBS + "/aura/webroot/db.jsp?cmd=reload",
@@ -536,6 +559,7 @@ function trackAddFeatures(data, lyr, updateBounds) {
    //console.log(" : " + locs.length)
    var bounds;
    prevObj = null;
+   var cumulativeDistance = 0;
    for (var i = 0; i < locs.length; ++i) {
       var lc = locs[i];
       obj = {};
@@ -550,7 +574,8 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var localDate = new Date(obj.measured_at.toString().split('.')[0].replace(/-/g, '/'));
       localDate.setHours(localDate.getHours() + gmtOffset)
       
-      var label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
+      var label="";
+      
       //var label = (locs.length > 2) ? lc[2].split(" ")[1].split(":")[0] + ":" + lc[2].split(" ")[1].split(":")[1] : lc[2]
       var point = xPoint(lc[loni], lc[lati]);
       points.push(point);
@@ -569,6 +594,19 @@ function trackAddFeatures(data, lyr, updateBounds) {
       var dist = distance(feat);
       obj.dist = dist;
       distances.push(dist);
+      cumulativeDistance = cumulativeDistance+(distances[i] || 0);
+      //only create a label if the distance from the previous point is > 1 mile away
+      if(i > 0 && i < locs.length-1){   
+          //if distance from previous point is more than a mile (1609 meters). Create a label.
+          if(cumulativeDistance>1609){
+              cumulativeDistance=0;
+              feat.attributes.label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
+          }          
+      }else{
+          //first point always has a label
+          feat.attributes.label = (locs.length > 2) ? localDate.toString().split(" ")[4].split(":")[0] + ":" + localDate.toString().split(" ")[4].split(":")[1] : lc[2]
+      }
+      
       
       
 
@@ -604,8 +642,8 @@ function addLine(points, obj , lyr, speeds, timesAtGmt, distances, pids) {
        var distanceDifferences = 0;
        distanceDifferences = distances[k+1];
        
-       //Only draw line if the next point is less than 1800 seconds away.
-        if(secondDifferences<1800 && distanceDifferences > 100){
+       //Only draw line if the next point is less than 1800 seconds away. And the distance is more than 100 meters but less than 5 miles (8074 meters)
+        if(secondDifferences<1800 && distanceDifferences > 100 && distanceDifferences < 8047){
             var pline = new OpenLayers.Geometry.LineString(points.slice(k,k+2));
             avgSpeed = (speeds[k]+speeds[k+1])/2;
             var style = {
@@ -621,7 +659,7 @@ function addLine(points, obj , lyr, speeds, timesAtGmt, distances, pids) {
             var lineFeature = new OpenLayers.Feature.Vector(pline, null, style);
 
             lobj = {};
-            lobj.dist = (DISTANCE/1000/1.6).toFixed(2) + " Miles";
+            lobj.dist = (distanceDifferences*0.000621371).toFixed(2) + " Miles";
             lobj.id = -1;
             lobj.fid = pids[k+1];
             lobj.bid = pids[k];

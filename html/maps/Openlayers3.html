@@ -347,7 +347,7 @@
                 </div>
 
             </div>
-
+            
             <hr size="1"/>
             <a style="color: blue;" href="/" target="_blank">Map</a> |
             <div id="coords" style="height: 1.5em; display:inline; text-align: right"></div> |
@@ -404,10 +404,11 @@
         var cols = $rs.colnames;
         var type = $rs.coltypes;
         var data = $rs.rows || $rs[Object.keys($rs)[0]];
-        str = "<form>";
+        str = "<form id=\"usersessionsform\">";
         mobile_id = "";
         for ( i in data) {
             d = data [i];
+            str = str+"<section id=\""+d[0]+"\">";
             if (mobile_id != d[0]) {
                 mobile_id = d[0]
                 if(typeof(d[2]) === 'undefined'){
@@ -419,35 +420,71 @@
                 if(typeof(d[4]) === 'undefined'){
                    d[4] = "" 
                 }
-                str = str + "<hr>" +"Name: "+ d[2].replace(null,"") + " " + d[3].replace(null,"")+" Username: " +d[4].replace(null,"")+ " </hr><br>"
+                str = str + "<hr>" +"Name: "+ d[2].replace(null,"") + " " + d[3].replace(null,"")+" Username: " +d[4].replace(null,"")+ " </hr><button id=\"button"+d[0]+"\" type=\"button\" onclick=\"moreTracks('"+d[0]+"','0')\">See More</button><br>";
                 
             }
-            if ( d[1].indexOf("-") < 0) {
-                p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'"; // containst mobile_id and session num
-            } else {
-                p = "'mobile_id="+ d[0] + "&measured_at=" + d[1] + "'"; // containst mobile_id and session num
-            }
-            s = "changeTrackLayer(" + p + ")";
+            //if ( d[1].indexOf("-") < 0) {
+            //    p = "'mobile_id="+ d[0] + "&session_num=" + d[1] + "'"; // containst mobile_id and session num
+            //} else {
+            //    p = "'mobile_id="+ d[0] + "&measured_at=" + d[1] + "'"; // containst mobile_id and session num
+            //}
+            //s = "changeTrackLayer(" + p + ")";
             
-            a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true); stationLayerVoronoi.prototype.LayerUpdateNearestWeather('"+d[1]+"'); " + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+d[0]+"\',\'"+ d[1]+"\');}\" name=\"Session\" value=\"false\">" + d[0] + "," + d[1] + "<br/></label>\n";
+            //a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true); stationLayerVoronoi.prototype.LayerUpdateNearestWeather('"+d[1]+"'); " + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+d[0]+"\',\'"+ d[1]+"\');}\" name=\"Session\" value=\"false\">" + d[0] + "," + d[1] + "<br/></label>\n";
+            
             //a = "<a href=# onclick=\"setTrackLayerVisibility(true);" + s + ";\" >" + d[0] + "," + d[1] + "</a><br/>\n"
-            str = str  + a;
-            if ( i == 0) {
-                CURRENT_PARMS = p;
-            }
+            //str = str  + a;
+            str = str+"</section>";
+            //if ( i == 0) {
+            //    CURRENT_PARMS = p;
+            //}
         }
         str = str + "</form>"
         //$("#tabs-3").append(str);
         $("#sessiontracks").html("");;
         $("#sessiontracks").html(str);
     }
+    
+    function moreTracks(mobile_id, startRow){
+        $.ajax({
+                type: "GET",
+                url: config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?api_key=test&qn=49",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                // send username and password as parameters to the python script
+                data: "mobile_id=" + mobile_id + "&startrow=" + startRow,
+                // script call was *not* successful
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    //  $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText
+                    console.log( XMLHttpRequest.responseText);   
+                },
+                success: function(data){
+                    eval(data);
+                    var cols = $rs.colnames;
+                    var type = $rs.coltypes;
+                    var dat = $rs.rows || $rs[Object.keys($rs)[0]];
+                    var str = "";
+                    for(i in dat){
+                        var row  = dat[i];                        
+                        var p = "'mobile_id="+ mobile_id + "&measured_at=" + row[0] + "'"; // containst mobile_id and session num
+                        var s = "changeTrackLayer(" + p + ")";
+                        var a = "<label><input type=\"checkbox\" onchange=\"if(this.checked) {this.value='true'; setTrackLayerVisibility(true); stationLayerVoronoi.prototype.LayerUpdateNearestWeather('"+row[0]+"'); " + s + ";} else {this.value='false'; trackRemoveFeatureByMobIDAndMeasuredAt(\'"+mobile_id+"\',\'"+ row[0]+"\');}\" name=\"Session\" value=\"false\">" + mobile_id + "," + row[0] + "<br/></label>\n";
+                        str = str+a;
+                    }
+                    $('#'+mobile_id).append(str);
+                    var nextRow = parseInt(startRow)+5;                    
+                    document.getElementById("button"+mobile_id).setAttribute("onClick","moreTracks('"+mobile_id+"','"+nextRow+"')");
+                }// success
+        });
+    }
+    
     function runQuery1(divName) {
         loggedInUserName = localStorage.getItem('name');
         //console.log("inside runquery1 and is name from localstorage is "+name); 
         if (typeof loggedInUserName !== 'undefined' && loggedInUserName !== null) {
             if (loggedInUserName == 'admin') {
                 url = config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?qn=9a"
-                url = config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?qn=15"
+                url = config.PROXY + GEOPROXY + "/aura/webroot/db.jsp?qn=48"
                 submitForm({URL: url, fdata: {}, CB: setUserSessions})
             }
             else {

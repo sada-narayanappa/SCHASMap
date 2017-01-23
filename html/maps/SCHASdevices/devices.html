@@ -64,10 +64,12 @@
                     <ul style="margin:0; padding:0; text-align:center;">
                         <li style="display: inline;"><a href="#" onclick="userTabs('uploadsFromUserChart')" style="margin:0 0 0 1px; padding:3px 10px; background:#ddd; color:#000; text-decoration:none; line-height:1.3em;">Uploads</a></li>
                         <li style="display: inline;"><a href="#" onclick="userTabs('peakflowUserChart')" style="margin:0 0 0 1px; padding:3px 10px; background:#ddd; color:#000; text-decoration:none; line-height:1.3em;">Peakflow</a></li>
+                        <!-- <li style="display: inline;"><a href="#" onclick="userTabs('inhalerUserChart')" style="margin:0 0 0 1px; padding:3px 10px; background:#ddd; color:#000; text-decoration:none; line-height:1.3em;">Inhaler Use</a></li> -->
                     </ul>
                 </div>   
-                <div id="uploadsFromUserChart" style="display:inline"></div>
-                <div id="peakflowUserChart" style="display:none"></div>
+                <div id="uploadsFromUserChart" style="display:inline; width: 35%;"></div>
+                <div id="peakflowUserChart" style="display:none; width: 35%;"></div>
+                <!-- <div id="inhalerUserChart" style="display:none; width: 40%;"></div> -->
             </div>
             <div id="moreInformation" style="width: 25%; float: right;">
                 <form id="profileForm" name="profileForm" method="post" action="">
@@ -387,23 +389,26 @@
                         var datei = cols.indexOf("stored_at");
                         var heartbeatsi = cols.indexOf("heartbeats");
                         var attacksi = cols.indexOf("attacks");
+                        var medicinesi = cols.indexOf("medicines");
                         var uploadData = []
                         var uploadDates = []
                         var uploadHeartbeats = []
                         var uploadAttacks = []
+                        var uploadInhalers = []
                         for ( i in data) {
                             uploadData[i] = data[i][uploadsi];   
                             uploadDates[i] = data[i][datei];
                             uploadHeartbeats[i] = data[i][heartbeatsi];
                             uploadAttacks[i]=data[i][attacksi]
+                            uploadInhalers[i]=data[i][medicinesi]
                         }   
 
-                        getUploadsMeasuredAt(mobileid, uploadDates,uploadData,uploadHeartbeats,uploadAttacks);
+                        getUploadsMeasuredAt(mobileid, uploadDates,uploadData,uploadHeartbeats,uploadAttacks,uploadInhalers);
                     } // success
                 }); // ajax
             }
             
-            function getUploadsMeasuredAt(mobileid,uploadDates,uploadData,uploadHeartbeats,uploadAttacks){
+            function getUploadsMeasuredAt(mobileid,uploadDates,uploadData,uploadHeartbeats,uploadAttacks,uploadInhalers){
                 $.ajax({
                     type: "GET",
                     url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=36",
@@ -421,27 +426,30 @@
                         var measuredDatei = measuredCols.indexOf("measureddate");
                         var measuredHeartbeatsi = measuredCols.indexOf("measuredheartbeats");
                         var measuredAttacksi = measuredCols.indexOf("measuredattacks");
+                        var measuredMedicationsi = measuredCols.indexOf("measuredmedications");
                         var measuredUploadData = []
                         var measuredUploadDates = []
                         var measuredUploadHeartbeats = []
                         var measuredUploadAttacks = []
+                        var measuredUploadInhalers = []
                         for ( i in measuredData) {
                             measuredUploadData[i] = measuredData[i][measuredUploadsi];   
                             measuredUploadDates[i] = measuredData[i][measuredDatei];
                             measuredUploadHeartbeats[i] = measuredData[i][measuredHeartbeatsi];
                             measuredUploadAttacks[i]=measuredData[i][measuredAttacksi]
+                            measuredUploadInhalers[i] = measuredData[i][measuredMedicationsi]
                         }   
 
-                        addUploadsChart(uploadDates,uploadData,uploadHeartbeats,uploadAttacks,measuredUploadDates,measuredUploadData,measuredUploadHeartbeats,measuredUploadAttacks);
+                        addUploadsChart(uploadDates,uploadData,uploadHeartbeats,uploadAttacks,uploadInhalers,measuredUploadDates,measuredUploadData,measuredUploadHeartbeats,measuredUploadAttacks,measuredUploadInhalers);
                     } // success
                 }); // ajax
                 
             }
             
-            function addUploadsChart(dates,data,heartbeats,attacks,measuredDates, measuredData, measuredHeartbeats, measuredAttacks){
+            function addUploadsChart(dates,data,heartbeats,attacks,inhalers,measuredDates, measuredData, measuredHeartbeats, measuredAttacks,measuredInhalers){
                 var data2 = [];
                 for(var i=0;i<dates.length;i++){
-                    data2[i]=[Date.parse(dates[i]),data[i]-heartbeats[i]-attacks[i]];                    
+                    data2[i]=[Date.parse(dates[i]),data[i]-heartbeats[i]-attacks[i]-inhalers[i]];                    
                 }
                 var heartbeats2 = [];
                 for(var i=0;i<dates.length;i++){
@@ -451,11 +459,15 @@
                 for(var i=0;i<dates.length;i++){
                     attacks2[i]=[Date.parse(dates[i]),attacks[i]];                    
                 }
+                var inhalers2 = [];
+                for(var i=0;i<dates.length;i++){
+                    inhalers2[i]=[Date.parse(dates[i]),inhalers[i]];                    
+                }
                 
                 var measuredData2 = [];
                 for(var i=0;i<measuredDates.length;i++){
                     if(measuredDates[i] != 'null'){
-                        measuredData2[i]=[Date.parse(measuredDates[i]),measuredData[i]-measuredHeartbeats[i]-measuredAttacks[i]];                    
+                        measuredData2[i]=[Date.parse(measuredDates[i]),measuredData[i]-measuredHeartbeats[i]-measuredAttacks[i]-measuredInhalers[i]];                    
                     }
                 }
                 var measuredHeartbeats2 = [];
@@ -468,6 +480,12 @@
                 for(var i=0;i<measuredDates.length;i++){
                     if(measuredDates[i] != 'null'){
                         measuredAttacks2[i]=[Date.parse(measuredDates[i]),measuredAttacks[i]];                    
+                    }
+                }
+                var measuredInhalers2 = [];
+                for(var i=0;i<measuredDates.length;i++){
+                    if(measuredDates[i] != 'null'){
+                        measuredInhalers2[i]=[Date.parse(measuredDates[i]),measuredInhalers[i]];                    
                     }
                 }
                 $('#uploadsFromUserChart').highcharts('StockChart',{
@@ -527,6 +545,11 @@
                     },{
                         name: 'Measured Attacks',
                         data: measuredAttacks2,
+                        color: '#ff0000',
+                        stack: 'measured'        
+                    },{
+                        name: 'Measured Inhaler Uses',
+                        data: measuredInhalers2,
                         color: '#32cd32',
                         stack: 'measured'        
                     },{
@@ -542,6 +565,11 @@
                     },{
                         name: 'Uploaded Attacks',
                         data: attacks2,
+                        color: '#8b0000',
+                        stack: 'stored'        
+                    },{
+                        name: 'Uploaded Inhaler Uses',
+                        data: inhalers2,
                         color: '#006400',
                         stack: 'stored'        
                     }]
@@ -858,12 +886,42 @@
                             fev[i] = data[i][fevi];
                         }
                         
-                        addPeakFlowData(measuredat,pef,fev);
+                        getPeakFlowChartInhalerData(mobid,measuredat,pef,fev);
                     } // success
                 }); // ajax
             }
             
-            function addPeakFlowData(measuredat,pef,fev){
+            function getPeakFlowChartInhalerData(mobid,measuredat,pef,fev){
+                    $.ajax({
+                    type: "GET",
+                    url: config.PROXY2 + config.WEBS + "/aura/webroot/db.jsp?api_key=test&qn=45&mobile_id="+mobid,
+                    contentType: "application/text; charset=utf-8",                   
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Data table error: " + XMLHttpRequest+ textStatus+ errorThrown)
+                    }, 
+                    success: function(data){
+                        eval(data);
+                        var cols = $rs.colnames;
+                        var type = $rs.coltypes;
+                        var data = $rs.rows || $rs[Object.keys($rs)[0]];
+                        var measuredati = cols.indexOf("measuredate");                        
+                        var numinhaleri = cols.indexOf("numinhaler");                        
+                        
+                        var inhalermeasuredat = [];
+                        var numinhaler = [];
+                        
+                        for ( i in data) {
+                            inhalermeasuredat[i] = data[i][measuredati];
+                            numinhaler[i] = data[i][numinhaleri];
+
+                        }
+                        
+                        addPeakFlowData(measuredat, pef,fev, inhalermeasuredat,numinhaler);
+                    } // success
+                }); // ajax
+            }
+            
+            function addPeakFlowData(measuredat,pef,fev,inhalermeasuredat,numinhaler){
                 var pefdata = [];
                 for(var i=0;i<measuredat.length;i++){
                     pefdata[i]=[Date.parse(measuredat[i]),Number(pef[i].replace(null,"0"))];                    
@@ -871,6 +929,10 @@
                 var fevdata = [];
                 for(var i=0;i<measuredat.length;i++){
                     fevdata[i]=[Date.parse(measuredat[i]),Number(fev[i].replace(null,"0"))];                    
+                }
+                var inhalerdata = [];
+                for(var i=0;i<inhalermeasuredat.length;i++){
+                    inhalerdata[i]=[Date.parse(inhalermeasuredat[i]),Number(numinhaler[i])];                    
                 }
                 $('#peakflowUserChart').highcharts('StockChart',{
                     rangeSelector: {
@@ -906,6 +968,13 @@
                             },
                             opposite: true
 
+                        }, { // tirtiary yAxis                            
+                            title: {
+                                text: null
+                            },
+                            labels: {
+                                enabled: false
+                            },                            
                         }
                     ],
                     tooltip: {
@@ -917,6 +986,15 @@
                         enabled: false
                     },
                     series: [{
+                        name: 'Inhaler',
+                        yAxis: 2,
+                        data: inhalerdata,
+                        type:'column',
+                        color: '#00ff00',
+                        tooltip: {
+                            valueSuffix: ' use(s)'
+                        }
+                    },{
                         name: 'PEF',
                         data: pefdata,
                         color: '#4169e1',
